@@ -1,0 +1,51 @@
+package com.bussinesdomain.maestros.dto;
+
+import com.bussinesdomain.maestros.constants.ValidationMessage;
+import com.bussinesdomain.maestros.enums.CollaboratorState;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class CollaboratorDTO {
+
+    @EqualsAndHashCode.Include
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long id;
+
+    @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
+    @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
+    private String lastName;
+    @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
+    @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
+    private String names;
+    @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
+    @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
+    private String email;
+
+    private CollaboratorState state;
+
+
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idLeader;
+    private String leaderNames;
+
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idRol;
+    private String rolDescription;
+
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idRegion;
+    private String regionDescription;
+
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idFunctionalLeader;
+    private String functionalLeaderNames;
+}
