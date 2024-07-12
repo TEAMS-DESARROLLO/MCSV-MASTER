@@ -22,7 +22,7 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
         }
         String[] ignoreProperties= new String[]{"idLeader"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
-        return super.update(entity, id);
+        return super.update(original, id);
     }
 
     @Override

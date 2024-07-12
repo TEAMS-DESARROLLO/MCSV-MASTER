@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTechnologyEntity,Long> implements ICollaboratorTechnologyService {
@@ -36,5 +38,10 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
     @Override
     public CollaboratorTechnologyEntity getTechnologyInCollaborator(Long idCollaborator, Long idTechnology) {
         return businessRepository.getTechnologyInCollaborator(idCollaborator,idTechnology);
+    }
+
+    @Override
+    public List<CollaboratorTechnologyEntity> getByCollaboratorId(Long idCollaborator) {
+        return businessRepository.getByCollaboratorId(idCollaborator);
     }
 }

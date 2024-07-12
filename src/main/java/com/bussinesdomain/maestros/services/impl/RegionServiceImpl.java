@@ -24,8 +24,9 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        BeanUtils.copyProperties(entity,original);
-        return super.update(entity,id);
+        String[] ignoreProperties= new String[]{"idRegion"};
+        BeanUtils.copyProperties(entity,original,ignoreProperties);
+        return super.update(original,id);
     }
 }
 

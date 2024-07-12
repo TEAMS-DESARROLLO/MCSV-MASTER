@@ -20,7 +20,7 @@ public class FuncionalLeaderServiceImpl extends CRUDImpl<FunctionalLeaderEntity,
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"idLeader"};
+        String[] ignoreProperties= new String[]{"idFunctionalLeader"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(entity,id);
     }

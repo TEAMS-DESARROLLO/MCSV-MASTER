@@ -25,7 +25,8 @@ public class TechnologyServiceImpl extends CRUDImpl<TechnologyEntity,Long> imple
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        BeanUtils.copyProperties(entity,original);
-        return super.update(entity,id);
+        String[] ignoreProperties= new String[]{"idTechnology"};
+        BeanUtils.copyProperties(entity,original,ignoreProperties);
+        return super.update(original,id);
     }
 }

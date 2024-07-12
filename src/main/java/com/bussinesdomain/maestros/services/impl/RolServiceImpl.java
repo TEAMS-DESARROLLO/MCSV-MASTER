@@ -23,7 +23,8 @@ public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolServ
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        BeanUtils.copyProperties(entity,original);
-        return super.update(entity,id);
+        String[] ignoreProperties= new String[]{"idRol"};
+        BeanUtils.copyProperties(entity,original,ignoreProperties);
+        return super.update(original,id);
     }
 }

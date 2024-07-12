@@ -25,8 +25,8 @@ public class CollaboratorServiceImpl extends CRUDImpl<CollaboratorEntity,Long> i
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"idLeader"};
+        String[] ignoreProperties= new String[]{"idCollaborator"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
-        return super.update(entity,id);
+        return super.update(original,id);
     }
 }

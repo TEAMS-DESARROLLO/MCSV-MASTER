@@ -85,7 +85,7 @@ public class CollaboratorController {
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{idLeader}")
+    @PutMapping("/{idCollaborator}")
     public ResponseEntity<CollaboratorResponseDTO> update(@Validated @PathVariable("idCollaborator") Long idCollaborator,
                                                     @RequestBody CollaboratorRequestDTO requestDTO){
         LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader());

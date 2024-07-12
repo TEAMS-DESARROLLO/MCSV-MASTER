@@ -56,7 +56,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 "a.lastName," +
                 "a.names," +
                 "a.email," +
-                "a.state" +
+                "a.state, " +
                 "l.idLeader," +
                 "l.names as leaderNames," +
                 "r.idRol," +
@@ -64,7 +64,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 "rg.idRegion," +
                 "rg.description as regionDescription," +
                 "fl.idFunctionalLeader," +
-                "fl.names as leaderNames" +
+                "fl.names as functionalLeaderNames" +
                 ") ");
         return sql;
     }

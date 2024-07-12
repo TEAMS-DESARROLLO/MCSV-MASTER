@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -29,6 +30,22 @@ public class CollaboratorTechnologyController {
     private final ICollaboratorTechnologyService collaboratorTechnologyService;
 
     private final ICollaboratorTechnologyMapper collaboratorTechnologyMapper;
+
+    @PostMapping("/findInCollaborator")
+    public ResponseEntity<List<CollaboratorTechnologyResponseDTO>> find(@RequestBody CollaboratorTechnologyRequestDTO requestDTO){
+        List<CollaboratorTechnologyEntity> lstEntity = collaboratorTechnologyService.getByCollaboratorId(requestDTO.getIdCollaborator());
+
+        List<CollaboratorTechnologyResponseDTO> dtoList = lstEntity.stream().map( entity -> {
+            CollaboratorTechnologyResponseDTO dto =collaboratorTechnologyMapper.toGetResponseDTO(entity);
+            dto.setIdCollaborator(entity.getCollaborator().getIdCollaborator());
+            dto.setCollaboratorNames(entity.getCollaborator().getNames());
+            dto.setIdTechnology(entity.getTechnology().getIdTechnology());
+            dto.setTechnologyName(entity.getTechnology().getName());
+            return dto;
+        }).collect(Collectors.toList());
+        return new ResponseEntity<>(dtoList, HttpStatus.CREATED);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<CollaboratorTechnologyResponseDTO> assignTechnology(@PathVariable("idCollaborator") Long idCollaborator, @RequestBody CollaboratorTechnologyRequestDTO requestDTO){
         CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
