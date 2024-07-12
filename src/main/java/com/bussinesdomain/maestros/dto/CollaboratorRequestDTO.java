@@ -14,10 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CollaboratorDTO {
+public class CollaboratorRequestDTO {
 
     @EqualsAndHashCode.Include
-    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idCollaborator;
 
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)

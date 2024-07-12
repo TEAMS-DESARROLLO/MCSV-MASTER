@@ -20,7 +20,8 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        BeanUtils.copyProperties(entity,original);
+        String[] ignoreProperties= new String[]{"idLeader"};
+        BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(entity, id);
     }
 

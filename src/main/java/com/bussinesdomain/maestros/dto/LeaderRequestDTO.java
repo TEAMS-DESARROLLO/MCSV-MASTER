@@ -13,10 +13,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class LeaderDTO {
+public class LeaderRequestDTO {
 
     @EqualsAndHashCode.Include
-    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idLeader;
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)

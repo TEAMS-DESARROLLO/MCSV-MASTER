@@ -1,6 +1,8 @@
 package com.bussinesdomain.maestros.mapper;
 
 import com.bussinesdomain.maestros.dto.LeaderDTO;
+import com.bussinesdomain.maestros.dto.LeaderRequestDTO;
+import com.bussinesdomain.maestros.dto.LeaderResponseDTO;
 import com.bussinesdomain.maestros.models.LeaderEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -14,12 +16,21 @@ public interface ILeaderMapper {
 
     @Mapping(target  = "idCommunity", ignore = true)
     @Mapping(target  = "communityDescription", ignore = true)
-    @Mapping(source = "idLeader",target = "id")
     LeaderDTO toGetDTO(LeaderEntity entity);
+
+    @Mapping(target  = "idCommunity", ignore = true)
+    @Mapping(target  = "communityDescription", ignore = true)
+    LeaderResponseDTO toGetResponseDTO(LeaderEntity entity);
 
     @Mapping(target = "community",ignore = true)
     @InheritInverseConfiguration
     LeaderEntity toEntity(LeaderDTO dto);
 
+    @Mapping(target = "community",ignore = true)
+    @InheritInverseConfiguration
+    LeaderEntity toEntity(LeaderRequestDTO dto);
+
     List<LeaderDTO> listEntityToDTO(List<LeaderEntity> lst);
+
+    List<LeaderResponseDTO> listEntityToResponseDTO(List<LeaderEntity> lst);
 }

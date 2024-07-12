@@ -21,7 +21,7 @@ public class LeaderEntity {
     @Column(name="names",nullable = false)
     private String names;
 
-    @ManyToOne(optional = false,fetch= FetchType.LAZY)
+    @ManyToOne(optional = false,fetch= FetchType.EAGER)
     @JoinColumn(name="id_community",referencedColumnName="id_community")
     private CommunityEntity community;
 }
