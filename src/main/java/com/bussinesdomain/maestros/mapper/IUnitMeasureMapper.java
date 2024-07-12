@@ -1,21 +1,22 @@
 package com.bussinesdomain.maestros.mapper;
 
-import com.bussinesdomain.maestros.dto.UnitMeasureDTO;
-import com.bussinesdomain.maestros.models.UnitMeasureEntity;
+import java.util.List;
+
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-import java.util.List;
+import com.bussinesdomain.maestros.dto.UnitMeasureRequestDTO;
+import com.bussinesdomain.maestros.dto.UnitMeasureResponseDTO;
+import com.bussinesdomain.maestros.models.UnitMeasureEntity;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface IUnitMeasureMapper {
 
-    UnitMeasureDTO toGetDTO(UnitMeasureEntity entity);
+    UnitMeasureResponseDTO toGetDTO(UnitMeasureEntity entity);
 
     @InheritInverseConfiguration
-    UnitMeasureEntity toEntity(UnitMeasureDTO dto);
+    UnitMeasureEntity toEntity(UnitMeasureRequestDTO dto);
 
-    List<UnitMeasureDTO> listEntityToDTO(List<UnitMeasureEntity> lst);
+    List<UnitMeasureResponseDTO> listEntityToDTO(List<UnitMeasureEntity> lst);
 }

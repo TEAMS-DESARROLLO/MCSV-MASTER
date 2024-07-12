@@ -12,11 +12,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class UnitMeasureResponseDTO {
+public class RolResponseDTO {
 
-    @EqualsAndHashCode.Include
+	@EqualsAndHashCode.Include
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
-    private Long idUnitMeasure;
-
-    private String name;
+	private Long idRol;
+	
+	private String description;
+	
 }

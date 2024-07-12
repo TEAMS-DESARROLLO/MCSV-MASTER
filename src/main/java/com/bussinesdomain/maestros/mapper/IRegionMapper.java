@@ -1,22 +1,23 @@
 package com.bussinesdomain.maestros.mapper;
 
-import com.bussinesdomain.maestros.dto.RegionDTO;
-import com.bussinesdomain.maestros.models.RegionEntity;
+import java.util.List;
+
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-import java.util.List;
+import com.bussinesdomain.maestros.dto.RegionRequestDTO;
+import com.bussinesdomain.maestros.dto.RegionResponseDTO;
+import com.bussinesdomain.maestros.models.RegionEntity;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface IRegionMapper {
 
-    @Mapping(source = "idRegion",target = "id")
-    RegionDTO toGetDTO(RegionEntity entity);
+    
+    RegionResponseDTO toGetDTO(RegionEntity entity);
 
     @InheritInverseConfiguration
-    RegionEntity toEntity(RegionDTO dto);
+    RegionEntity toEntity(RegionRequestDTO dto);
 
-    List<RegionDTO> listEntityToDTO(List<RegionEntity> lst);
+    List<RegionResponseDTO> listEntityToDTO(List<RegionEntity> lst);
 }

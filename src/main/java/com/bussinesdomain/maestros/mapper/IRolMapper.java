@@ -1,22 +1,23 @@
 package com.bussinesdomain.maestros.mapper;
 
-import com.bussinesdomain.maestros.dto.RolDTO;
-import com.bussinesdomain.maestros.models.RolEntity;
+import java.util.List;
+
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-import java.util.List;
+import com.bussinesdomain.maestros.dto.RolRequestDTO;
+import com.bussinesdomain.maestros.dto.RolResponseDTO;
+import com.bussinesdomain.maestros.models.RolEntity;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface IRolMapper {
 
-    @Mapping(source = "idRol",target = "id")
-    RolDTO toGetDTO(RolEntity entity);
+    
+    RolResponseDTO toGetDTO(RolEntity entity);
 
     @InheritInverseConfiguration
-    RolEntity toEntity(RolDTO dto);
+    RolEntity toEntity(RolRequestDTO dto);
 
-    List<RolDTO> listEntityToDTO(List<RolEntity> lst);
+    List<RolResponseDTO> listEntityToDTO(List<RolEntity> lst);
 }
