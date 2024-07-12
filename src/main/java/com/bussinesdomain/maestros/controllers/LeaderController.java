@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -42,7 +43,12 @@ public class LeaderController {
     public ResponseEntity<List<LeaderDTO>> findByFiltro(){
 
         List<LeaderEntity> objs = leaderService.getAll();
-        List<LeaderDTO> lst = leaderMapper.listEntityToDTO(objs);
+        List<LeaderDTO> lst = objs.stream().map( obj -> {
+            LeaderDTO ele = leaderMapper.toGetDTO(obj);
+            ele.setIdCommunity(obj.getCommunity().getIdCommunity());
+            ele.setCommunityDescription(obj.getCommunity().getDescription());
+            return ele;
+        }).collect(Collectors.toList());
         return new ResponseEntity<>(lst, HttpStatus.OK);
     }
 
@@ -64,6 +70,8 @@ public class LeaderController {
         entidad.setCommunity(communityEntity);
         LeaderEntity entidadSave = this.leaderService.create( entidad);
         LeaderResponseDTO responseviaDTO = this.leaderMapper.toGetResponseDTO(entidadSave);
+        responseviaDTO.setIdCommunity(entidadSave.getCommunity().getIdCommunity());
+        responseviaDTO.setCommunityDescription(entidadSave.getCommunity().getDescription());
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
     }
 
@@ -75,6 +83,8 @@ public class LeaderController {
         objEntitySource.setCommunity(communityEntity);
         LeaderEntity obj =  leaderService.update(objEntitySource, idLeader);
         LeaderResponseDTO responseviaDTO = this.leaderMapper.toGetResponseDTO(obj);
+        responseviaDTO.setIdCommunity(obj.getCommunity().getIdCommunity());
+        responseviaDTO.setCommunityDescription(obj.getCommunity().getDescription());
         return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);
     }
 

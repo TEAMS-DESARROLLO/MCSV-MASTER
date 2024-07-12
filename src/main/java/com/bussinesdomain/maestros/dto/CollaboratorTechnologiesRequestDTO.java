@@ -19,5 +19,5 @@ public class CollaboratorTechnologiesRequestDTO {
     private Long idCollaborator;
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
-    private List<Long> lstIdCollaborator;
+    private List<Long> lstIdTechnologies;
 }

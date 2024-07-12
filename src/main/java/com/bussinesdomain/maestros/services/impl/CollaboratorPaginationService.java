@@ -94,10 +94,10 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 sql.append(" AND a.names LIKE :names ");
             }
             if(filtro.getField().equals("email")){
-                sql.append(" AND a.names LIKE :email ");
+                sql.append(" AND a.email LIKE :email ");
             }
             if(filtro.getField().equals("state")){
-                sql.append(" AND a.names LIKE :state ");
+                sql.append(" AND a.state LIKE :state ");
             }
 
             if(filtro.getField().equals("idLeader")){

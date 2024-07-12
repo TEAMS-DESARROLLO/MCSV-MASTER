@@ -82,6 +82,18 @@ public class CollaboratorController {
 
         CollaboratorEntity entidadSave = this.collaboratorService.create( entidad);
         CollaboratorResponseDTO responseviaDTO = this.collaboratorMapper.toGetResponseDTO(entidadSave);
+
+        responseviaDTO.setIdLeader(entidadSave.getLeader().getIdLeader());
+        responseviaDTO.setLeaderNames(entidadSave.getLeader().getNames());
+
+        responseviaDTO.setIdRol(entidadSave.getRol().getIdRol());
+        responseviaDTO.setRolDescription(entidadSave.getRol().getDescription());
+
+        responseviaDTO.setIdRegion(entidadSave.getRegion().getIdRegion());
+        responseviaDTO.setRegionDescription(entidadSave.getRegion().getDescription());
+
+        responseviaDTO.setIdFunctionalLeader(entidadSave.getFunctionalLeader().getIdFunctionalLeader());
+        responseviaDTO.setFunctionalLeaderNames(entidadSave.getFunctionalLeader().getNames());
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
     }
 
@@ -105,6 +117,18 @@ public class CollaboratorController {
 
         CollaboratorEntity obj =  collaboratorService.update(objEntitySource, idCollaborator);
         CollaboratorResponseDTO responseviaDTO = this.collaboratorMapper.toGetResponseDTO(obj);
+
+        responseviaDTO.setIdLeader(obj.getLeader().getIdLeader());
+        responseviaDTO.setLeaderNames(obj.getLeader().getNames());
+
+        responseviaDTO.setIdRol(obj.getRol().getIdRol());
+        responseviaDTO.setRolDescription(obj.getRol().getDescription());
+
+        responseviaDTO.setIdRegion(obj.getRegion().getIdRegion());
+        responseviaDTO.setRegionDescription(obj.getRegion().getDescription());
+
+        responseviaDTO.setIdFunctionalLeader(obj.getFunctionalLeader().getIdFunctionalLeader());
+        responseviaDTO.setFunctionalLeaderNames(obj.getFunctionalLeader().getNames());
         return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);
     }
 
