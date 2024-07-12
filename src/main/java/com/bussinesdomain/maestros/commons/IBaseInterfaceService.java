@@ -9,6 +9,8 @@ public interface IBaseInterfaceService<T,ID> {
 	public Page<?> pagination(Integer pagenumber, Integer rows, List<SortModel> sortModel, Filter filter );
 	
 	public T create(T entidad);
+
+	public List<T> createAll(List<T> entidades);
 	
 	public T readById(ID id);
 	

@@ -30,6 +30,11 @@ public abstract class CRUDImpl<T,ID> implements IBaseInterfaceService<T,ID>  {
     }
 
     @Override
+    public List<T> createAll(List<T> entidades) {
+        return getRepo().saveAll(entidades);
+    }
+
+    @Override
     public void delete(T entidad) {
         getRepo().delete(entidad);
         

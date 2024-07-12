@@ -3,6 +3,7 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
+import com.bussinesdomain.maestros.repository.ICollaboratorTechnologyBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICollaboratorTechnologyService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CollaboratorTechnologyImpl extends CRUDImpl<CollaboratorTechnologyEntity,Long> implements ICollaboratorTechnologyService {
+public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTechnologyEntity,Long> implements ICollaboratorTechnologyService {
     private final IGenericRepository<CollaboratorTechnologyEntity,Long> repository;
 
 
@@ -19,6 +20,8 @@ public class CollaboratorTechnologyImpl extends CRUDImpl<CollaboratorTechnologyE
     protected IGenericRepository<CollaboratorTechnologyEntity, Long> getRepo() {
         return repository;
     }
+
+    private final ICollaboratorTechnologyBusinessRepository businessRepository;
 
     @Override
     public CollaboratorTechnologyEntity update(CollaboratorTechnologyEntity entity,Long id){
@@ -28,5 +31,10 @@ public class CollaboratorTechnologyImpl extends CRUDImpl<CollaboratorTechnologyE
         }
         BeanUtils.copyProperties(entity,original);
         return super.update(entity,id);
+    }
+
+    @Override
+    public CollaboratorTechnologyEntity getTechnologyInCollaborator(Long idCollaborator, Long idTechnology) {
+        return businessRepository.getTechnologyInCollaborator(idCollaborator,idTechnology);
     }
 }

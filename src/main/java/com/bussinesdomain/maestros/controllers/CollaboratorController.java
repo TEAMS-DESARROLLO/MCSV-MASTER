@@ -4,6 +4,7 @@ import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
 import com.bussinesdomain.maestros.mapper.ICollaboratorMapper;
+import com.bussinesdomain.maestros.mapper.ICollaboratorTechnologyMapper;
 import com.bussinesdomain.maestros.models.*;
 import com.bussinesdomain.maestros.services.*;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -23,10 +27,13 @@ public class CollaboratorController {
     private final ICollaboratorService collaboratorService;
     private final ICollaboratorMapper collaboratorMapper;
 
+
     private final ILeaderService leaderService;
     private final IRolService rolService;
     private final IRegionService regionService;
     private final IFunctionalLeaderService functionalLeaderService;
+
+
 
     private final IPaginationCommons<CollaboratorDTO> iPaginationCommons;
 
@@ -102,8 +109,10 @@ public class CollaboratorController {
     }
 
     @DeleteMapping("/{idCollaborator}")
-    public ResponseEntity<CommunityResponseDTO> delete(@PathVariable("idCollaborator") Long idCollaborator){
+    public ResponseEntity<CollaboratorResponseDTO> delete(@PathVariable("idCollaborator") Long idCollaborator){
         collaboratorService.deleteById(idCollaborator);
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }
+
+
 }

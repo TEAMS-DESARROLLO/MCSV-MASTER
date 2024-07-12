@@ -1,0 +1,67 @@
+package com.bussinesdomain.maestros.controllers;
+
+import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.mapper.IFunctionalLeaderMapper;
+import com.bussinesdomain.maestros.models.CommunityEntity;
+import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
+import com.bussinesdomain.maestros.models.LeaderEntity;
+import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/functionalLeader")
+public class FunctionalLeaderController {
+
+    private final IFunctionalLeaderService functionalLeaderService;
+    private final IFunctionalLeaderMapper functionalLeaderMapper;
+
+    @GetMapping("/all")
+    public ResponseEntity<List<FunctionalLeaderDTO>> findByFiltro(){
+
+        List<FunctionalLeaderEntity> objs = functionalLeaderService.getAll();
+        List<FunctionalLeaderDTO> lst = functionalLeaderMapper.listEntityToDTO(objs);
+        return new ResponseEntity<>(lst, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/{idFunctionalLeader}")
+    public ResponseEntity<FunctionalLeaderResponseDTO> findById(@PathVariable("idFunctionalLeader") Long idFunctionalLeader){
+
+        FunctionalLeaderEntity obj = this.functionalLeaderService.readById(idFunctionalLeader);
+        FunctionalLeaderResponseDTO dto = this.functionalLeaderMapper.toGetResponseDTO(obj);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<FunctionalLeaderResponseDTO> save(@Validated @RequestBody FunctionalLeaderRequestDTO requestDTO) {
+
+        FunctionalLeaderEntity entidad = this.functionalLeaderMapper.toEntity(requestDTO);
+        FunctionalLeaderEntity entidadSave = this.functionalLeaderService.create( entidad);
+        FunctionalLeaderResponseDTO responseviaDTO = this.functionalLeaderMapper.toGetResponseDTO(entidadSave);
+        return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{idFunctionalLeader}")
+    public ResponseEntity<FunctionalLeaderResponseDTO> update(@Validated @PathVariable("idFunctionalLeader") Long idFunctionalLeader,
+                                                    @RequestBody FunctionalLeaderRequestDTO requestDTO){
+        FunctionalLeaderEntity objEntitySource = this.functionalLeaderMapper.toEntity(requestDTO);
+        FunctionalLeaderEntity obj =  functionalLeaderService.update(objEntitySource, idFunctionalLeader);
+        FunctionalLeaderResponseDTO responseviaDTO = this.functionalLeaderMapper.toGetResponseDTO(obj);
+        return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{idFunctionalLeader}")
+    public ResponseEntity<CommunityResponseDTO> delete(@PathVariable("idFunctionalLeader") Long idFunctionalLeader){
+        functionalLeaderService.deleteById(idFunctionalLeader);
+        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+    }
+}

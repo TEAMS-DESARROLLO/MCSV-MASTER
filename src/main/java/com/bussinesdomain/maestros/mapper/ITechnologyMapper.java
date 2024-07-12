@@ -1,6 +1,8 @@
 package com.bussinesdomain.maestros.mapper;
 
 import com.bussinesdomain.maestros.dto.TechnologyDTO;
+import com.bussinesdomain.maestros.dto.TechnologyRequestDTO;
+import com.bussinesdomain.maestros.dto.TechnologyResponseDTO;
 import com.bussinesdomain.maestros.models.TechnologyEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
@@ -12,11 +14,15 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ITechnologyMapper {
 
-    @Mapping(source = "idTechnology",target = "id")
     TechnologyDTO toGetDTO(TechnologyEntity entity);
+
+    TechnologyResponseDTO toGetResponseDTO(TechnologyEntity entity);
 
     @InheritInverseConfiguration
     TechnologyEntity toEntity(TechnologyDTO dto);
+    @InheritInverseConfiguration
+    TechnologyEntity toEntity(TechnologyRequestDTO dto);
 
     List<TechnologyDTO> listEntityToDTO(List<TechnologyEntity> lst);
+    List<TechnologyResponseDTO> listEntityToResponseDTO(List<TechnologyEntity> lst);
 }

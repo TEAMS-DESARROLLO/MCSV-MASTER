@@ -15,7 +15,7 @@ public class CollaboratorTechnologyDTO {
 
     @EqualsAndHashCode.Include
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
-    private Long id;
+    private Long idCollaboratorTechnology;
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idCollaborator;

@@ -13,11 +13,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class FunctionalLeaderDTO {
+public class FunctionalLeaderResponseDTO {
     @EqualsAndHashCode.Include
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idFunctionalLeader;
-    @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
-    @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
+
     private String names;
 }
