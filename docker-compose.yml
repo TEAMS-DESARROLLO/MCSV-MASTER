@@ -2,7 +2,7 @@ version: '3.8'
 services:
   mcsv-master:
     container_name: mcsv-master
-    image: maestros:1.0.1
+    image: master:1.0.1
     # build:
     #   context: ./
     #   dockerfile: ./eureka-server/Dockerfile
