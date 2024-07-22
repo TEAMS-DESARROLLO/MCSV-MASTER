@@ -39,8 +39,7 @@ public class CollaboratorTechnologyController {
             CollaboratorTechnologyResponseDTO dto =collaboratorTechnologyMapper.toGetResponseDTO(entity);
             dto.setIdCollaborator(entity.getCollaborator().getIdCollaborator());
             dto.setCollaboratorNames(entity.getCollaborator().getNames());
-            dto.setIdTechnology(entity.getTechnology().getIdTechnology());
-            dto.setTechnologyName(entity.getTechnology().getName());
+
             return dto;
         }).collect(Collectors.toList());
         return new ResponseEntity<>(dtoList, HttpStatus.CREATED);
@@ -51,41 +50,42 @@ public class CollaboratorTechnologyController {
         CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
         TechnologyEntity technologyEntity = technologyService.readById(requestDTO.getIdTechnology());
 
-        CollaboratorTechnologyEntity entity = collaboratorTechnologyMapper.toEntity(requestDTO);
-        entity.setCollaborator(collaboratorEntity);
-        entity.setTechnology(technologyEntity);
-        CollaboratorTechnologyEntity entitySave =collaboratorTechnologyService.create(entity);
-        CollaboratorTechnologyResponseDTO responseviaDTO = this.collaboratorTechnologyMapper.toGetResponseDTO(entitySave);
-        responseviaDTO.setIdTechnology(entitySave.getTechnology().getIdTechnology());
-        responseviaDTO.setTechnologyName(entitySave.getTechnology().getName());
-        responseviaDTO.setIdCollaborator(entitySave.getCollaborator().getIdCollaborator());
-        responseviaDTO.setCollaboratorNames(entitySave.getCollaborator().getNames());
-        return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
+        //CollaboratorTechnologyEntity entity = collaboratorTechnologyMapper.toEntity(requestDTO);
+        //entity.setCollaborator(collaboratorEntity);
+
+        //CollaboratorTechnologyEntity entitySave =collaboratorTechnologyService.create(entity);
+        //CollaboratorTechnologyResponseDTO responseviaDTO = this.collaboratorTechnologyMapper.toGetResponseDTO(entitySave);
+
+        // responseviaDTO.setIdCollaborator(entitySave.getCollaborator().getIdCollaborator());
+        // responseviaDTO.setCollaboratorNames(entitySave.getCollaborator().getNames());
+        //return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
+        return null;
     }
 
     @PostMapping("/createMultiple")
     public ResponseEntity<List<CollaboratorTechnologyResponseDTO>> assignTechnology( @RequestBody CollaboratorTechnologiesRequestDTO requestDTO){
         CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
 
-        List<CollaboratorTechnologyEntity> entities = new ArrayList<CollaboratorTechnologyEntity>();
-        for(Long idTechnology : requestDTO.getLstIdTechnologies()){
-            CollaboratorTechnologyEntity entity = new CollaboratorTechnologyEntity();
-            entity.setCollaborator(collaboratorEntity);
-            TechnologyEntity technologyEntity = new TechnologyEntity();
-            technologyEntity.setIdTechnology(idTechnology);
-            entity.setTechnology(technologyEntity);
-            entities.add(entity);
-        }
-        List<CollaboratorTechnologyEntity> entitiesSave =collaboratorTechnologyService.createAll(entities);
-        List<CollaboratorTechnologyResponseDTO> responseviaDTO = entitiesSave.stream().map( entity -> {
-            CollaboratorTechnologyResponseDTO dto =collaboratorTechnologyMapper.toGetResponseDTO(entity);
-            dto.setIdCollaborator(entity.getCollaborator().getIdCollaborator());
-            dto.setCollaboratorNames(entity.getCollaborator().getNames());
-            dto.setIdTechnology(entity.getTechnology().getIdTechnology());
-            dto.setTechnologyName(entity.getTechnology().getName());
-            return dto;
-        }).collect(Collectors.toList());
-        return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
+        // List<CollaboratorTechnologyEntity> entities = new ArrayList<CollaboratorTechnologyEntity>();
+        // for(Long idTechnology : requestDTO.getLstIdTechnologies()){
+        //     CollaboratorTechnologyEntity entity = new CollaboratorTechnologyEntity();
+        //     entity.setCollaborator(collaboratorEntity);
+        //     TechnologyEntity technologyEntity = new TechnologyEntity();
+        //     technologyEntity.setIdTechnology(idTechnology);
+        //     entity.setTechnology(technologyEntity);
+        //     entities.add(entity);
+        // }
+        // List<CollaboratorTechnologyEntity> entitiesSave =collaboratorTechnologyService.createAll(entities);
+        // List<CollaboratorTechnologyResponseDTO> responseviaDTO = entitiesSave.stream().map( entity -> {
+        //     CollaboratorTechnologyResponseDTO dto =collaboratorTechnologyMapper.toGetResponseDTO(entity);
+        //     dto.setIdCollaborator(entity.getCollaborator().getIdCollaborator());
+        //     dto.setCollaboratorNames(entity.getCollaborator().getNames());
+        //     dto.setIdTechnology(entity.getTechnology().getIdTechnology());
+        //     dto.setTechnologyName(entity.getTechnology().getName());
+        //     return dto;
+        // }).collect(Collectors.toList());
+        // return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
+        return null;
     }
 
     @DeleteMapping("/{idCollaboratorTechnology}")

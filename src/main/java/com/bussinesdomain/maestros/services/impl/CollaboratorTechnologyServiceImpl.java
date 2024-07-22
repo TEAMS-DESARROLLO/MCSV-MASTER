@@ -37,11 +37,13 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
 
     @Override
     public CollaboratorTechnologyEntity getTechnologyInCollaborator(Long idCollaborator, Long idTechnology) {
-        return businessRepository.getTechnologyInCollaborator(idCollaborator,idTechnology);
+        //return businessRepository.getTechnologyInCollaborator(idCollaborator,idTechnology);
+        return null;
     }
 
     @Override
     public List<CollaboratorTechnologyEntity> getByCollaboratorId(Long idCollaborator) {
-        return businessRepository.getByCollaboratorId(idCollaborator);
+        //return businessRepository.getByCollaboratorId(idCollaborator);
+        return null;
     }
 }

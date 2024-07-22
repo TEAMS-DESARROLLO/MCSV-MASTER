@@ -59,7 +59,7 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
 
     @Override
     public StringBuilder getFrom() {
-        StringBuilder sql = new StringBuilder(" FROM LeaderEntity a inner join CommunityEntity cm on a.community=cm ");
+        StringBuilder sql = new StringBuilder(" FROM LeaderEntity a  join CommunityEntity cm on a.community.idCommunity = cm.idCommunity ");
         return sql;
     }
 

@@ -1,13 +1,16 @@
 package com.bussinesdomain.maestros.controllers;
 
+import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
 import com.bussinesdomain.maestros.mapper.IFunctionalLeaderMapper;
-import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
-import com.bussinesdomain.maestros.models.LeaderEntity;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
+import com.bussinesdomain.maestros.services.impl.FunctionalLeaderPaginationService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +26,13 @@ public class FunctionalLeaderController {
 
     private final IFunctionalLeaderService functionalLeaderService;
     private final IFunctionalLeaderMapper functionalLeaderMapper;
+    private final FunctionalLeaderPaginationService functionalLeaderPaginationService;
+
+    @PostMapping("/pagination")
+    public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
+        Page<FunctionalLeaderDTO> lst = functionalLeaderPaginationService.pagination(pagination);
+        return new ResponseEntity<>(lst, HttpStatus.OK) ;
+    }       
 
     @GetMapping("/all")
     public ResponseEntity<List<FunctionalLeaderDTO>> findByFiltro(){

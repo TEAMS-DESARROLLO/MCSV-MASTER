@@ -4,7 +4,8 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
-import com.bussinesdomain.maestros.dto.CollaboratorDTO;
+
+import com.bussinesdomain.maestros.dto.CollaboratorResponseDTO;
 import com.bussinesdomain.maestros.exception.ServiceException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -17,10 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 @RequiredArgsConstructor
-public class CollaboratorPaginationService implements IPaginationCommons<CollaboratorDTO> {
+public class CollaboratorPaginationService implements IPaginationCommons<CollaboratorResponseDTO> {
+
     private final EntityManager entityManager;
     @Override
-    public Page<CollaboratorDTO> pagination(PaginationModel pagination) {
+    public Page<CollaboratorResponseDTO> pagination(PaginationModel pagination) {
         try {
 
             String sqlCount  = "SELECT count(a) " + getFrom().toString() + getFilters( pagination.getFilters()  ).toString();
@@ -38,11 +40,11 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
             querySelect.setMaxResults(pagination.getRowsPerPage());
 
             @SuppressWarnings("unchecked")
-            List<CollaboratorDTO> lista = querySelect.getResultList();
+            List<CollaboratorResponseDTO> lista = querySelect.getResultList();
 
             PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
 
-            Page<CollaboratorDTO> page = new PageImpl<CollaboratorDTO>(lista, pageable, total);
+            Page<CollaboratorResponseDTO> page = new PageImpl<CollaboratorResponseDTO>(lista, pageable, total);
 
             return page;
         } catch (RuntimeException e) {
@@ -52,7 +54,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
 
     @Override
     public StringBuilder getSelect() {
-        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.CollaboratorDTO(a.idCollaborator," +
+        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.CollaboratorResponseDTO(a.idCollaborator," +
                 "a.lastName," +
                 "a.names," +
                 "a.email," +
@@ -64,7 +66,9 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 "rg.idRegion," +
                 "rg.description as regionDescription," +
                 "fl.idFunctionalLeader," +
-                "fl.names as functionalLeaderNames" +
+                "fl.names as functionalLeaderNames," +
+                "ce.idCommunity as idCommunity," +
+                "ce.description as descriptionCommunity"  +
                 ") ");
         return sql;
     }
@@ -72,10 +76,12 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
     @Override
     public StringBuilder getFrom() {
         StringBuilder sql = new StringBuilder(" FROM CollaboratorEntity a " +
-                " inner join LeaderEntity l on a.leader=l " +
-                " inner join RolEntity r on a.rol=r " +
-                " inner join RegionEntity rg on a.region=rg " +
-                " inner join FunctionalLeaderEntity fl on a.functionalLeader=fl ");
+                " left join LeaderEntity l on a.leader=l " +
+                " left join RolEntity r on a.rol=r " +
+                " left join RegionEntity rg on a.region=rg " +
+                " left join FunctionalLeaderEntity fl on a.functionalLeader=fl " +
+                " left join CommunityEntity ce on l.community = ce " 
+                );
         return sql;
     }
 

@@ -1,11 +1,16 @@
 package com.bussinesdomain.maestros.controllers;
 
+import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
 import com.bussinesdomain.maestros.mapper.ICommunityMapper;
 import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.services.ICommunityService;
+import com.bussinesdomain.maestros.services.impl.CommunityPaginationService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +26,15 @@ public class CommunityController {
 
     private final ICommunityMapper communityMapper;
     private final ICommunityService communityService;
+    private final CommunityPaginationService communityPaginationService;
 
+
+
+    @PostMapping("/pagination")
+    public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
+        Page<CommunityDTO> lst = communityPaginationService.pagination(pagination);
+        return new ResponseEntity<>(lst, HttpStatus.OK) ;
+    }    
 
     @GetMapping("/all")
     public ResponseEntity<List<CommunityResponseDTO>> findByFiltro(){

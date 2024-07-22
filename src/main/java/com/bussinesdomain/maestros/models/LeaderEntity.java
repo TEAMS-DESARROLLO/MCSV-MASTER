@@ -15,6 +15,8 @@ public class LeaderEntity {
     @Id
     @GeneratedValue(generator = "seqLeader", strategy = GenerationType.IDENTITY)
     @SequenceGenerator(name = "seqLeader", sequenceName = "leader_seq", allocationSize = 1)
+
+    
     @Column(name="id_leader")
     private Long idLeader;
 

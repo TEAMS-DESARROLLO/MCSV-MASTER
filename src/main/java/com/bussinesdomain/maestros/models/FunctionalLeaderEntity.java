@@ -13,8 +13,10 @@ import lombok.NoArgsConstructor;
 public class FunctionalLeaderEntity {
 
     @Id
-    @GeneratedValue(generator = "seqFunctionalLeader", strategy = GenerationType.IDENTITY)
-    @SequenceGenerator(name = "seqFunctionalLeader", sequenceName = "functional_leader_seq", allocationSize = 1)
+    // @GeneratedValue(generator = "seqFunctionalLeader", strategy = GenerationType.IDENTITY)
+    // @SequenceGenerator(name = "seqFunctionalLeader", sequenceName = "functional_leader_seq", allocationSize = 1)
+    @GeneratedValue(generator = "seqFunctionalLeader", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "seqFunctionalLeader", sequenceName="functional_leader_seq", allocationSize = 1)
     @Column(name="id_functional_leader")
     private Long idFunctionalLeader;
 

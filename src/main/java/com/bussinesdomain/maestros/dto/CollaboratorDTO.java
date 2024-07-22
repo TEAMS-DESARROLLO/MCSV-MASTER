@@ -23,29 +23,31 @@ public class CollaboratorDTO {
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
     private String lastName;
+
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
     private String names;
+
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
     private String email;
 
-    private CollaboratorState state;
+    private Integer state;
 
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idLeader;
-    private String leaderNames;
+
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idRol;
-    private String rolDescription;
+
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idRegion;
-    private String regionDescription;
+
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idFunctionalLeader;
-    private String functionalLeaderNames;
+
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+
 public class TechnologyDTO {
     @EqualsAndHashCode.Include
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)

@@ -22,6 +22,7 @@ import com.bussinesdomain.maestros.dto.RolResponseDTO;
 import com.bussinesdomain.maestros.mapper.IRolMapper;
 import com.bussinesdomain.maestros.models.RolEntity;
 import com.bussinesdomain.maestros.services.IRolService;
+import com.bussinesdomain.maestros.services.impl.RolPaginationServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +34,13 @@ import lombok.extern.slf4j.Slf4j;
 public class RolController {
 
 	private final IRolMapper mapper;
-	private final IPaginationCommons<RolResponseDTO> paginationCommons;
+	private final RolPaginationServiceImpl rolPaginationServiceImpl;
 	private final IRolService service;
 	
 	@PostMapping("/pagination")
 	public ResponseEntity<?> paginator(@RequestBody PaginationModel pagination){
 		log.info("PAGINATION ..... " + pagination);
-		Page<RolResponseDTO> lst = paginationCommons.pagination(pagination);
+		Page<RolResponseDTO> lst = rolPaginationServiceImpl.pagination(pagination);
 		return new ResponseEntity<>(lst,HttpStatus.OK);
 		
 	}

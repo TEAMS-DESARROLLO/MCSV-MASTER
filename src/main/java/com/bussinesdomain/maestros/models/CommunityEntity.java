@@ -5,15 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "community")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CommunityEntity {
+public class CommunityEntity implements Serializable {
 
     @Id
     @GeneratedValue(generator = "seqCommunity", strategy = GenerationType.IDENTITY)
@@ -21,7 +22,7 @@ public class CommunityEntity {
     @Column(name = "id_community")
     private Long idCommunity;
 
-    @Column(name="description",nullable = false)
+    //@Column(name="description",nullable = false)
     private String description;
 
     @Temporal(TemporalType.TIMESTAMP)

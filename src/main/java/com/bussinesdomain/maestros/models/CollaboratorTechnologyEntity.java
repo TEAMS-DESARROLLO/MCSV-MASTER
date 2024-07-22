@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "collaborator_technology",
-uniqueConstraints = {@UniqueConstraint(columnNames = {"id_collaborator","id_technology"})})
+@Table(name = "collaborator_technology")
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -19,11 +18,9 @@ public class CollaboratorTechnologyEntity {
     @Column(name="id_collaborator_technology")
     private Long idCollaboratorTechnology;
 
-    @ManyToOne(optional = false,fetch= FetchType.EAGER)
-    @JoinColumn(name="id_collaborator",referencedColumnName="id_collaborator")
+    @ManyToOne
+    @JoinColumn(name="id_collaborator")
     private CollaboratorEntity collaborator;
 
-    @ManyToOne(optional = false,fetch= FetchType.EAGER)
-    @JoinColumn(name="id_technology",referencedColumnName="id_technology")
-    private TechnologyEntity technology;
+
 }

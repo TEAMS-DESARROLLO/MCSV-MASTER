@@ -3,12 +3,13 @@ package com.bussinesdomain.maestros.controllers;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
-import com.bussinesdomain.maestros.mapper.ICommunityMapper;
 import com.bussinesdomain.maestros.mapper.ILeaderMapper;
 import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.models.LeaderEntity;
 import com.bussinesdomain.maestros.services.ICommunityService;
 import com.bussinesdomain.maestros.services.ILeaderService;
+import com.bussinesdomain.maestros.services.impl.LeaderPaginationService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -31,11 +32,11 @@ public class LeaderController {
 
     private final ICommunityService communityService;
 
-    private final IPaginationCommons<LeaderDTO> iPaginationCommons;
+    private final LeaderPaginationService leaderPaginationService;
 
     @PostMapping("/pagination")
     public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
-        Page<LeaderDTO> lst = iPaginationCommons.pagination(pagination);
+        Page<LeaderDTO> lst = leaderPaginationService.pagination(pagination);
         return new ResponseEntity<>(lst, HttpStatus.OK) ;
     }
 

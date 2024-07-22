@@ -18,6 +18,11 @@ public class RolEntity {
     @Column(name="id_rol")
     private Long idRol;
 
+    @Column(name="codigo_rol",nullable = false,unique = true)
+    private String codigoRol;
+
     @Column(name="description",nullable = false)
     private String description;
+
+    
 }

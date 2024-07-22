@@ -2,6 +2,7 @@ package com.bussinesdomain.maestros.dto;
 
 import com.bussinesdomain.maestros.constants.ValidationMessage;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,5 +20,8 @@ public class RolResponseDTO {
 	private Long idRol;
 	
 	private String description;
+
+	@Column(name="codigo_rol",nullable = false,unique = true)
+	private String codigoRol;
 	
 }

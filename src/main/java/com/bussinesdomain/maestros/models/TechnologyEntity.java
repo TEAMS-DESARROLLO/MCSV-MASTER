@@ -20,4 +20,8 @@ public class TechnologyEntity {
 
     @Column(name="name",nullable = false)
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name="id_subpractica")
+    private SubpracticaEntity subpracticaEntity;
 }

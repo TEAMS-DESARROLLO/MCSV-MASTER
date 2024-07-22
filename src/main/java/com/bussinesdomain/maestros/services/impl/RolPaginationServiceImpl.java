@@ -57,7 +57,7 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
 
 	@Override
 	public StringBuilder getSelect() {
-		StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.RolResponseDTO(r.idRol,r.description) ");
+		StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.RolResponseDTO(r.idRol,r.description,r.codigoRol) ");
         return sql;
 	}
 

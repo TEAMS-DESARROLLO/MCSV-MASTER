@@ -14,13 +14,9 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ICollaboratorMapper {
     @Mapping(target  = "idLeader", ignore = true)
-    @Mapping(target  = "leaderNames", ignore = true)
     @Mapping(target  = "idRol", ignore = true)
-    @Mapping(target  = "rolDescription", ignore = true)
     @Mapping(target  = "idRegion", ignore = true)
-    @Mapping(target  = "regionDescription", ignore = true)
     @Mapping(target  = "idFunctionalLeader", ignore = true)
-    @Mapping(target  = "functionalLeaderNames", ignore = true)
     CollaboratorDTO toGetDTO(CollaboratorEntity entity);
 
     @Mapping(target  = "idLeader", ignore = true)
@@ -30,7 +26,6 @@ public interface ICollaboratorMapper {
     @Mapping(target  = "idRegion", ignore = true)
     @Mapping(target  = "regionDescription", ignore = true)
     @Mapping(target  = "idFunctionalLeader", ignore = true)
-    @Mapping(target  = "functionalLeaderNames", ignore = true)
     CollaboratorResponseDTO toGetResponseDTO(CollaboratorEntity entity);
 
     @Mapping(target = "leader", ignore = true)

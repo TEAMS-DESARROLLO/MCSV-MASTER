@@ -1,7 +1,6 @@
 package com.bussinesdomain.maestros.dto;
 
 import com.bussinesdomain.maestros.constants.ValidationMessage;
-import com.bussinesdomain.maestros.enums.CollaboratorState;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -30,12 +29,13 @@ public class CollaboratorResponseDTO {
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
     private String email;
 
-    private CollaboratorState state;
+    private Integer state;
 
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idLeader;
     private String leaderNames;
+
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idRol;
@@ -48,4 +48,8 @@ public class CollaboratorResponseDTO {
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idFunctionalLeader;
     private String functionalLeaderNames;
+
+    private Long idCommunity;
+    private String communityDescription;
+
 }

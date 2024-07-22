@@ -1,12 +1,13 @@
 package com.bussinesdomain.maestros.controllers;
 
-import com.bussinesdomain.maestros.commons.IPaginationCommons;
+
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
 import com.bussinesdomain.maestros.mapper.ICollaboratorMapper;
-import com.bussinesdomain.maestros.mapper.ICollaboratorTechnologyMapper;
 import com.bussinesdomain.maestros.models.*;
 import com.bussinesdomain.maestros.services.*;
+import com.bussinesdomain.maestros.services.impl.CollaboratorPaginationService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -35,14 +34,14 @@ public class CollaboratorController {
 
 
 
-    private final IPaginationCommons<CollaboratorDTO> iPaginationCommons;
+    private final CollaboratorPaginationService iCollaboratorPaginationService;
 
     @PostMapping("/pagination")
     public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
-        Page<CollaboratorDTO> lst = iPaginationCommons.pagination(pagination);
+        Page<CollaboratorResponseDTO> lst = iCollaboratorPaginationService.pagination(pagination);
         return new ResponseEntity<>(lst, HttpStatus.OK) ;
     }
-    @GetMapping("/{idLeader}")
+    @GetMapping("/{idCollaborator}")
     public ResponseEntity<CollaboratorResponseDTO> findById(@PathVariable("idCollaborator") Long idCollaborator){
 
         CollaboratorEntity obj = this.collaboratorService.readById(idCollaborator);

@@ -9,12 +9,12 @@ import java.util.List;
 
 public interface ICollaboratorTechnologyBusinessRepository extends JpaRepository<CollaboratorTechnologyEntity,Long>{
 
-    @Query("SELECT ct FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator")
-    List<CollaboratorTechnologyEntity> getByCollaboratorId(@Param("idCollaborator")Long idCollaborator);
+    // @Query("SELECT ct FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator")
+    // List<CollaboratorTechnologyEntity> getByCollaboratorId(@Param("idCollaborator")Long idCollaborator);
 
-    @Query("SELECT 1 FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator and ct.technology.idTechnology = :idTechnology")
-    Boolean existsTechnologyInCollaborator(@Param("idCollaborator")Long idCollaborator,@Param("idTechnology")Long idTechnology);
+    // @Query("SELECT 1 FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator and ct.technology.idTechnology = :idTechnology")
+    // Boolean existsTechnologyInCollaborator(@Param("idCollaborator")Long idCollaborator,@Param("idTechnology")Long idTechnology);
 
-    @Query("SELECT ct FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator and ct.technology.idTechnology = :idTechnology")
-    CollaboratorTechnologyEntity getTechnologyInCollaborator(@Param("idCollaborator")Long idCollaborator,@Param("idTechnology")Long idTechnology);
+    // @Query("SELECT ct FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator and ct.technology.idTechnology = :idTechnology")
+    // CollaboratorTechnologyEntity getTechnologyInCollaborator(@Param("idCollaborator")Long idCollaborator,@Param("idTechnology")Long idTechnology);
 }
