@@ -1,6 +1,6 @@
 version: '3.8'
 services:
-  mcsv-maestros:
+  mcsv-master:
     container_name: mcsv-master
     image: maestros:1.0.1
     # build:
