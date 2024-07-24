@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import com.bussinesdomain.maestros.dto.RegionRequestDTO;
@@ -16,6 +17,9 @@ public interface IRegionMapper {
     
     RegionResponseDTO toGetDTO(RegionEntity entity);
 
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     RegionEntity toEntity(RegionRequestDTO dto);
 

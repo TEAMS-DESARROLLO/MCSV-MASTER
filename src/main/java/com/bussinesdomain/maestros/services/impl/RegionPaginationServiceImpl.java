@@ -77,7 +77,7 @@ public class RegionPaginationServiceImpl implements IPaginationCommons<RegionRes
                 sql.append(" AND r.idRegion = :idRegion");
             }
             if(filtro.getField().equals("description")){
-                sql.append(" AND r.description LIKE :description ");
+                sql.append(" AND upper(r.description) LIKE upper(:description) ");
             }
         }
 		sql.append(" AND r.registrationStatus LIKE :registrationStatus ");

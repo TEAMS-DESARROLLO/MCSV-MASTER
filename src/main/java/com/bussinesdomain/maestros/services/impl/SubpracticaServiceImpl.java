@@ -5,7 +5,6 @@ import org.springframework.beans.BeanUtils;
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.SubpracticaEntity;
-import com.bussinesdomain.maestros.models.TechnologyEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ISubPracticaService;
 

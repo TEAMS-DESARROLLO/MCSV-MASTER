@@ -77,10 +77,10 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
                 sql.append(" AND r.idRol = :idRol");
             }
             if(filtro.getField().equals("description")){
-                sql.append(" AND r.description LIKE :description ");
+                sql.append(" AND upper(r.description) LIKE upper(:description) ");
             }
 			if(filtro.getField().equals("codigoRol")){
-				sql.append(" AND r.codigoRol LIKE :codigoRol");
+				sql.append(" AND upper(r.codigoRol) LIKE upper(:codigoRol)");
 			}
         }
 		sql.append(" AND r.registrationStatus LIKE :registrationStatus ");

@@ -77,7 +77,7 @@ public class UnitMeasurePaginationServiceImpl implements IPaginationCommons<Unit
                 sql.append(" AND u.idUnitMeasure = :idUnitMeasure");
             }
             if(filtro.getField().equals("name")){
-                sql.append(" AND u.name LIKE :name ");
+                sql.append(" AND upper(u.name) LIKE upper(:name) ");
             }
         }
 		

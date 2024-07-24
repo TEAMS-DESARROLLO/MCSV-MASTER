@@ -3,10 +3,13 @@ package com.bussinesdomain.maestros.services.impl;
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
-import com.bussinesdomain.maestros.models.LeaderEntity;
+import com.bussinesdomain.maestros.repository.IFunctionalLeaderBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FunctionalLeaderServiceImpl extends CRUDImpl<FunctionalLeaderEntity,Long> implements IFunctionalLeaderService {
     private final IGenericRepository<FunctionalLeaderEntity,Long> repository;
+    private final IFunctionalLeaderBusinessRepository businessRepository;
     @Override
     public FunctionalLeaderEntity create(FunctionalLeaderEntity entidad) {
         entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
@@ -28,11 +32,43 @@ public class FunctionalLeaderServiceImpl extends CRUDImpl<FunctionalLeaderEntity
         }
         String[] ignoreProperties= new String[]{"idFunctionalLeader","createdAt","registrationStatus"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
-        return super.update(entity,id);
+        return super.update(original,id);
     }
 
     @Override
     protected IGenericRepository<FunctionalLeaderEntity, Long> getRepo() {
         return repository;
+    }
+
+
+    @Override
+    public Long count() {
+        return businessRepository.countActive();
+    }
+
+
+    @Override
+    public void deleteById(Long id) {
+        FunctionalLeaderEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
+        super.update(entity, id);
+    }
+
+
+    @Override
+    public Boolean exists(Long id) {
+        return businessRepository.existsActiveById(id);
+    }
+
+
+    @Override
+    public List<FunctionalLeaderEntity> getAll() {
+        return businessRepository.findAllActive();
+    }
+
+
+    @Override
+    public FunctionalLeaderEntity readById(Long id) {
+        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
     }
 }
