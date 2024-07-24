@@ -22,5 +22,8 @@ public class CollaboratorTechnologyEntity {
     @JoinColumn(name="id_collaborator")
     private CollaboratorEntity collaborator;
 
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
+
 
 }

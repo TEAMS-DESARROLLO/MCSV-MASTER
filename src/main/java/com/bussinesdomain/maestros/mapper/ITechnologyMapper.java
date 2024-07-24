@@ -18,8 +18,10 @@ public interface ITechnologyMapper {
 
     TechnologyResponseDTO toGetResponseDTO(TechnologyEntity entity);
 
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     TechnologyEntity toEntity(TechnologyDTO dto);
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     TechnologyEntity toEntity(TechnologyRequestDTO dto);
 

@@ -32,4 +32,7 @@ public class SubpracticaEntity {
     @JoinColumn(name = "id_community")
     private CommunityEntity comunidadEntity;
 
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
+
 }

@@ -47,4 +47,7 @@ public class CollaboratorEntity {
     @ManyToOne()
     @JoinColumn(name="id_functional_leader")
     private FunctionalLeaderEntity functionalLeader;
+
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
 }

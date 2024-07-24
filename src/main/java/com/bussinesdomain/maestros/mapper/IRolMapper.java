@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
 import com.bussinesdomain.maestros.dto.RolRequestDTO;
@@ -16,6 +17,7 @@ public interface IRolMapper {
     
     RolResponseDTO toGetDTO(RolEntity entity);
 
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     RolEntity toEntity(RolRequestDTO dto);
 

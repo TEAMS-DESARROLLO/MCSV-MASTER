@@ -33,6 +33,9 @@ public class CommunityEntity implements Serializable {
     @Column(name="updated_at",nullable = true)
     private LocalDateTime updatedAt;
 
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
+
     @PrePersist
     public void prePersisten(){
         this.createdAt=LocalDateTime.now();

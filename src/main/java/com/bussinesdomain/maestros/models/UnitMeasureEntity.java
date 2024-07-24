@@ -19,4 +19,7 @@ public class UnitMeasureEntity {
 
     @Column(name="name",nullable = false)
     private String name;
+
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
 }

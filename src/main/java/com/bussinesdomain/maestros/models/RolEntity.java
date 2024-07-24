@@ -24,5 +24,6 @@ public class RolEntity {
     @Column(name="description",nullable = false)
     private String description;
 
-    
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
 }

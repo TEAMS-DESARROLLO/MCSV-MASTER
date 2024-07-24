@@ -24,4 +24,7 @@ public class TechnologyEntity {
     @ManyToOne
     @JoinColumn(name="id_subpractica")
     private SubpracticaEntity subpracticaEntity;
+
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
 }

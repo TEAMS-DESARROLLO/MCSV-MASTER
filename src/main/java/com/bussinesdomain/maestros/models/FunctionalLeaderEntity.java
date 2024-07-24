@@ -23,4 +23,7 @@ public class FunctionalLeaderEntity {
     @Column(name="names",nullable = false)
     private String names;
 
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
+
 }

@@ -20,7 +20,7 @@ public abstract class CRUDImpl<T,ID> implements IBaseInterfaceService<T,ID>  {
 
     @Override
     public Long count() {
-        return getRepo().count();
+        return getRepo().countActive();
     }
 
     @Override
@@ -42,9 +42,9 @@ public abstract class CRUDImpl<T,ID> implements IBaseInterfaceService<T,ID>  {
 
     @Override
     public void deleteById(ID id) {
-        getRepo().findById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        getRepo().findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         try {
-            getRepo().deleteById(id) ;
+            getRepo().logicalDeleteById(id);
             
         } catch (Exception e) {
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
@@ -54,12 +54,12 @@ public abstract class CRUDImpl<T,ID> implements IBaseInterfaceService<T,ID>  {
 
     @Override
     public Boolean exists(ID id) {
-        return getRepo().existsById(id);
+        return getRepo().existsActiveById(id);
     }
 
     @Override
     public List<T> getAll() {
-        return getRepo().findAll();
+        return getRepo().findAllActive();
     }
 
     @Override
@@ -69,7 +69,7 @@ public abstract class CRUDImpl<T,ID> implements IBaseInterfaceService<T,ID>  {
 
     @Override
     public T readById(ID id) {
-        T rtn = getRepo().findById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+        T rtn = getRepo().findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
         return  rtn;
     }
 
