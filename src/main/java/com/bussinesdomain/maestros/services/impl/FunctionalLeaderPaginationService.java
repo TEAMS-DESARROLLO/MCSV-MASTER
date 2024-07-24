@@ -11,7 +11,7 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
-
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.dto.FunctionalLeaderDTO;
 
 import jakarta.persistence.EntityManager;
@@ -76,6 +76,7 @@ public class FunctionalLeaderPaginationService implements IPaginationCommons<Fun
                 sql.append(" AND upper(a.names) LIKE upper(:names) ");
             }
         }
+		sql.append(" AND a.registrationStatus LIKE :registrationStatus ");
 
         return sql;
     }
@@ -90,6 +91,7 @@ public class FunctionalLeaderPaginationService implements IPaginationCommons<Fun
                 query.setParameter("names","%"+filtro.getValue()+"%");
             }
         }
+		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
         return query;
     }
 

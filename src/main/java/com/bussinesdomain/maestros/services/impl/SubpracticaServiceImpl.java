@@ -2,8 +2,10 @@ package com.bussinesdomain.maestros.services.impl;
 
 import org.springframework.beans.BeanUtils;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.SubpracticaEntity;
+import com.bussinesdomain.maestros.models.TechnologyEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ISubPracticaService;
 
@@ -12,6 +14,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> implements ISubPracticaService {
     private final IGenericRepository<SubpracticaEntity, Long> repository ;
+    @Override
+    public SubpracticaEntity create(SubpracticaEntity entidad) {
+        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
+        return super.create(entidad);
+    }
 
     @Override
     public SubpracticaEntity update(SubpracticaEntity entity,Long id){
@@ -19,7 +26,7 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"idSubpractica"};
+        String[] ignoreProperties= new String[]{"idSubpractica","createdAt","registrationStatus"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(entity,id);
     }

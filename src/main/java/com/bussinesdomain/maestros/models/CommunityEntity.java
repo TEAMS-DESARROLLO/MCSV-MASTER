@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
+
 
 @Entity
 @Table(name = "community")
@@ -38,6 +40,7 @@ public class CommunityEntity implements Serializable {
 
     @PrePersist
     public void prePersisten(){
+        this.registrationStatus=RegistrationStatus.ACTIVE;
         this.createdAt=LocalDateTime.now();
     }
     @PreUpdate

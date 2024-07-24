@@ -1,8 +1,10 @@
 package com.bussinesdomain.maestros.services.impl;
 
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
+import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.repository.ICollaboratorTechnologyBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICollaboratorTechnologyService;
@@ -16,6 +18,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTechnologyEntity,Long> implements ICollaboratorTechnologyService {
     private final IGenericRepository<CollaboratorTechnologyEntity,Long> repository;
+    @Override
+    public CollaboratorTechnologyEntity create(CollaboratorTechnologyEntity entidad) {
+        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
+        return super.create(entidad);
+    }
 
 
     @Override
@@ -31,7 +38,8 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        BeanUtils.copyProperties(entity,original);
+        String[] ignoreProperties= new String[]{"idCollaboratorTechnology","createdAt","registrationStatus"};
+        BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(entity,id);
     }
 

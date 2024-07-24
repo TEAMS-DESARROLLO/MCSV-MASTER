@@ -4,6 +4,7 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.dto.LeaderDTO;
 import com.bussinesdomain.maestros.exception.ServiceException;
 import jakarta.persistence.EntityManager;
@@ -81,6 +82,7 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
                 sql.append(" AND cm.description LIKE :communityDescription ");
             }
         }
+		sql.append(" AND a.registrationStatus LIKE :registrationStatus ");
 
         return sql;
     }
@@ -101,6 +103,7 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
                 query.setParameter("communityDescription","%"+filtro.getValue()+"%");
             }
         }
+		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
         return query;
     }
 

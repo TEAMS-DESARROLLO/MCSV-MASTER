@@ -17,6 +17,8 @@ public interface IRolMapper {
     
     RolResponseDTO toGetDTO(RolEntity entity);
 
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     RolEntity toEntity(RolRequestDTO dto);

@@ -11,6 +11,7 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.dto.CommunityDTO;
 
 import jakarta.persistence.EntityManager;
@@ -75,6 +76,7 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
                 sql.append(" AND a.description LIKE :description ");
             }
         }
+		sql.append(" AND a.registrationStatus LIKE :registrationStatus ");
 
         return sql;
     }
@@ -89,6 +91,7 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
                 query.setParameter("description","%"+filtro.getValue()+"%");
             }
         }
+		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
         return query;
     }
 

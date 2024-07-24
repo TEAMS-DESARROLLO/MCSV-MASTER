@@ -1,7 +1,9 @@
 package com.bussinesdomain.maestros.services.impl;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.RegionEntity;
+import com.bussinesdomain.maestros.models.RolEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.IRegionService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +21,17 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
         return repository;
     }
     @Override
+    public RegionEntity create(RegionEntity entidad) {
+        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
+        return super.create(entidad);
+    }
+    @Override
     public RegionEntity update(RegionEntity entity, Long id){
         RegionEntity original = this.readById(id);
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"idRegion"};
+        String[] ignoreProperties= new String[]{"idRegion","createdAt","registrationStatus"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(original,id);
     }

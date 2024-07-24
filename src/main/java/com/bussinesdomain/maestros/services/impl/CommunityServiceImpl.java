@@ -1,8 +1,10 @@
 package com.bussinesdomain.maestros.services.impl;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.CommunityEntity;
+import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICommunityService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,11 @@ import org.springframework.stereotype.Service;
 public class CommunityServiceImpl extends CRUDImpl<CommunityEntity,Long> implements ICommunityService {
 
     private final IGenericRepository<CommunityEntity, Long> repository;
+    @Override
+    public CommunityEntity create(CommunityEntity entidad) {
+        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
+        return super.create(entidad);
+    }
 
     @Override
     public CommunityEntity update(CommunityEntity entity, Long id) {
@@ -21,7 +28,7 @@ public class CommunityServiceImpl extends CRUDImpl<CommunityEntity,Long> impleme
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"createdAt","updatedAt","idCommunity"};
+        String[] ignoreProperties= new String[]{"idCommunity","createdAt","registrationStatus"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(original,id);
     }
