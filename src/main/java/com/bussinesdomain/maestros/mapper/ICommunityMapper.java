@@ -15,8 +15,12 @@ import java.util.List;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ICommunityMapper {
 
+    @Mapping(target  = "idRegion", ignore = true)
+    @Mapping(target  = "regionDescription", ignore = true)
     CommunityDTO toGetDTO(CommunityEntity entity);
 
+    @Mapping(target  = "idRegion", ignore = true)
+    @Mapping(target  = "regionDescription", ignore = true)
     CommunityResponseDTO toGetResponseDTO(CommunityEntity entity);
 
     @Mapping(target  = "createdAt", ignore = true)

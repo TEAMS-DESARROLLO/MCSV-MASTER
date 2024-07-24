@@ -37,6 +37,10 @@ public class CommunityEntity implements Serializable {
 
     @Column(name="registration_status ", nullable=false,length = 1)
     private String registrationStatus;
+    
+    @ManyToOne(optional = true,fetch= FetchType.EAGER)
+    @JoinColumn(name="id_region",referencedColumnName="id_region")
+    private RegionEntity region;
 
     @PrePersist
     public void prePersisten(){

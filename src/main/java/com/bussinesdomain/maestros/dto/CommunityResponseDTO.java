@@ -18,4 +18,9 @@ public class CommunityResponseDTO {
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idCommunity;
     private String description;
+
+    
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idRegion;
+    private String regionDescription;
 }
