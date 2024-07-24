@@ -16,7 +16,6 @@ public class CollaboratorServiceImpl extends CRUDImpl<CollaboratorEntity,Long> i
     private final IGenericRepository<CollaboratorEntity,Long> repository;
     @Override
     public CollaboratorEntity create(CollaboratorEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
 

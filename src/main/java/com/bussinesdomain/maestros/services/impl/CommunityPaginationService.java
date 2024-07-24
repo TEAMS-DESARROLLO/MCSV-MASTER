@@ -73,7 +73,7 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
                 sql.append(" AND a.idCommunity = :idCommunity");
             }
             if(filtro.getField().equals("description")){
-                sql.append(" AND a.description LIKE :description ");
+                sql.append(" AND upper(a.description) LIKE upper(:description) ");
             }
         }
 		sql.append(" AND a.registrationStatus LIKE :registrationStatus ");

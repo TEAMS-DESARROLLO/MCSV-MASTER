@@ -17,7 +17,6 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
     private final IGenericRepository<LeaderEntity,Long> repository;
     @Override
     public LeaderEntity create(LeaderEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
 

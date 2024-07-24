@@ -2,12 +2,14 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
-import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.CommunityEntity;
-import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
+import com.bussinesdomain.maestros.repository.ICommunityBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICommunityService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +18,9 @@ import org.springframework.stereotype.Service;
 public class CommunityServiceImpl extends CRUDImpl<CommunityEntity,Long> implements ICommunityService {
 
     private final IGenericRepository<CommunityEntity, Long> repository;
+    private final ICommunityBusinessRepository businessRepository;
     @Override
     public CommunityEntity create(CommunityEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
 
@@ -37,4 +39,37 @@ public class CommunityServiceImpl extends CRUDImpl<CommunityEntity,Long> impleme
     protected IGenericRepository<CommunityEntity, Long> getRepo() {
         return repository;
     }
+
+
+    @Override
+    public Long count() {
+        return businessRepository.countActive();
+    }
+
+
+    @Override
+    public void deleteById(Long id) {
+        CommunityEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
+        super.update(entity, id);
+    }
+
+
+    @Override
+    public Boolean exists(Long id) {
+        return businessRepository.existsActiveById(id);
+    }
+
+
+    @Override
+    public List<CommunityEntity> getAll() {
+        return businessRepository.findAllActive();
+    }
+
+
+    @Override
+    public CommunityEntity readById(Long id) {
+        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    }
+    
 }

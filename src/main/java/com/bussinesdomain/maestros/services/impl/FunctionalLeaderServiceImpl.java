@@ -20,7 +20,6 @@ public class FunctionalLeaderServiceImpl extends CRUDImpl<FunctionalLeaderEntity
     private final IFunctionalLeaderBusinessRepository businessRepository;
     @Override
     public FunctionalLeaderEntity create(FunctionalLeaderEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
 

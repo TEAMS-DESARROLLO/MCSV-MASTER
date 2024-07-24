@@ -21,7 +21,6 @@ public class TechnologyServiceImpl extends CRUDImpl<TechnologyEntity,Long> imple
     }
     @Override
     public TechnologyEntity create(TechnologyEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
     @Override

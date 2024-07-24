@@ -15,7 +15,6 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
     private final IGenericRepository<SubpracticaEntity, Long> repository ;
     @Override
     public SubpracticaEntity create(SubpracticaEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
 

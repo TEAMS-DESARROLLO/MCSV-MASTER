@@ -25,7 +25,6 @@ public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolServ
     }
     @Override
     public RolEntity create(RolEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
     @Override

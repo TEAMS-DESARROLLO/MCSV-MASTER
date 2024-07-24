@@ -27,7 +27,6 @@ public class UnitMeasureServiceImpl extends CRUDImpl<UnitMeasureEntity,Long> imp
 
     @Override
     public UnitMeasureEntity create(UnitMeasureEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
 

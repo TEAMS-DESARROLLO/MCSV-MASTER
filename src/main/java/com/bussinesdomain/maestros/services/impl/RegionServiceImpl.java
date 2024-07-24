@@ -25,7 +25,6 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
     }
     @Override
     public RegionEntity create(RegionEntity entidad) {
-        entidad.setRegistrationStatus(RegistrationStatus.ACTIVE);
         return super.create(entidad);
     }
     @Override
