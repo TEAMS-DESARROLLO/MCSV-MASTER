@@ -7,10 +7,6 @@ import java.util.*;
 import org.springframework.stereotype.Service;
 
 import com.bussinesdomain.maestros.dto.CommunityResultadoDTO;
-import com.bussinesdomain.maestros.dto.CommunityTreeDTO;
-
-import com.bussinesdomain.maestros.dto.SubpracticaTreeDTO;
-import com.bussinesdomain.maestros.dto.TechnologyResponseDTO;
 import com.bussinesdomain.maestros.dto.TreeNodesDataDTO;
 import com.bussinesdomain.maestros.services.ITreeComunitySubPracticaTenololgyService;
 
