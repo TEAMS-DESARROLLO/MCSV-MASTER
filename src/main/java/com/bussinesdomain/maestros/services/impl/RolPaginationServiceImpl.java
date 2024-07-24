@@ -79,6 +79,9 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
             if(filtro.getField().equals("description")){
                 sql.append(" AND r.description LIKE :description ");
             }
+			if(filtro.getField().equals("codigoRol")){
+				sql.append(" AND r.codigoRol LIKE :codigoRol");
+			}
         }
 		sql.append(" AND r.registrationStatus LIKE :registrationStatus ");
 
@@ -93,6 +96,9 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
             }
             if(filtro.getField().equals("description")){
                 query.setParameter("description","%"+filtro.getValue()+"%");
+            }
+			if(filtro.getField().equals("codigoRol")){
+                query.setParameter("codigoRol","%"+filtro.getValue()+"%");
             }
         }
 		
@@ -112,16 +118,24 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " idRol " + sort.getSort() );
+                    sql.append( " r.idRol " + sort.getSort() );
                     flagMore = true;
                 }
 
                 if(sort.getColName().equals("description")){
                     if(flagMore)
                         sql.append(", ");
-                    sql.append( " description " + sort.getSort() );
+                    sql.append( " r.description " + sort.getSort() );
                     flagMore = true;
                 }
+
+				if(sort.getColName().equals("codigoRol")){
+                    if(flagMore)
+                        sql.append(", ");
+                    sql.append( " r.codigoRol " + sort.getSort() );
+                    flagMore = true;
+                }
+				
            }
         }
          return sql;

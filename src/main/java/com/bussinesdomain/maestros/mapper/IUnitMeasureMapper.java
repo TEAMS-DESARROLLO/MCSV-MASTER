@@ -16,6 +16,9 @@ public interface IUnitMeasureMapper {
 
     UnitMeasureResponseDTO toGetDTO(UnitMeasureEntity entity);
 
+
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     UnitMeasureEntity toEntity(UnitMeasureRequestDTO dto);
