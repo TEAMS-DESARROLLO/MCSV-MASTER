@@ -13,14 +13,19 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ITechnologyMapper {
-
+    @Mapping(target  = "idSubpractica", ignore = true)
+    @Mapping(target  = "descriptionSubpractica", ignore = true)
     TechnologyDTO toGetDTO(TechnologyEntity entity);
-
+    @Mapping(target  = "idSubpractica", ignore = true)
+    @Mapping(target  = "descriptionSubpractica", ignore = true)
     TechnologyResponseDTO toGetResponseDTO(TechnologyEntity entity);
-
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     TechnologyEntity toEntity(TechnologyDTO dto);
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     TechnologyEntity toEntity(TechnologyRequestDTO dto);

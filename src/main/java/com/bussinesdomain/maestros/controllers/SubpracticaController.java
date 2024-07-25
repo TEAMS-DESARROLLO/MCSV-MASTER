@@ -31,11 +31,11 @@ public class SubpracticaController {
 
     private final ICommunityService communityService;
 
-    private final SubpracticaPaginationService SubpracticaPaginationService;
+    private final SubpracticaPaginationService subpracticaPaginationService;
 
     @PostMapping("/pagination")
     public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
-        Page<SubpracticaDTO> lst = SubpracticaPaginationService.pagination(pagination);
+        Page<SubpracticaDTO> lst = subpracticaPaginationService.pagination(pagination);
         return new ResponseEntity<>(lst, HttpStatus.OK) ;
     }
 
