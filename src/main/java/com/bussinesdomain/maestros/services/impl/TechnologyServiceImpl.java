@@ -1,5 +1,6 @@
 package com.bussinesdomain.maestros.services.impl;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.TechnologyEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
@@ -18,14 +19,17 @@ public class TechnologyServiceImpl extends CRUDImpl<TechnologyEntity,Long> imple
     protected IGenericRepository<TechnologyEntity, Long> getRepo() {
         return repository;
     }
-
+    @Override
+    public TechnologyEntity create(TechnologyEntity entidad) {
+        return super.create(entidad);
+    }
     @Override
     public TechnologyEntity update(TechnologyEntity entity,Long id){
         TechnologyEntity original = this.readById(id);
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"idTechnology"};
+        String[] ignoreProperties= new String[]{"idTechnology","createdAt","registrationStatus"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(original,id);
     }

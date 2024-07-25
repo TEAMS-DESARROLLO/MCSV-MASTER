@@ -44,7 +44,7 @@ public abstract class CRUDImpl<T,ID> implements IBaseInterfaceService<T,ID>  {
     public void deleteById(ID id) {
         getRepo().findById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         try {
-            getRepo().deleteById(id) ;
+            getRepo().deleteById(id);
             
         } catch (Exception e) {
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");

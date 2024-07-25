@@ -11,6 +11,7 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.dto.UnitMeasureResponseDTO;
 
 import jakarta.persistence.EntityManager;
@@ -76,9 +77,11 @@ public class UnitMeasurePaginationServiceImpl implements IPaginationCommons<Unit
                 sql.append(" AND u.idUnitMeasure = :idUnitMeasure");
             }
             if(filtro.getField().equals("name")){
-                sql.append(" AND u.name LIKE :name ");
+                sql.append(" AND upper(u.name) LIKE upper(:name) ");
             }
         }
+		
+		sql.append(" AND u.registrationStatus LIKE :registrationStatus ");
 
         return sql;
 	}
@@ -93,6 +96,9 @@ public class UnitMeasurePaginationServiceImpl implements IPaginationCommons<Unit
                 query.setParameter("name","%"+filtro.getValue()+"%");
             }
         }
+		
+		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
+
         return query;
 	}
 

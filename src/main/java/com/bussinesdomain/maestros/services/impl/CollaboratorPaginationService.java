@@ -4,7 +4,7 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
-
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.dto.CollaboratorResponseDTO;
 import com.bussinesdomain.maestros.exception.ServiceException;
 import jakarta.persistence.EntityManager;
@@ -134,6 +134,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 sql.append(" AND fl.names LIKE :functionalLeaderNames ");
             }
         }
+		sql.append(" AND a.registrationStatus LIKE :registrationStatus ");
         return sql;
     }
 
@@ -184,6 +185,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 query.setParameter("functionalLeaderNames","%"+filtro.getValue()+"%");
             }
         }
+		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
         return query;
     }
 

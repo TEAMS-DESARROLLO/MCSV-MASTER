@@ -1,45 +1,44 @@
 package com.bussinesdomain.maestros.services.impl;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
+import com.bussinesdomain.maestros.repository.IFunctionalLeaderBusinessRepository;
+import com.bussinesdomain.maestros.repository.IGenericRepository;
+import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import com.bussinesdomain.maestros.constants.RegistrationStatus;
-import com.bussinesdomain.maestros.exception.ModelNotFoundException;
-import com.bussinesdomain.maestros.models.SubpracticaEntity;
-import com.bussinesdomain.maestros.repository.IGenericRepository;
-import com.bussinesdomain.maestros.repository.ISubpracticaBusinessRepository;
-import com.bussinesdomain.maestros.services.ISubPracticaService;
-
-import lombok.RequiredArgsConstructor;
-
-
 @Service
 @RequiredArgsConstructor
-public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> implements ISubPracticaService {
-    private final IGenericRepository<SubpracticaEntity, Long> repository ;
-    private final ISubpracticaBusinessRepository businessRepository;
+public class FunctionalLeaderServiceImpl extends CRUDImpl<FunctionalLeaderEntity,Long> implements IFunctionalLeaderService {
+    private final IGenericRepository<FunctionalLeaderEntity,Long> repository;
+    private final IFunctionalLeaderBusinessRepository businessRepository;
     @Override
-    public SubpracticaEntity create(SubpracticaEntity entidad) {
+    public FunctionalLeaderEntity create(FunctionalLeaderEntity entidad) {
         return super.create(entidad);
     }
 
     @Override
-    public SubpracticaEntity update(SubpracticaEntity entity,Long id){
-        SubpracticaEntity original = this.readById(id);
+    public FunctionalLeaderEntity update(FunctionalLeaderEntity entity,Long id){
+        FunctionalLeaderEntity original = this.readById(id);
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"idSubpractica","createdAt","registrationStatus"};
+        String[] ignoreProperties= new String[]{"idFunctionalLeader","createdAt","registrationStatus"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(original,id);
     }
 
     @Override
-    protected IGenericRepository<SubpracticaEntity, Long> getRepo() {
+    protected IGenericRepository<FunctionalLeaderEntity, Long> getRepo() {
         return repository;
     }
+
 
     @Override
     public Long count() {
@@ -49,7 +48,7 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
 
     @Override
     public void deleteById(Long id) {
-        SubpracticaEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        FunctionalLeaderEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }
@@ -62,15 +61,13 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
 
 
     @Override
-    public List<SubpracticaEntity> getAll() {
+    public List<FunctionalLeaderEntity> getAll() {
         return businessRepository.findAllActive();
     }
 
 
     @Override
-    public SubpracticaEntity readById(Long id) {
+    public FunctionalLeaderEntity readById(Long id) {
         return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
     }
-    
-
 }

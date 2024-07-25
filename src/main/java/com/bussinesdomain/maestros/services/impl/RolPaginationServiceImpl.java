@@ -11,6 +11,7 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.dto.RolResponseDTO;
 import com.bussinesdomain.maestros.exception.ServiceException;
 
@@ -76,9 +77,13 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
                 sql.append(" AND r.idRol = :idRol");
             }
             if(filtro.getField().equals("description")){
-                sql.append(" AND r.description LIKE :description ");
+                sql.append(" AND upper(r.description) LIKE upper(:description) ");
             }
+			if(filtro.getField().equals("codigoRol")){
+				sql.append(" AND upper(r.codigoRol) LIKE upper(:codigoRol)");
+			}
         }
+		sql.append(" AND r.registrationStatus LIKE :registrationStatus ");
 
         return sql;
 	}
@@ -92,7 +97,12 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
             if(filtro.getField().equals("description")){
                 query.setParameter("description","%"+filtro.getValue()+"%");
             }
+			if(filtro.getField().equals("codigoRol")){
+                query.setParameter("codigoRol","%"+filtro.getValue()+"%");
+            }
         }
+		
+		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
         return query;
 	}
 
@@ -108,16 +118,24 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " idRol " + sort.getSort() );
+                    sql.append( " r.idRol " + sort.getSort() );
                     flagMore = true;
                 }
 
                 if(sort.getColName().equals("description")){
                     if(flagMore)
                         sql.append(", ");
-                    sql.append( " description " + sort.getSort() );
+                    sql.append( " r.description " + sort.getSort() );
                     flagMore = true;
                 }
+
+				if(sort.getColName().equals("codigoRol")){
+                    if(flagMore)
+                        sql.append(", ");
+                    sql.append( " r.codigoRol " + sort.getSort() );
+                    flagMore = true;
+                }
+				
            }
         }
          return sql;

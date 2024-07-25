@@ -11,6 +11,7 @@ import com.bussinesdomain.maestros.commons.Filter;
 import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.dto.CommunityDTO;
 
 import jakarta.persistence.EntityManager;
@@ -53,13 +54,19 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
 
     @Override
     public StringBuilder getSelect() {
-        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.CommunityDTO(a.idCommunity,a.description) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.CommunityDTO("+
+        "a.idCommunity,"+
+        "a.description,"+
+        "r.idRegion as idRegion,"+
+        "r.description as regionDescription"+
+        ") ");
         return sql;
     }
 
     @Override
     public StringBuilder getFrom() {
-        StringBuilder sql = new StringBuilder(" FROM CommunityEntity a  ");
+        StringBuilder sql = new StringBuilder(" FROM CommunityEntity a  "+
+        " inner join RegionEntity r on a.region = r ");
         return sql;
     }
 
@@ -72,9 +79,16 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
                 sql.append(" AND a.idCommunity = :idCommunity");
             }
             if(filtro.getField().equals("description")){
-                sql.append(" AND a.description LIKE :description ");
+                sql.append(" AND upper(a.description) LIKE upper(:description) ");
+            }
+            if(filtro.getField().equals("idRegion")){
+                sql.append(" AND r.idRegion = :idRegion");
+            }
+            if(filtro.getField().equals("regionDescription")){
+                sql.append(" AND upper(r.description) LIKE upper(:regionDescription) ");
             }
         }
+		sql.append(" AND a.registrationStatus LIKE :registrationStatus ");
 
         return sql;
     }
@@ -88,7 +102,14 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
             if(filtro.getField().equals("description")){
                 query.setParameter("description","%"+filtro.getValue()+"%");
             }
+            if(filtro.getField().equals("idRegion")){
+                query.setParameter("idRegion",filtro.getValue() );
+            }
+            if(filtro.getField().equals("regionDescription")){
+                query.setParameter("regionDescription","%"+filtro.getValue()+"%");
+            }
         }
+		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
         return query;
     }
 
@@ -104,7 +125,7 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " idCommunity " + sort.getSort() );
+                    sql.append( " a.idCommunity " + sort.getSort() );
                     flagMore = true;
                 }
 
@@ -113,7 +134,23 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " description " + sort.getSort() );
+                    sql.append( " a.description " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("idRegion")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.idRegion " + sort.getSort() );
+                    flagMore = true;
+                }
+
+
+                if(sort.getColName().equals("regionDescription")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " r.description " + sort.getSort() );
                     flagMore = true;
                 }
             }

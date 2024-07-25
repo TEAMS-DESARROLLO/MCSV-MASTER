@@ -20,9 +20,15 @@ public interface IFunctionalLeaderMapper {
     FunctionalLeaderResponseDTO toGetResponseDTO(FunctionalLeaderEntity entity);
 
     @InheritInverseConfiguration
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
+    @Mapping(target = "registrationStatus",ignore = true)
     FunctionalLeaderEntity toEntity(FunctionalLeaderDTO dto);
 
     @InheritInverseConfiguration
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
+    @Mapping(target = "registrationStatus",ignore = true)
     FunctionalLeaderEntity toEntity(FunctionalLeaderRequestDTO dto);
 
     List<FunctionalLeaderDTO> listEntityToDTO(List<FunctionalLeaderEntity> lst);

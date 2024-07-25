@@ -1,9 +1,9 @@
 package com.bussinesdomain.maestros.mapper;
 
-import com.bussinesdomain.maestros.dto.LeaderDTO;
-import com.bussinesdomain.maestros.dto.LeaderRequestDTO;
-import com.bussinesdomain.maestros.dto.LeaderResponseDTO;
-import com.bussinesdomain.maestros.models.LeaderEntity;
+import com.bussinesdomain.maestros.dto.SubpracticaDTO;
+import com.bussinesdomain.maestros.dto.SubpracticaRequestDTO;
+import com.bussinesdomain.maestros.dto.SubpracticaResponseDTO;
+import com.bussinesdomain.maestros.models.SubpracticaEntity;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,33 +12,33 @@ import org.mapstruct.MappingConstants;
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface ILeaderMapper {
+public interface ISubpracticaMapper {
 
     @Mapping(target  = "idCommunity", ignore = true)
     @Mapping(target  = "communityDescription", ignore = true)
-    LeaderDTO toGetDTO(LeaderEntity entity);
+    SubpracticaDTO toGetDTO(SubpracticaEntity entity);
 
     @Mapping(target  = "idCommunity", ignore = true)
     @Mapping(target  = "communityDescription", ignore = true)
-    LeaderResponseDTO toGetResponseDTO(LeaderEntity entity);
+    SubpracticaResponseDTO toGetResponseDTO(SubpracticaEntity entity);
 
-    @Mapping(target = "community",ignore = true)
+    @Mapping(target = "comunidadEntity",ignore = true)
     
     @Mapping(target = "createdAt",ignore = true)
     @Mapping(target = "updatedAt",ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
-    LeaderEntity toEntity(LeaderDTO dto);
+    SubpracticaEntity toEntity(SubpracticaDTO dto);
 
-    @Mapping(target = "community",ignore = true)
+    @Mapping(target = "comunidadEntity",ignore = true)
     
     @Mapping(target = "createdAt",ignore = true)
     @Mapping(target = "updatedAt",ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
-    LeaderEntity toEntity(LeaderRequestDTO dto);
+    SubpracticaEntity toEntity(SubpracticaRequestDTO dto);
 
-    List<LeaderDTO> listEntityToDTO(List<LeaderEntity> lst);
+    List<SubpracticaDTO> listEntityToDTO(List<SubpracticaEntity> lst);
 
-    List<LeaderResponseDTO> listEntityToResponseDTO(List<LeaderEntity> lst);
+    List<SubpracticaResponseDTO> listEntityToResponseDTO(List<SubpracticaEntity> lst);
 }

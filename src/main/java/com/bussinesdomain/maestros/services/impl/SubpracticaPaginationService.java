@@ -5,7 +5,7 @@ import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
-import com.bussinesdomain.maestros.dto.LeaderDTO;
+import com.bussinesdomain.maestros.dto.SubpracticaDTO;
 import com.bussinesdomain.maestros.exception.ServiceException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -16,13 +16,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
+public class SubpracticaPaginationService  implements IPaginationCommons<SubpracticaDTO> {
 
     private final EntityManager entityManager;
     @Override
-    public Page<LeaderDTO> pagination(PaginationModel pagination) {
+    public Page<SubpracticaDTO> pagination(PaginationModel pagination) {
         try {
 
             String sqlCount  = "SELECT count(a) " + getFrom().toString() + getFilters( pagination.getFilters()  ).toString();
@@ -40,11 +41,11 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
             querySelect.setMaxResults(pagination.getRowsPerPage());
 
             @SuppressWarnings("unchecked")
-            List<LeaderDTO> lista = querySelect.getResultList();
+            List<SubpracticaDTO> lista = querySelect.getResultList();
 
             PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
 
-            Page<LeaderDTO> page = new PageImpl<LeaderDTO>(lista, pageable, total);
+            Page<SubpracticaDTO> page = new PageImpl<SubpracticaDTO>(lista, pageable, total);
 
             return page;
         } catch (RuntimeException e) {
@@ -54,13 +55,17 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
 
     @Override
     public StringBuilder getSelect() {
-        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.LeaderDTO(a.idLeader,a.names,cm.idCommunity,cm.description as communityDescription) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.SubpracticaDTO("+
+        "a.idSubpractica,"+
+        "a.descriptionSubpractica,"+
+        "cm.idCommunity,"+
+        "cm.description as communityDescription) ");
         return sql;
     }
 
     @Override
     public StringBuilder getFrom() {
-        StringBuilder sql = new StringBuilder(" FROM LeaderEntity a  join CommunityEntity cm on a.community.idCommunity = cm.idCommunity ");
+        StringBuilder sql = new StringBuilder(" FROM SubpracticaEntity a  join CommunityEntity cm on a.comunidadEntity.idCommunity = cm.idCommunity ");
         return sql;
     }
 
@@ -69,11 +74,11 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
         StringBuilder sql = new StringBuilder("where 1=1 ");
 
         for(Filter filtro:filters){
-            if(filtro.getField().equals("idLeader")){
-                sql.append(" AND a.idLeader = :idLeader");
+            if(filtro.getField().equals("idSubpractica")){
+                sql.append(" AND a.idSubpractica = :idSubpractica");
             }
-            if(filtro.getField().equals("names")){
-                sql.append(" AND upper(a.names) LIKE upper(:names) ");
+            if(filtro.getField().equals("descriptionSubpractica")){
+                sql.append(" AND upper(a.descriptionSubpractica) LIKE upper(:descriptionSubpractica) ");
             }
             if(filtro.getField().equals("idCommunity")){
                 sql.append(" AND cm.idCommunity = :idCommunity ");
@@ -90,11 +95,11 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
     @Override
     public Query setParams(List<Filter> filters, Query query) {
         for(Filter filtro:filters){
-            if(filtro.getField().equals("idLeader")){
-                query.setParameter("idLeader",filtro.getValue() );
+            if(filtro.getField().equals("idSubpractica")){
+                query.setParameter("idSubpractica",filtro.getValue() );
             }
-            if(filtro.getField().equals("names")){
-                query.setParameter("names","%"+filtro.getValue()+"%");
+            if(filtro.getField().equals("descriptionSubpractica")){
+                query.setParameter("descriptionSubpractica","%"+filtro.getValue()+"%");
             }
             if(filtro.getField().equals("idCommunity")){
                 query.setParameter("idCommunity",filtro.getValue() );
@@ -115,18 +120,18 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
             sql.append(" ORDER BY ");
 
             for(SortModel sort:sorts){
-                if(sort.getColName().equals("idLeader")){
+                if(sort.getColName().equals("idSubpractica")){
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " a.idLeader " + sort.getSort() );
+                    sql.append( " a.idSubpractica " + sort.getSort() );
                     flagMore = true;
                 }
 
-                if(sort.getColName().equals("names")){
+                if(sort.getColName().equals("descriptionSubpractica")){
                     if(flagMore)
                         sql.append(", ");
-                    sql.append( " a.names " + sort.getSort() );
+                    sql.append( " a.descriptionSubpractica " + sort.getSort() );
                     flagMore = true;
                 }
                 if(sort.getColName().equals("idCommunity")){
@@ -148,3 +153,4 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
         return sql;
     }
 }
+
