@@ -3,6 +3,7 @@ package com.bussinesdomain.maestros.controllers;
 
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ICollaboratorMapper;
 import com.bussinesdomain.maestros.models.*;
 import com.bussinesdomain.maestros.services.*;
@@ -44,7 +45,7 @@ public class CollaboratorController {
     @GetMapping("/{idCollaborator}")
     public ResponseEntity<CollaboratorResponseDTO> findById(@PathVariable("idCollaborator") Long idCollaborator){
 
-        CollaboratorEntity obj = this.collaboratorService.readById(idCollaborator);
+        CollaboratorEntity obj = this.collaboratorService.readById(idCollaborator).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + idCollaborator)) ;
         CollaboratorResponseDTO dto = this.collaboratorMapper.toGetResponseDTO(obj);
 
         dto.setIdLeader(obj.getLeader().getIdLeader());
@@ -64,13 +65,13 @@ public class CollaboratorController {
 
     @PostMapping("/create")
     public ResponseEntity<CollaboratorResponseDTO> save(@Validated @RequestBody CollaboratorRequestDTO requestDTO) {
-        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader());
+        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdLeader())) ;
 
-        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol());
+        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdRol())) ;
 
-        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion());
+        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdRegion())) ;
 
-        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader());
+        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdFunctionalLeader())) ;
 
         CollaboratorEntity entidad = this.collaboratorMapper.toEntity(requestDTO);
 
@@ -99,13 +100,13 @@ public class CollaboratorController {
     @PutMapping("/{idCollaborator}")
     public ResponseEntity<CollaboratorResponseDTO> update(@Validated @PathVariable("idCollaborator") Long idCollaborator,
                                                     @RequestBody CollaboratorRequestDTO requestDTO){
-        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader());
+        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdLeader())) ;
 
-        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol());
+        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdRol())) ;
 
-        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion());
+        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdRegion())) ;
 
-        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader());
+        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdFunctionalLeader())) ;
 
         CollaboratorEntity objEntitySource = this.collaboratorMapper.toEntity(requestDTO);
 

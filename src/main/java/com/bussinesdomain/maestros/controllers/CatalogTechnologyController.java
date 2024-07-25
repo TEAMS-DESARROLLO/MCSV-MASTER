@@ -18,6 +18,7 @@ import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.CatalogTechnologyRequestDTO;
 import com.bussinesdomain.maestros.dto.CatalogTechnologyResponseDTO;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ICatalogTechnologyMapper;
 import com.bussinesdomain.maestros.models.CatalogTechnologyEntity;
 import com.bussinesdomain.maestros.services.ICatalogTechnologyService;
@@ -52,7 +53,7 @@ public class CatalogTechnologyController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<CatalogTechnologyResponseDTO> findById(@PathVariable("id") Long id){
-		CatalogTechnologyEntity CatalogTechnologyEntity = this.service.readById(id);
+		CatalogTechnologyEntity CatalogTechnologyEntity = this.service.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
 		CatalogTechnologyResponseDTO CatalogTechnologyDTO =this.mapper.toGetDTO(CatalogTechnologyEntity);
 		return new ResponseEntity<>(CatalogTechnologyDTO,HttpStatus.OK);
 	}

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.RolRequestDTO;
 import com.bussinesdomain.maestros.dto.RolResponseDTO;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.IRolMapper;
 import com.bussinesdomain.maestros.models.RolEntity;
 import com.bussinesdomain.maestros.services.IRolService;
@@ -53,7 +54,7 @@ public class RolController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<RolResponseDTO> findById(@PathVariable("id")Long id){
-		RolEntity rolEntity = this.service.readById(id);
+		RolEntity rolEntity = this.service.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
 		RolResponseDTO rolDTO = this.mapper.toGetDTO(rolEntity);
 		return new ResponseEntity<>(rolDTO,HttpStatus.OK);
 	}

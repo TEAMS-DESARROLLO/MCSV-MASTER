@@ -2,6 +2,7 @@ package com.bussinesdomain.maestros.controllers;
 
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.IFunctionalLeaderMapper;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
@@ -46,7 +47,7 @@ public class FunctionalLeaderController {
     @GetMapping("/{idFunctionalLeader}")
     public ResponseEntity<FunctionalLeaderResponseDTO> findById(@PathVariable("idFunctionalLeader") Long idFunctionalLeader){
 
-        FunctionalLeaderEntity obj = this.functionalLeaderService.readById(idFunctionalLeader);
+        FunctionalLeaderEntity obj = this.functionalLeaderService.readById(idFunctionalLeader).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + idFunctionalLeader)) ;
         FunctionalLeaderResponseDTO dto = this.functionalLeaderMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

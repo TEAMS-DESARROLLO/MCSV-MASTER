@@ -3,19 +3,14 @@ package com.bussinesdomain.maestros.controllers;
 import com.bussinesdomain.maestros.dto.CollaboratorTechnologiesRequestDTO;
 import com.bussinesdomain.maestros.dto.CollaboratorTechnologyRequestDTO;
 import com.bussinesdomain.maestros.dto.CollaboratorTechnologyResponseDTO;
-import com.bussinesdomain.maestros.dto.CommunityRequestDTO;
-import com.bussinesdomain.maestros.dto.CommunityResponseDTO;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ICollaboratorTechnologyMapper;
 import com.bussinesdomain.maestros.models.CatalogTechnologyEntity;
 import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
-import com.bussinesdomain.maestros.models.CommunityEntity;
-import com.bussinesdomain.maestros.models.RegionEntity;
-import com.bussinesdomain.maestros.models.TechnologyEntity;
 import com.bussinesdomain.maestros.services.ICatalogTechnologyService;
 import com.bussinesdomain.maestros.services.ICollaboratorService;
 import com.bussinesdomain.maestros.services.ICollaboratorTechnologyService;
-import com.bussinesdomain.maestros.services.ITechnologyService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +27,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/collaboratorTechnology")
 public class CollaboratorTechnologyController {
     private final ICollaboratorService collaboratorService;
-    private final ITechnologyService technologyService;
     private final ICatalogTechnologyService catalogTechnologyService;
     private final ICollaboratorTechnologyService collaboratorTechnologyService;
 
@@ -48,15 +41,32 @@ public class CollaboratorTechnologyController {
             dto.setIdCollaborator(entity.getCollaborator().getIdCollaborator());
             dto.setCollaboratorNames(entity.getCollaborator().getNames());
 
+            dto.setIdCatalogTechnology(entity.getCatalogTechnology().getIdCatalogTechnology());
+            dto.setDescriptionCatalogTechnology(entity.getCatalogTechnology().getDescriptionCatalogTechnology());
+
             return dto;
         }).collect(Collectors.toList());
         return new ResponseEntity<>(dtoList, HttpStatus.CREATED);
     }
 
+    @GetMapping("/{id}")
+	public ResponseEntity<CollaboratorTechnologyResponseDTO> findById(@PathVariable("id")Long id){
+		CollaboratorTechnologyEntity collaboratorTechnologyEntity = this.collaboratorTechnologyService.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+		CollaboratorTechnologyResponseDTO collaboratorTechnologyDTO = this.collaboratorTechnologyMapper.toGetResponseDTO(collaboratorTechnologyEntity);
+		
+        collaboratorTechnologyDTO.setIdCollaborator(collaboratorTechnologyEntity.getCollaborator().getIdCollaborator());
+        collaboratorTechnologyDTO.setCollaboratorNames(collaboratorTechnologyEntity.getCollaborator().getNames());
+
+        collaboratorTechnologyDTO.setIdCatalogTechnology(collaboratorTechnologyEntity.getCatalogTechnology().getIdCatalogTechnology());
+        collaboratorTechnologyDTO.setDescriptionCatalogTechnology(collaboratorTechnologyEntity.getCatalogTechnology().getDescriptionCatalogTechnology());
+        
+        return new ResponseEntity<>(collaboratorTechnologyDTO,HttpStatus.OK);
+	}
+
     @PostMapping("/create")
     public ResponseEntity<CollaboratorTechnologyResponseDTO> assignTechnology(@RequestBody CollaboratorTechnologyRequestDTO requestDTO){
-        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
-        CatalogTechnologyEntity catalogTechnologyEntity = catalogTechnologyService.readById(requestDTO.getIdCatalogTechnology());
+        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCollaborator())) ;
+        CatalogTechnologyEntity catalogTechnologyEntity = catalogTechnologyService.readById(requestDTO.getIdCatalogTechnology()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCatalogTechnology())) ;
 
         CollaboratorTechnologyEntity entity = collaboratorTechnologyMapper.toEntity(requestDTO);
         entity.setCollaborator(collaboratorEntity);
@@ -79,8 +89,8 @@ public class CollaboratorTechnologyController {
                                                        @RequestBody CollaboratorTechnologyRequestDTO requestDTO){
         CollaboratorTechnologyEntity objEntitySource = this.collaboratorTechnologyMapper.toEntity(requestDTO);
 
-        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
-        CatalogTechnologyEntity catalogTechnologyEntity = catalogTechnologyService.readById(requestDTO.getIdCatalogTechnology());
+        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCollaborator())) ;
+        CatalogTechnologyEntity catalogTechnologyEntity = catalogTechnologyService.readById(requestDTO.getIdCatalogTechnology()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCatalogTechnology())) ;
 
 
         objEntitySource.setCollaborator(collaboratorEntity);
@@ -100,7 +110,7 @@ public class CollaboratorTechnologyController {
 
     @PostMapping("/createMultiple")
     public ResponseEntity<List<CollaboratorTechnologyResponseDTO>> assignTechnology( @RequestBody CollaboratorTechnologiesRequestDTO requestDTO){
-        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
+        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCollaborator())) ;
 
         // List<CollaboratorTechnologyEntity> entities = new ArrayList<CollaboratorTechnologyEntity>();
         // for(Long idTechnology : requestDTO.getLstIdTechnologies()){
@@ -126,7 +136,7 @@ public class CollaboratorTechnologyController {
 
     @DeleteMapping("/{idCollaboratorTechnology}")
     public ResponseEntity<CollaboratorTechnologyResponseDTO> delete(@PathVariable("idCollaboratorTechnology") Long idCollaboratorTechnology){
-        CollaboratorTechnologyEntity entity = collaboratorTechnologyService.readById(idCollaboratorTechnology);
+        CollaboratorTechnologyEntity entity = collaboratorTechnologyService.readById(idCollaboratorTechnology).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + idCollaboratorTechnology)) ;
         collaboratorTechnologyService.delete(entity);
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }

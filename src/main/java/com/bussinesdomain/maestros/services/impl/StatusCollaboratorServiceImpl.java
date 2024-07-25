@@ -1,6 +1,8 @@
 package com.bussinesdomain.maestros.services.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,6 @@ import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.StatusCollaboratorEntity;
 import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
-import com.bussinesdomain.maestros.repository.IStatusCollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.services.IStatusCollaboratorService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class StatusCollaboratorServiceImpl extends CRUDImpl<StatusCollaboratorEntity,Long> implements IStatusCollaboratorService {
     private final IGenericRepository<StatusCollaboratorEntity,Long> repository;
-    private final IStatusCollaboratorBusinessRepository businessRepository;
     private final ICollaboratorBusinessRepository businessCollaboratorRepository;
 
     @Override
@@ -38,7 +38,7 @@ public class StatusCollaboratorServiceImpl extends CRUDImpl<StatusCollaboratorEn
 
     @Override
     public StatusCollaboratorEntity update(StatusCollaboratorEntity entity, Long id){
-        StatusCollaboratorEntity original = this.readById(id);
+        StatusCollaboratorEntity original = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
@@ -50,14 +50,14 @@ public class StatusCollaboratorServiceImpl extends CRUDImpl<StatusCollaboratorEn
 
     @Override
     public Long count() {
-        return businessRepository.countActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).count();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        StatusCollaboratorEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
-        boolean existsCollaborators = businessCollaboratorRepository.underStatusCollaborator(id);
+        StatusCollaboratorEntity entity = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underStatusCollaborator(id).stream().anyMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
         if(existsCollaborators){
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
         }
@@ -68,19 +68,19 @@ public class StatusCollaboratorServiceImpl extends CRUDImpl<StatusCollaboratorEn
 
     @Override
     public Boolean exists(Long id) {
-        return businessRepository.existsActiveById(id);
+        return repository.findById(id).stream().allMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
     }
 
 
     @Override
     public List<StatusCollaboratorEntity> getAll() {
-        return businessRepository.findAllActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).collect(Collectors.toList());
     }
 
 
     @Override
-    public StatusCollaboratorEntity readById(Long id) {
-        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    public Optional<StatusCollaboratorEntity> readById(Long id) {
+        return repository.findById(id).stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).findFirst() ;
     }
     
 }

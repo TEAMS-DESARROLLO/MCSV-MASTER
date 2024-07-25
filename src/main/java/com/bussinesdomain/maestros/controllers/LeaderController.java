@@ -2,6 +2,7 @@ package com.bussinesdomain.maestros.controllers;
 
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ILeaderMapper;
 import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.models.LeaderEntity;
@@ -55,7 +56,7 @@ public class LeaderController {
     @GetMapping("/{idLeader}")
     public ResponseEntity<LeaderResponseDTO> findById(@PathVariable("idLeader") Long idLeader){
 
-        LeaderEntity obj = this.leaderService.readById(idLeader);
+        LeaderEntity obj = this.leaderService.readById(idLeader).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + idLeader)) ;
         LeaderResponseDTO dto = this.leaderMapper.toGetResponseDTO(obj);
         dto.setIdCommunity(obj.getCommunity().getIdCommunity());
         dto.setCommunityDescription(obj.getCommunity().getDescription() );
@@ -64,7 +65,7 @@ public class LeaderController {
 
     @PostMapping("/create")
     public ResponseEntity<LeaderResponseDTO> save(@Validated @RequestBody LeaderRequestDTO requestDTO) {
-        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity());
+        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCommunity())) ;
 
         LeaderEntity entidad = this.leaderMapper.toEntity(requestDTO);
         entidad.setCommunity(communityEntity);
@@ -78,7 +79,7 @@ public class LeaderController {
     @PutMapping("/{idLeader}")
     public ResponseEntity<LeaderResponseDTO> update(@Validated @PathVariable("idLeader") Long idLeader,
                                                        @RequestBody LeaderRequestDTO requestDTO){
-        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity());
+        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCommunity())) ;
         LeaderEntity objEntitySource = this.leaderMapper.toEntity(requestDTO);
         objEntitySource.setCommunity(communityEntity);
         LeaderEntity obj =  leaderService.update(objEntitySource, idLeader);

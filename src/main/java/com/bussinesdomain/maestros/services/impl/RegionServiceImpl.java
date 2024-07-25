@@ -7,11 +7,12 @@ import com.bussinesdomain.maestros.models.RegionEntity;
 import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.ICommunityBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
-import com.bussinesdomain.maestros.repository.IRegionBusinessRepository;
 import com.bussinesdomain.maestros.services.IRegionService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IRegionService {
     private final IGenericRepository<RegionEntity,Long> repository;
-    private final IRegionBusinessRepository businessRepository;
     private final ICollaboratorBusinessRepository businessCollaboratorRepository;
     private final ICommunityBusinessRepository businessRegionRepository;
     @Override
@@ -33,7 +33,7 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
     }
     @Override
     public RegionEntity update(RegionEntity entity, Long id){
-        RegionEntity original = this.readById(id);
+        RegionEntity original = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
@@ -45,18 +45,18 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
 
     @Override
     public Long count() {
-        return businessRepository.countActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).count();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        RegionEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
-        boolean existsCollaborators = businessCollaboratorRepository.underRegion(id);
+        RegionEntity entity = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underRegion(id).stream().anyMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
         if(existsCollaborators){
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
         }
-        boolean existsCommunities = businessRegionRepository.underRegion(id);
+        boolean existsCommunities = businessRegionRepository.underRegion(id).stream().anyMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
         if(existsCommunities){
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
         }
@@ -67,19 +67,19 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
 
     @Override
     public Boolean exists(Long id) {
-        return businessRepository.existsActiveById(id);
+        return repository.findById(id).stream().allMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
     }
 
 
     @Override
     public List<RegionEntity> getAll() {
-        return businessRepository.findAllActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).collect(Collectors.toList());
     }
 
 
     @Override
-    public RegionEntity readById(Long id) {
-        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    public Optional<RegionEntity> readById(Long id) {
+        return repository.findById(id).stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).findFirst() ;
     }
 }
 

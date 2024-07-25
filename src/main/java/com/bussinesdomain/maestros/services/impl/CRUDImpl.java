@@ -3,6 +3,7 @@ package com.bussinesdomain.maestros.services.impl;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
@@ -68,9 +69,10 @@ public abstract class CRUDImpl<T,ID> implements IBaseInterfaceService<T,ID>  {
     }
 
     @Override
-    public T readById(ID id) {
-        T rtn = getRepo().findById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
-        return  rtn;
+    public Optional<T> readById(ID id) {
+        //T rtn = getRepo().findById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+        //return  rtn;
+        return getRepo().findById(id);
     }
 
     @Override

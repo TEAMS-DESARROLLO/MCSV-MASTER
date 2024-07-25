@@ -19,6 +19,7 @@ import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.UnitMeasureRequestDTO;
 import com.bussinesdomain.maestros.dto.UnitMeasureResponseDTO;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.IUnitMeasureMapper;
 import com.bussinesdomain.maestros.models.UnitMeasureEntity;
 import com.bussinesdomain.maestros.services.IUnitMeasureService;
@@ -53,7 +54,7 @@ public class UnitMeasureController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<UnitMeasureResponseDTO> findById(@PathVariable("id") Long id){
-		UnitMeasureEntity unitMeasureEntity = this.service.readById(id);
+		UnitMeasureEntity unitMeasureEntity = this.service.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
 		UnitMeasureResponseDTO unitMeasureDTO =this.mapper.toGetDTO(unitMeasureEntity);
 		return new ResponseEntity<>(unitMeasureDTO,HttpStatus.OK);
 	}

@@ -1,6 +1,7 @@
 package com.bussinesdomain.maestros.commons;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 
@@ -12,7 +13,7 @@ public interface IBaseInterfaceService<T,ID> {
 
 	public List<T> createAll(List<T> entidades);
 	
-	public T readById(ID id);
+	public Optional<T> readById(ID id);
 	
 	public T update(T entidad, ID id);
 	

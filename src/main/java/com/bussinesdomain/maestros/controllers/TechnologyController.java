@@ -6,6 +6,7 @@ import com.bussinesdomain.maestros.dto.SubpracticaDTO;
 import com.bussinesdomain.maestros.dto.TechnologyDTO;
 import com.bussinesdomain.maestros.dto.TechnologyRequestDTO;
 import com.bussinesdomain.maestros.dto.TechnologyResponseDTO;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ITechnologyMapper;
 import com.bussinesdomain.maestros.models.SubpracticaEntity;
 import com.bussinesdomain.maestros.models.TechnologyEntity;
@@ -60,7 +61,7 @@ public class TechnologyController {
     @GetMapping("/{idTechnology}")
     public ResponseEntity<TechnologyResponseDTO> findById(@PathVariable("idTechnology") Long idTechnology){
 
-        TechnologyEntity obj = this.technologyService.readById(idTechnology);
+        TechnologyEntity obj = this.technologyService.readById(idTechnology).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + idTechnology )) ;
         TechnologyResponseDTO dto = this.technologyMapper.toGetResponseDTO(obj);
         dto.setIdSubpractica(obj.getSubpracticaEntity().getIdSubpractica());
         dto.setDescriptionSubpractica(obj.getSubpracticaEntity().getDescriptionSubpractica());
@@ -71,7 +72,7 @@ public class TechnologyController {
     public ResponseEntity<TechnologyResponseDTO> save(@Validated @RequestBody TechnologyRequestDTO requestDTO) {
 
         TechnologyEntity entidad = this.technologyMapper.toEntity(requestDTO);
-        SubpracticaEntity subpracticaEntity = this.SubpracticaService.readById(requestDTO.getIdSubpractica());
+        SubpracticaEntity subpracticaEntity = this.SubpracticaService.readById(requestDTO.getIdSubpractica()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdSubpractica() )) ;
         entidad.setSubpracticaEntity(subpracticaEntity);
         TechnologyEntity entidadSave = this.technologyService.create(entidad);
         TechnologyResponseDTO responseviaDTO = this.technologyMapper.toGetResponseDTO(entidadSave);
@@ -84,7 +85,7 @@ public class TechnologyController {
     public ResponseEntity<TechnologyResponseDTO> update(@Validated @PathVariable("idTechnology") Long idTechnology,
                                                     @RequestBody TechnologyRequestDTO requestDTO){
         TechnologyEntity objEntitySource = this.technologyMapper.toEntity(requestDTO);
-        SubpracticaEntity subpracticaEntity = this.SubpracticaService.readById(requestDTO.getIdSubpractica());
+        SubpracticaEntity subpracticaEntity = this.SubpracticaService.readById(requestDTO.getIdSubpractica()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdSubpractica() )) ;
         objEntitySource.setSubpracticaEntity(subpracticaEntity);
         TechnologyEntity obj =  technologyService.update(objEntitySource, idTechnology);
         TechnologyResponseDTO responseviaDTO = this.technologyMapper.toGetResponseDTO(obj);

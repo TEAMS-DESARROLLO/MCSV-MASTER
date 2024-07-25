@@ -19,6 +19,7 @@ import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.RegionRequestDTO;
 import com.bussinesdomain.maestros.dto.RegionResponseDTO;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.IRegionMapper;
 import com.bussinesdomain.maestros.models.RegionEntity;
 import com.bussinesdomain.maestros.services.IRegionService;
@@ -53,7 +54,7 @@ public class RegionController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<RegionResponseDTO> findById(@PathVariable("id")Long id){
-		RegionEntity regionEntity = this.service.readById(id);
+		RegionEntity regionEntity = this.service.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
 		RegionResponseDTO regionDTO = this.mapper.toGetDTO(regionEntity);
 		return new ResponseEntity<>(regionDTO,HttpStatus.OK);
 	}

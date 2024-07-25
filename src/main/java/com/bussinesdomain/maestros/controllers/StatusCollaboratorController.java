@@ -20,6 +20,7 @@ import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.StatusCollaboratorRequestDTO;
 import com.bussinesdomain.maestros.dto.StatusCollaboratorResponseDTO;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.IStatusCollaboratorMapper;
 import com.bussinesdomain.maestros.models.StatusCollaboratorEntity;
 import com.bussinesdomain.maestros.services.IStatusCollaboratorService;
@@ -53,7 +54,7 @@ public class StatusCollaboratorController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<StatusCollaboratorResponseDTO> findById(@PathVariable("id") Long id){
-		StatusCollaboratorEntity StatusCollaboratorEntity = this.service.readById(id);
+		StatusCollaboratorEntity StatusCollaboratorEntity = this.service.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
 		StatusCollaboratorResponseDTO StatusCollaboratorDTO =this.mapper.toGetDTO(StatusCollaboratorEntity);
 		return new ResponseEntity<>(StatusCollaboratorDTO,HttpStatus.OK);
 	}

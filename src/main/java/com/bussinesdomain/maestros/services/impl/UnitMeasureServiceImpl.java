@@ -4,11 +4,12 @@ import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.UnitMeasureEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
-import com.bussinesdomain.maestros.repository.IUnitMeasureBusinessRepository;
 import com.bussinesdomain.maestros.services.IUnitMeasureService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UnitMeasureServiceImpl extends CRUDImpl<UnitMeasureEntity,Long> implements IUnitMeasureService {
     private final IGenericRepository<UnitMeasureEntity,Long> repository;
-    private final IUnitMeasureBusinessRepository businessRepository;
 
     @Override
     protected IGenericRepository<UnitMeasureEntity, Long> getRepo() {
@@ -33,7 +33,7 @@ public class UnitMeasureServiceImpl extends CRUDImpl<UnitMeasureEntity,Long> imp
 
     @Override
     public UnitMeasureEntity update(UnitMeasureEntity entity, Long id){
-        UnitMeasureEntity original = this.readById(id);
+        UnitMeasureEntity original = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
@@ -45,13 +45,13 @@ public class UnitMeasureServiceImpl extends CRUDImpl<UnitMeasureEntity,Long> imp
 
     @Override
     public Long count() {
-        return businessRepository.countActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).count();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        UnitMeasureEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        UnitMeasureEntity entity = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }
@@ -59,19 +59,19 @@ public class UnitMeasureServiceImpl extends CRUDImpl<UnitMeasureEntity,Long> imp
 
     @Override
     public Boolean exists(Long id) {
-        return businessRepository.existsActiveById(id);
+        return repository.findById(id).stream().allMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
     }
 
 
     @Override
     public List<UnitMeasureEntity> getAll() {
-        return businessRepository.findAllActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).collect(Collectors.toList());
     }
 
 
     @Override
-    public UnitMeasureEntity readById(Long id) {
-        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    public Optional<UnitMeasureEntity> readById(Long id) {
+        return repository.findById(id).stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).findFirst() ;
     }
     
 }

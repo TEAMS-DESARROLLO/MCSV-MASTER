@@ -1,6 +1,8 @@
 package com.bussinesdomain.maestros.services.impl;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,6 @@ import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.SubpracticaEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
-import com.bussinesdomain.maestros.repository.ISubpracticaBusinessRepository;
 import com.bussinesdomain.maestros.repository.ITechnologyBusinessRepository;
 import com.bussinesdomain.maestros.services.ISubPracticaService;
 
@@ -21,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> implements ISubPracticaService {
     private final IGenericRepository<SubpracticaEntity, Long> repository ;
-    private final ISubpracticaBusinessRepository businessRepository;
     private final ITechnologyBusinessRepository businessTechnologyRepository;
     @Override
     public SubpracticaEntity create(SubpracticaEntity entidad) {
@@ -30,7 +30,7 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
 
     @Override
     public SubpracticaEntity update(SubpracticaEntity entity,Long id){
-        SubpracticaEntity original = this.readById(id);
+        SubpracticaEntity original = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
@@ -46,13 +46,13 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
 
     @Override
     public Long count() {
-        return businessRepository.countActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).count();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        SubpracticaEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        SubpracticaEntity entity = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         Boolean existsTechnology = this.businessTechnologyRepository.underSubpractica(id);
         if(existsTechnology){
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
@@ -64,19 +64,19 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
 
     @Override
     public Boolean exists(Long id) {
-        return businessRepository.existsActiveById(id);
+        return repository.findById(id).stream().allMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
     }
 
 
     @Override
     public List<SubpracticaEntity> getAll() {
-        return businessRepository.findAllActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).collect(Collectors.toList());
     }
 
 
     @Override
-    public SubpracticaEntity readById(Long id) {
-        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    public Optional<SubpracticaEntity> readById(Long id) {
+        return repository.findById(id).stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).findFirst() ;
     }
     
 

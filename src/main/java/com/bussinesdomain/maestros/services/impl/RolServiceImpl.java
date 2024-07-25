@@ -6,11 +6,12 @@ import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.RolEntity;
 import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
-import com.bussinesdomain.maestros.repository.IRolBusinessRepository;
 import com.bussinesdomain.maestros.services.IRolService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolService {
     private final IGenericRepository<RolEntity,Long> repository;
-    private final IRolBusinessRepository businessRepository;
     private final ICollaboratorBusinessRepository businessCollaboratorRepository;
 
     @Override
@@ -32,7 +32,7 @@ public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolServ
     }
     @Override
     public RolEntity update(RolEntity entity,Long id){
-        RolEntity original = this.readById(id);
+        RolEntity original = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
@@ -44,14 +44,14 @@ public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolServ
 
     @Override
     public Long count() {
-        return businessRepository.countActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).count();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        RolEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
-        boolean existsCollaborators = businessCollaboratorRepository.underRol(id);
+        RolEntity entity = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underRol(id).stream().anyMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
         if(existsCollaborators){
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
         }
@@ -62,18 +62,18 @@ public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolServ
 
     @Override
     public Boolean exists(Long id) {
-        return businessRepository.existsActiveById(id);
+        return repository.findById(id).stream().allMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
     }
 
 
     @Override
     public List<RolEntity> getAll() {
-        return businessRepository.findAllActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).collect(Collectors.toList());
     }
 
 
     @Override
-    public RolEntity readById(Long id) {
-        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    public Optional<RolEntity> readById(Long id) {
+        return repository.findById(id).stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).findFirst() ;
     }
 }

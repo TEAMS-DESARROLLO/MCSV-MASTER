@@ -2,6 +2,7 @@ package com.bussinesdomain.maestros.controllers;
 
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ICommunityMapper;
 import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.models.RegionEntity;
@@ -56,7 +57,7 @@ public class CommunityController {
     @GetMapping("/{idCommunity}")
     public ResponseEntity<CommunityResponseDTO> findById(@PathVariable("idCommunity") Long idCommunity){
 
-        CommunityEntity obj = this.communityService.readById(idCommunity);
+        CommunityEntity obj = this.communityService.readById(idCommunity).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + idCommunity)) ;
         CommunityResponseDTO dto = this.communityMapper.toGetResponseDTO(obj);
         dto.setIdRegion(obj.getRegion().getIdRegion());
         dto.setRegionDescription(obj.getRegion().getDescription());
@@ -66,7 +67,7 @@ public class CommunityController {
     @PostMapping("/create")
     public ResponseEntity<CommunityResponseDTO> save(@Validated @RequestBody CommunityRequestDTO requestDTO) {
         CommunityEntity entidad = this.communityMapper.toEntity(requestDTO);
-        RegionEntity regionEntity = this.regionService.readById(requestDTO.getIdRegion());
+        RegionEntity regionEntity = this.regionService.readById(requestDTO.getIdRegion()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdRegion())) ;
         entidad.setRegion(regionEntity);
         CommunityEntity entidadSave = this.communityService.create( entidad);
         CommunityResponseDTO responseviaDTO = this.communityMapper.toGetResponseDTO(entidadSave);
@@ -80,7 +81,7 @@ public class CommunityController {
     public ResponseEntity<CommunityResponseDTO> update(@Validated @PathVariable("idCommunity") Long idCommunity,
                                                        @RequestBody CommunityRequestDTO requestDTO){
         CommunityEntity objEntitySource = this.communityMapper.toEntity(requestDTO);
-        RegionEntity regionEntity = this.regionService.readById(requestDTO.getIdRegion());
+        RegionEntity regionEntity = this.regionService.readById(requestDTO.getIdRegion()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdRegion())) ;
         objEntitySource.setRegion(regionEntity);
         CommunityEntity obj =  communityService.update(objEntitySource, idCommunity);
         CommunityResponseDTO responseviaDTO = this.communityMapper.toGetResponseDTO(obj);

@@ -2,6 +2,7 @@ package com.bussinesdomain.maestros.controllers;
 
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ISubpracticaMapper;
 import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.models.SubpracticaEntity;
@@ -55,7 +56,7 @@ public class SubpracticaController {
     @GetMapping("/{idSubpractica}")
     public ResponseEntity<SubpracticaResponseDTO> findById(@PathVariable("idSubpractica") Long idSubpractica){
 
-        SubpracticaEntity obj = this.SubpracticaService.readById(idSubpractica);
+        SubpracticaEntity obj = this.SubpracticaService.readById(idSubpractica).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + idSubpractica)) ;
         SubpracticaResponseDTO dto = this.SubpracticaMapper.toGetResponseDTO(obj);
         dto.setIdCommunity(obj.getComunidadEntity().getIdCommunity());
         dto.setCommunityDescription(obj.getComunidadEntity().getDescription() );
@@ -64,7 +65,7 @@ public class SubpracticaController {
 
     @PostMapping("/create")
     public ResponseEntity<SubpracticaResponseDTO> save(@Validated @RequestBody SubpracticaRequestDTO requestDTO) {
-        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity());
+        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCommunity())) ;
 
         SubpracticaEntity entidad = this.SubpracticaMapper.toEntity(requestDTO);
         entidad.setComunidadEntity(communityEntity);
@@ -78,7 +79,7 @@ public class SubpracticaController {
     @PutMapping("/{idSubpractica}")
     public ResponseEntity<SubpracticaResponseDTO> update(@Validated @PathVariable("idSubpractica") Long idSubpractica,
                                                        @RequestBody SubpracticaRequestDTO requestDTO){
-        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity());
+        CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity()).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + requestDTO.getIdCommunity())) ;
         SubpracticaEntity objEntitySource = this.SubpracticaMapper.toEntity(requestDTO);
         objEntitySource.setComunidadEntity(communityEntity);
         SubpracticaEntity obj =  SubpracticaService.update(objEntitySource, idSubpractica);

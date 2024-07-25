@@ -4,7 +4,6 @@ package com.bussinesdomain.maestros.services.impl;
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
-import com.bussinesdomain.maestros.repository.ICollaboratorTechnologyBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICollaboratorTechnologyService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,11 +29,10 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
         return repository;
     }
 
-    private final ICollaboratorTechnologyBusinessRepository businessRepository;
 
     @Override
     public CollaboratorTechnologyEntity update(CollaboratorTechnologyEntity entity,Long id){
-        CollaboratorTechnologyEntity original = this.readById(id);
+        CollaboratorTechnologyEntity original = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
@@ -44,13 +44,13 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
 
     @Override
     public Long count() {
-        return businessRepository.countActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).count();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        CollaboratorTechnologyEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        CollaboratorTechnologyEntity entity = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }
@@ -58,19 +58,19 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
 
     @Override
     public Boolean exists(Long id) {
-        return businessRepository.existsActiveById(id);
+        return repository.findById(id).stream().allMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
     }
 
 
     @Override
     public List<CollaboratorTechnologyEntity> getAll() {
-        return businessRepository.findAllActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).collect(Collectors.toList());
     }
 
 
     @Override
-    public CollaboratorTechnologyEntity readById(Long id) {
-        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    public Optional<CollaboratorTechnologyEntity> readById(Long id) {
+        return repository.findById(id).stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).findFirst() ;
     }
 
     @Override

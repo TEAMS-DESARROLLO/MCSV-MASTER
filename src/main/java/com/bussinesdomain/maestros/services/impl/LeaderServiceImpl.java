@@ -6,11 +6,12 @@ import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.LeaderEntity;
 import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
-import com.bussinesdomain.maestros.repository.ILeaderBusinessRepository;
 import com.bussinesdomain.maestros.services.ILeaderService;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements ILeaderService {
 
     private final IGenericRepository<LeaderEntity,Long> repository;
-    private final ILeaderBusinessRepository businessRepository;
     private final ICollaboratorBusinessRepository businessCollaboratorRepository;
     @Override
     public LeaderEntity create(LeaderEntity entidad) {
@@ -29,7 +29,7 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
 
     @Override
     public LeaderEntity update(LeaderEntity entity, Long id) {
-        LeaderEntity original = this.readById(id);
+        LeaderEntity original = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
@@ -46,14 +46,14 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
 
     @Override
     public Long count() {
-        return businessRepository.countActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).count();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        LeaderEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
-        boolean existsCollaborators = businessCollaboratorRepository.underLeader(id);
+        LeaderEntity entity = this.readById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underLeader(id).stream().anyMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
         if(existsCollaborators){
             throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
         }
@@ -64,19 +64,19 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
 
     @Override
     public Boolean exists(Long id) {
-        return businessRepository.existsActiveById(id);
+        return repository.findById(id).stream().allMatch(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE));
     }
 
 
     @Override
     public List<LeaderEntity> getAll() {
-        return businessRepository.findAllActive();
+        return repository.findAll().stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).collect(Collectors.toList());
     }
 
 
     @Override
-    public LeaderEntity readById(Long id) {
-        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
+    public Optional<LeaderEntity> readById(Long id) {
+        return repository.findById(id).stream().filter(x -> x.getRegistrationStatus().equals(RegistrationStatus.ACTIVE)).findFirst() ;
     }
     
 }
