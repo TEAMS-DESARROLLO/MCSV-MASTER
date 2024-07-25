@@ -1,6 +1,8 @@
 package com.bussinesdomain.maestros.dto;
 
 import com.bussinesdomain.maestros.constants.ValidationMessage;
+
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -42,5 +44,7 @@ public class CollaboratorRequestDTO {
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idFunctionalLeader;
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idStatusCollaborator;
 
 }

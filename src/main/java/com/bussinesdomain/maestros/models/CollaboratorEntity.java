@@ -52,6 +52,11 @@ public class CollaboratorEntity {
     @JoinColumn(name="id_functional_leader")
     private FunctionalLeaderEntity functionalLeader;
 
+    
+    @ManyToOne()
+    @JoinColumn(name="id_status_collaborator")
+    private StatusCollaboratorEntity statusCollaborator;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at",nullable = false)
     private LocalDateTime createdAt;

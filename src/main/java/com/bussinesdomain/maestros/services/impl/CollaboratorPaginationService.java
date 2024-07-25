@@ -67,8 +67,8 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 "rg.description as regionDescription," +
                 "fl.idFunctionalLeader," +
                 "fl.names as functionalLeaderNames," +
-                "ce.idCommunity as idCommunity," +
-                "ce.description as descriptionCommunity"  +
+                "sc.idStatusCollaborator as idStatusCollaborator," +
+                "sc.descriptionStatusCollaborator as descriptionStatusCollaborator"  +
                 ") ");
         return sql;
     }
@@ -80,7 +80,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 " left join RolEntity r on a.rol=r " +
                 " left join RegionEntity rg on a.region=rg " +
                 " left join FunctionalLeaderEntity fl on a.functionalLeader=fl " +
-                " left join CommunityEntity ce on l.community = ce " 
+                " left join StatusCollaboratorEntity sc on a.statusCollaborator = sc " 
                 );
         return sql;
     }
@@ -133,6 +133,13 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
             if(filtro.getField().equals("functionalLeaderNames")){
                 sql.append(" AND fl.names LIKE :functionalLeaderNames ");
             }
+
+            if(filtro.getField().equals("idStatusCollaborator")){
+                sql.append(" AND sc.idStatusCollaborator = :idStatusCollaborator ");
+            }
+            if(filtro.getField().equals("descriptionStatusCollaborator")){
+                sql.append(" AND sc.descriptionStatusCollaborator LIKE :descriptionStatusCollaborator ");
+            }
         }
 		sql.append(" AND a.registrationStatus LIKE :registrationStatus ");
         return sql;
@@ -183,6 +190,13 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
             }
             if(filtro.getField().equals("functionalLeaderNames")){
                 query.setParameter("functionalLeaderNames","%"+filtro.getValue()+"%");
+            }
+            
+            if(filtro.getField().equals("idStatusCollaborator")){
+                query.setParameter("idStatusCollaborator",filtro.getValue() );
+            }
+            if(filtro.getField().equals("descriptionStatusCollaborator")){
+                query.setParameter("descriptionStatusCollaborator","%"+filtro.getValue()+"%");
             }
         }
 		query.setParameter("registrationStatus",RegistrationStatus.ACTIVE );
@@ -290,6 +304,21 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                         sql.append(", ");
 
                     sql.append( " fl.names " + sort.getSort() );
+                    flagMore = true;
+                }
+
+                if(sort.getColName().equals("idStatusCollaborator")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " sc.idStatusCollaborator " + sort.getSort() );
+                    flagMore = true;
+                }
+                if(sort.getColName().equals("descriptionStatusCollaborator")){
+                    if(flagMore)
+                        sql.append(", ");
+
+                    sql.append( " sc.descriptionStatusCollaborator " + sort.getSort() );
                     flagMore = true;
                 }
             }

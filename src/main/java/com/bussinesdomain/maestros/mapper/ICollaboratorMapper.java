@@ -17,6 +17,7 @@ public interface ICollaboratorMapper {
     @Mapping(target  = "idRol", ignore = true)
     @Mapping(target  = "idRegion", ignore = true)
     @Mapping(target  = "idFunctionalLeader", ignore = true)
+    @Mapping(target  = "idStatusCollaborator", ignore = true)
     CollaboratorDTO toGetDTO(CollaboratorEntity entity);
 
     @Mapping(target  = "idLeader", ignore = true)
@@ -26,12 +27,18 @@ public interface ICollaboratorMapper {
     @Mapping(target  = "idRegion", ignore = true)
     @Mapping(target  = "regionDescription", ignore = true)
     @Mapping(target  = "idFunctionalLeader", ignore = true)
+    @Mapping(target  = "functionalLeaderNames", ignore = true)
+    @Mapping(target  = "idStatusCollaborator", ignore = true)
+    @Mapping(target  = "descriptionStatusCollaborator", ignore = true)
     CollaboratorResponseDTO toGetResponseDTO(CollaboratorEntity entity);
 
     @Mapping(target = "leader", ignore = true)
     @Mapping(target = "rol",ignore = true)
     @Mapping(target = "region",ignore = true)
     @Mapping(target = "functionalLeader",ignore = true)
+    @Mapping(target = "statusCollaborator",ignore = true)
+    @Mapping(target  = "createdAt", ignore = true)
+    @Mapping(target  = "updatedAt", ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     CollaboratorEntity toEntity(CollaboratorDTO dto);
@@ -41,6 +48,9 @@ public interface ICollaboratorMapper {
     @Mapping(target = "rol",ignore = true)
     @Mapping(target = "region",ignore = true)
     @Mapping(target = "functionalLeader",ignore = true)
+    @Mapping(target = "statusCollaborator",ignore = true)
+    @Mapping(target  = "createdAt", ignore = true)
+    @Mapping(target  = "updatedAt", ignore = true)
     @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     CollaboratorEntity toEntity(CollaboratorRequestDTO dto);
