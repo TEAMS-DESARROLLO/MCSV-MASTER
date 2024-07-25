@@ -26,6 +26,16 @@ public class CollaboratorTechnologyEntity {
     @JoinColumn(name="id_collaborator")
     private CollaboratorEntity collaborator;
 
+    @ManyToOne
+    @JoinColumn(name="id_catalog_technology")
+    private CatalogTechnologyEntity catalogTechnology;
+
+    @Column(name="collaborator_rank")
+    private Integer collaboratorRank;
+
+    @Column(name="evaluator_rank")
+    private Integer evaluatorRank;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at",nullable = false)
     private LocalDateTime createdAt;

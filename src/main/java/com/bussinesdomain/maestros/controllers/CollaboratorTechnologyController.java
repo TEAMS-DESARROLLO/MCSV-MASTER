@@ -3,10 +3,16 @@ package com.bussinesdomain.maestros.controllers;
 import com.bussinesdomain.maestros.dto.CollaboratorTechnologiesRequestDTO;
 import com.bussinesdomain.maestros.dto.CollaboratorTechnologyRequestDTO;
 import com.bussinesdomain.maestros.dto.CollaboratorTechnologyResponseDTO;
+import com.bussinesdomain.maestros.dto.CommunityRequestDTO;
+import com.bussinesdomain.maestros.dto.CommunityResponseDTO;
 import com.bussinesdomain.maestros.mapper.ICollaboratorTechnologyMapper;
+import com.bussinesdomain.maestros.models.CatalogTechnologyEntity;
 import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
+import com.bussinesdomain.maestros.models.CommunityEntity;
+import com.bussinesdomain.maestros.models.RegionEntity;
 import com.bussinesdomain.maestros.models.TechnologyEntity;
+import com.bussinesdomain.maestros.services.ICatalogTechnologyService;
 import com.bussinesdomain.maestros.services.ICollaboratorService;
 import com.bussinesdomain.maestros.services.ICollaboratorTechnologyService;
 import com.bussinesdomain.maestros.services.ITechnologyService;
@@ -14,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,6 +34,7 @@ import java.util.stream.Collectors;
 public class CollaboratorTechnologyController {
     private final ICollaboratorService collaboratorService;
     private final ITechnologyService technologyService;
+    private final ICatalogTechnologyService catalogTechnologyService;
     private final ICollaboratorTechnologyService collaboratorTechnologyService;
 
     private final ICollaboratorTechnologyMapper collaboratorTechnologyMapper;
@@ -48,18 +56,46 @@ public class CollaboratorTechnologyController {
     @PostMapping("/create")
     public ResponseEntity<CollaboratorTechnologyResponseDTO> assignTechnology(@RequestBody CollaboratorTechnologyRequestDTO requestDTO){
         CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
-        TechnologyEntity technologyEntity = technologyService.readById(requestDTO.getIdTechnology());
+        CatalogTechnologyEntity catalogTechnologyEntity = catalogTechnologyService.readById(requestDTO.getIdCatalogTechnology());
 
-        //CollaboratorTechnologyEntity entity = collaboratorTechnologyMapper.toEntity(requestDTO);
-        //entity.setCollaborator(collaboratorEntity);
+        CollaboratorTechnologyEntity entity = collaboratorTechnologyMapper.toEntity(requestDTO);
+        entity.setCollaborator(collaboratorEntity);
+        entity.setCatalogTechnology(catalogTechnologyEntity);
 
-        //CollaboratorTechnologyEntity entitySave =collaboratorTechnologyService.create(entity);
-        //CollaboratorTechnologyResponseDTO responseviaDTO = this.collaboratorTechnologyMapper.toGetResponseDTO(entitySave);
+        CollaboratorTechnologyEntity entitySave =collaboratorTechnologyService.create(entity);
+        CollaboratorTechnologyResponseDTO responseviaDTO = this.collaboratorTechnologyMapper.toGetResponseDTO(entitySave);
 
-        // responseviaDTO.setIdCollaborator(entitySave.getCollaborator().getIdCollaborator());
-        // responseviaDTO.setCollaboratorNames(entitySave.getCollaborator().getNames());
-        //return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
-        return null;
+        responseviaDTO.setIdCollaborator(entitySave.getCollaborator().getIdCollaborator());
+        responseviaDTO.setCollaboratorNames(entitySave.getCollaborator().getNames());
+
+        
+        responseviaDTO.setIdCatalogTechnology(entitySave.getCatalogTechnology().getIdCatalogTechnology());
+        responseviaDTO.setDescriptionCatalogTechnology(entitySave.getCatalogTechnology().getDescriptionCatalogTechnology());
+        return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{idCollaboratorTechnology}")
+    public ResponseEntity<CollaboratorTechnologyResponseDTO> update(@Validated @PathVariable("idCollaboratorTechnology") Long idCollaboratorTechnology,
+                                                       @RequestBody CollaboratorTechnologyRequestDTO requestDTO){
+        CollaboratorTechnologyEntity objEntitySource = this.collaboratorTechnologyMapper.toEntity(requestDTO);
+
+        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
+        CatalogTechnologyEntity catalogTechnologyEntity = catalogTechnologyService.readById(requestDTO.getIdCatalogTechnology());
+
+
+        objEntitySource.setCollaborator(collaboratorEntity);
+        objEntitySource.setCatalogTechnology(catalogTechnologyEntity);
+
+        CollaboratorTechnologyEntity obj =  collaboratorTechnologyService.update(objEntitySource, idCollaboratorTechnology);
+        CollaboratorTechnologyResponseDTO responseviaDTO = this.collaboratorTechnologyMapper.toGetResponseDTO(obj);
+
+        responseviaDTO.setIdCollaborator(obj.getCollaborator().getIdCollaborator());
+        responseviaDTO.setCollaboratorNames(obj.getCollaborator().getNames());
+
+        
+        responseviaDTO.setIdCatalogTechnology(obj.getCatalogTechnology().getIdCatalogTechnology());
+        responseviaDTO.setDescriptionCatalogTechnology(obj.getCatalogTechnology().getDescriptionCatalogTechnology());
+        return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);
     }
 
     @PostMapping("/createMultiple")
@@ -89,7 +125,7 @@ public class CollaboratorTechnologyController {
     }
 
     @DeleteMapping("/{idCollaboratorTechnology}")
-    public ResponseEntity<CollaboratorTechnologyResponseDTO> unAssignTechnology(@PathVariable("idCollaboratorTechnology") Long idCollaboratorTechnology){
+    public ResponseEntity<CollaboratorTechnologyResponseDTO> delete(@PathVariable("idCollaboratorTechnology") Long idCollaboratorTechnology){
         CollaboratorTechnologyEntity entity = collaboratorTechnologyService.readById(idCollaboratorTechnology);
         collaboratorTechnologyService.delete(entity);
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);

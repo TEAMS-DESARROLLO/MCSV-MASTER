@@ -4,7 +4,6 @@ package com.bussinesdomain.maestros.services.impl;
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
-import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.repository.ICollaboratorTechnologyBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICollaboratorTechnologyService;
@@ -40,6 +39,38 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
         String[] ignoreProperties= new String[]{"idCollaboratorTechnology","createdAt","registrationStatus"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(entity,id);
+    }
+
+
+    @Override
+    public Long count() {
+        return businessRepository.countActive();
+    }
+
+
+    @Override
+    public void deleteById(Long id) {
+        CollaboratorTechnologyEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
+        super.update(entity, id);
+    }
+
+
+    @Override
+    public Boolean exists(Long id) {
+        return businessRepository.existsActiveById(id);
+    }
+
+
+    @Override
+    public List<CollaboratorTechnologyEntity> getAll() {
+        return businessRepository.findAllActive();
+    }
+
+
+    @Override
+    public CollaboratorTechnologyEntity readById(Long id) {
+        return businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id)) ;
     }
 
     @Override

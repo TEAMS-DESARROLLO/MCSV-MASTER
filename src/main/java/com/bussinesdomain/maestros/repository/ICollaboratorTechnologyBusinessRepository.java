@@ -1,20 +1,24 @@
 package com.bussinesdomain.maestros.repository;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ICollaboratorTechnologyBusinessRepository extends JpaRepository<CollaboratorTechnologyEntity,Long>{
 
-    // @Query("SELECT ct FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator")
-    // List<CollaboratorTechnologyEntity> getByCollaboratorId(@Param("idCollaborator")Long idCollaborator);
+    @Query("select r from CollaboratorTechnologyEntity r where idCollaboratorTechnology = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Optional<CollaboratorTechnologyEntity> findActiveById(Long id);
 
-    // @Query("SELECT 1 FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator and ct.technology.idTechnology = :idTechnology")
-    // Boolean existsTechnologyInCollaborator(@Param("idCollaborator")Long idCollaborator,@Param("idTechnology")Long idTechnology);
+    @Query("select count(*) from CollaboratorTechnologyEntity where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Long countActive();
 
-    // @Query("SELECT ct FROM CollaboratorTechnologyEntity ct WHERE ct.collaborator.idCollaborator = :idCollaborator and ct.technology.idTechnology = :idTechnology")
-    // CollaboratorTechnologyEntity getTechnologyInCollaborator(@Param("idCollaborator")Long idCollaborator,@Param("idTechnology")Long idTechnology);
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorTechnologyEntity r where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean existsActiveById(Long id);
+    
+    @Query("select r from CollaboratorTechnologyEntity r where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    List<CollaboratorTechnologyEntity> findAllActive();
 }
