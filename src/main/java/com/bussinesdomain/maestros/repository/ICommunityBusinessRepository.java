@@ -22,4 +22,7 @@ public interface ICommunityBusinessRepository extends JpaRepository<CommunityEnt
     
     @Query("select r from CommunityEntity r where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
     List<CommunityEntity> findAllActive();
+    
+    @Query("select case when count(r) > 0 then true else false end from CommunityEntity r where r.region.idRegion = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underRegion(Long idRegion);
 }

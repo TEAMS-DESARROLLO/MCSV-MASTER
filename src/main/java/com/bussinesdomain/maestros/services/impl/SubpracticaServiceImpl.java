@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.SubpracticaEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.repository.ISubpracticaBusinessRepository;
+import com.bussinesdomain.maestros.repository.ITechnologyBusinessRepository;
 import com.bussinesdomain.maestros.services.ISubPracticaService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> implements ISubPracticaService {
     private final IGenericRepository<SubpracticaEntity, Long> repository ;
     private final ISubpracticaBusinessRepository businessRepository;
+    private final ITechnologyBusinessRepository businessTechnologyRepository;
     @Override
     public SubpracticaEntity create(SubpracticaEntity entidad) {
         return super.create(entidad);
@@ -50,6 +53,10 @@ public class SubpracticaServiceImpl  extends CRUDImpl<SubpracticaEntity,Long> im
     @Override
     public void deleteById(Long id) {
         SubpracticaEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        Boolean existsTechnology = this.businessTechnologyRepository.underSubpractica(id);
+        if(existsTechnology){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }

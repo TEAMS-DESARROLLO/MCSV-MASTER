@@ -2,9 +2,11 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.repository.ICommunityBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
+import com.bussinesdomain.maestros.repository.ISubpracticaBusinessRepository;
 import com.bussinesdomain.maestros.services.ICommunityService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,7 @@ public class CommunityServiceImpl extends CRUDImpl<CommunityEntity,Long> impleme
 
     private final IGenericRepository<CommunityEntity, Long> repository;
     private final ICommunityBusinessRepository businessRepository;
+    private final ISubpracticaBusinessRepository subpracticalBusinessRepository;
     @Override
     public CommunityEntity create(CommunityEntity entidad) {
         return super.create(entidad);
@@ -50,6 +53,10 @@ public class CommunityServiceImpl extends CRUDImpl<CommunityEntity,Long> impleme
     @Override
     public void deleteById(Long id) {
         CommunityEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        Boolean existsSubpractica = subpracticalBusinessRepository.underCommunity(id);
+        if(existsSubpractica){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }

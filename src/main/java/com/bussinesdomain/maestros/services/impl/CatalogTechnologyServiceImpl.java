@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.CatalogTechnologyEntity;
 import com.bussinesdomain.maestros.repository.ICatalogTechnologyBusinessRepository;
+import com.bussinesdomain.maestros.repository.ICollaboratorTechnologyBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICatalogTechnologyService;
 
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class CatalogTechnologyServiceImpl extends CRUDImpl<CatalogTechnologyEntity,Long> implements ICatalogTechnologyService {
     private final IGenericRepository<CatalogTechnologyEntity,Long> repository;
     private final ICatalogTechnologyBusinessRepository businessRepository;
+    private final ICollaboratorTechnologyBusinessRepository collaboratorTechnologyBusinessRepository;
 
     @Override
     protected IGenericRepository<CatalogTechnologyEntity, Long> getRepo() {
@@ -54,6 +57,10 @@ public class CatalogTechnologyServiceImpl extends CRUDImpl<CatalogTechnologyEnti
     @Override
     public void deleteById(Long id) {
         CatalogTechnologyEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        Boolean existsCollaboratorTechnology = collaboratorTechnologyBusinessRepository.underCatalogTechnology(id);
+        if(existsCollaboratorTechnology){
+           throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }

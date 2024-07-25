@@ -22,4 +22,7 @@ public interface ITechnologyBusinessRepository extends JpaRepository<TechnologyE
     
     @Query("select r from TechnologyEntity r where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
     List<TechnologyEntity> findAllActive();
+
+    @Query("select case when count(r) > 0 then true else false end from TechnologyEntity r where r.subpracticaEntity.idSubpractica = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underSubpractica(Long idRegion);
 }

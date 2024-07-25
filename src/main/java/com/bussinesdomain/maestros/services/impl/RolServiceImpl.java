@@ -2,7 +2,9 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.RolEntity;
+import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.repository.IRolBusinessRepository;
 import com.bussinesdomain.maestros.services.IRolService;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolService {
     private final IGenericRepository<RolEntity,Long> repository;
     private final IRolBusinessRepository businessRepository;
+    private final ICollaboratorBusinessRepository businessCollaboratorRepository;
 
     @Override
     protected IGenericRepository<RolEntity, Long> getRepo() {
@@ -48,6 +51,10 @@ public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolServ
     @Override
     public void deleteById(Long id) {
         RolEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underRol(id);
+        if(existsCollaborators){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }

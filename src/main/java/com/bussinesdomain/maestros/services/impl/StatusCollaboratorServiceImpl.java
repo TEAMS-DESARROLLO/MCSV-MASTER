@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.StatusCollaboratorEntity;
+import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.repository.IStatusCollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.services.IStatusCollaboratorService;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class StatusCollaboratorServiceImpl extends CRUDImpl<StatusCollaboratorEntity,Long> implements IStatusCollaboratorService {
     private final IGenericRepository<StatusCollaboratorEntity,Long> repository;
     private final IStatusCollaboratorBusinessRepository businessRepository;
+    private final ICollaboratorBusinessRepository businessCollaboratorRepository;
 
     @Override
     protected IGenericRepository<StatusCollaboratorEntity, Long> getRepo() {
@@ -54,6 +57,10 @@ public class StatusCollaboratorServiceImpl extends CRUDImpl<StatusCollaboratorEn
     @Override
     public void deleteById(Long id) {
         StatusCollaboratorEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underStatusCollaborator(id);
+        if(existsCollaborators){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }

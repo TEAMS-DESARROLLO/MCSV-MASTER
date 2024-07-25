@@ -21,4 +21,12 @@ public interface ICollaboratorTechnologyBusinessRepository extends JpaRepository
     
     @Query("select r from CollaboratorTechnologyEntity r where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
     List<CollaboratorTechnologyEntity> findAllActive();
+
+    
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorEntity r where r.collaborator.idCollaborator = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underCollaborator(Long idCollaborator);
+
+    
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorEntity r where r.catalogTechnology.idCatalogTechnology = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underCatalogTechnology(Long idCatalogTechnology);
 }

@@ -2,7 +2,9 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.LeaderEntity;
+import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.repository.ILeaderBusinessRepository;
 import com.bussinesdomain.maestros.services.ILeaderService;
@@ -19,6 +21,7 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
 
     private final IGenericRepository<LeaderEntity,Long> repository;
     private final ILeaderBusinessRepository businessRepository;
+    private final ICollaboratorBusinessRepository businessCollaboratorRepository;
     @Override
     public LeaderEntity create(LeaderEntity entidad) {
         return super.create(entidad);
@@ -50,6 +53,10 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
     @Override
     public void deleteById(Long id) {
         LeaderEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underLeader(id);
+        if(existsCollaborators){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }

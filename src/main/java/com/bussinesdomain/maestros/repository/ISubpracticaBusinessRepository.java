@@ -22,4 +22,7 @@ public interface ISubpracticaBusinessRepository  extends JpaRepository<Subpracti
     
     @Query("select r from SubpracticaEntity r where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
     List<SubpracticaEntity> findAllActive();
+    
+    @Query("select case when count(r) > 0 then true else false end from SubpracticaEntity r where r.comunidadEntity.idCommunity = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underCommunity(Long idCommunity);
 }

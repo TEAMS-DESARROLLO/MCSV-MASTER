@@ -22,4 +22,25 @@ public interface ICollaboratorBusinessRepository extends JpaRepository<Collabora
     
     @Query("select r from CollaboratorEntity r where registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
     List<CollaboratorEntity> findAllActive();
+
+
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorEntity r where r.functionalLeader.idFunctionalLeader = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underFunctionalLeader(Long idFunctionalLeader);
+    
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorEntity r where r.leader.idLeader = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underLeader(Long idLeader);
+
+    
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorEntity r where r.region.idRegion = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underRegion(Long idRegion);
+
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorEntity r where r.rol.idRol = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underRol(Long idRol);
+
+
+    @Query("select case when count(r) > 0 then true else false end from CollaboratorEntity r where r.statusCollaborator.idStatusCollaborator = ?1 and registrationStatus='"+RegistrationStatus.ACTIVE+"' ")
+    Boolean underStatusCollaborator(Long idStatusCollaborator);
+    
+
+
 }

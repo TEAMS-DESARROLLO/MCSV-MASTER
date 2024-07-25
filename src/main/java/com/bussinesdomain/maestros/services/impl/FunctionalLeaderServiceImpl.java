@@ -2,7 +2,9 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
+import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
 import com.bussinesdomain.maestros.repository.IFunctionalLeaderBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 public class FunctionalLeaderServiceImpl extends CRUDImpl<FunctionalLeaderEntity,Long> implements IFunctionalLeaderService {
     private final IGenericRepository<FunctionalLeaderEntity,Long> repository;
     private final IFunctionalLeaderBusinessRepository businessRepository;
+    private final ICollaboratorBusinessRepository businessCollaboratorRepository;
     @Override
     public FunctionalLeaderEntity create(FunctionalLeaderEntity entidad) {
         return super.create(entidad);
@@ -49,6 +52,11 @@ public class FunctionalLeaderServiceImpl extends CRUDImpl<FunctionalLeaderEntity
     @Override
     public void deleteById(Long id) {
         FunctionalLeaderEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        
+        boolean existsCollaborators = businessCollaboratorRepository.underFunctionalLeader(id);
+        if(existsCollaborators){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }

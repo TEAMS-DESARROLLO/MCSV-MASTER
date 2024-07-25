@@ -2,7 +2,10 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.constants.RegistrationStatus;
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
+import com.bussinesdomain.maestros.exception.RepositoryException;
 import com.bussinesdomain.maestros.models.RegionEntity;
+import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
+import com.bussinesdomain.maestros.repository.ICommunityBusinessRepository;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.repository.IRegionBusinessRepository;
 import com.bussinesdomain.maestros.services.IRegionService;
@@ -18,7 +21,8 @@ import org.springframework.stereotype.Service;
 public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IRegionService {
     private final IGenericRepository<RegionEntity,Long> repository;
     private final IRegionBusinessRepository businessRepository;
-
+    private final ICollaboratorBusinessRepository businessCollaboratorRepository;
+    private final ICommunityBusinessRepository businessRegionRepository;
     @Override
     protected IGenericRepository<RegionEntity, Long> getRepo() {
         return repository;
@@ -48,6 +52,14 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
     @Override
     public void deleteById(Long id) {
         RegionEntity entity = businessRepository.findActiveById(id).orElseThrow(()->new ModelNotFoundException("ID NOT FOUND " + id )) ;
+        boolean existsCollaborators = businessCollaboratorRepository.underRegion(id);
+        if(existsCollaborators){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
+        boolean existsCommunities = businessRegionRepository.underRegion(id);
+        if(existsCommunities){
+            throw new RepositoryException("ERROR WHILE DELETING, CHECK IF THERE ARE FOREIGN KEYS RELATED TO THE ROW");
+        }
         entity.setRegistrationStatus(RegistrationStatus.INACTIVE);
         super.update(entity, id);
     }
