@@ -76,6 +76,7 @@ public class CollaboratorController {
         dto.setFunctionalLeaderNames(obj.getFunctionalLeader().getNames());
 
         dto.setIdStatusCollaborator(obj.getStatusCollaborator().getIdStatusCollaborator());
+        dto.setDescriptionStatusCollaborator( obj.getStatusCollaborator().getDescriptionStatusCollaborator() );
 
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
