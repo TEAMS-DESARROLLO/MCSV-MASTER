@@ -36,6 +36,9 @@ public class FunctionalLeaderEntity {
     @Column(name="registration_status ", nullable=false,length = 1)
     private String registrationStatus;
 
+    @Column(name="id_user ", nullable=true)
+    private Integer idUser;
+
     @PrePersist
     public void prePersisten(){
         this.registrationStatus=RegistrationStatus.ACTIVE;

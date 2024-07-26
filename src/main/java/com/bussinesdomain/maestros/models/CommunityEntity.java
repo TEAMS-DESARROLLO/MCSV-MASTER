@@ -42,6 +42,9 @@ public class CommunityEntity implements Serializable {
     @JoinColumn(name="id_region",referencedColumnName="id_region")
     private RegionEntity region;
 
+    @Column(name="id_user ", nullable=true)
+    private Integer idUser;
+
     @PrePersist
     public void prePersisten(){
         this.registrationStatus=RegistrationStatus.ACTIVE;

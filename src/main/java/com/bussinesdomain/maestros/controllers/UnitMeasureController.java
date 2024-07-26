@@ -60,7 +60,10 @@ public class UnitMeasureController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<UnitMeasureResponseDTO> save(@Validated @RequestBody  UnitMeasureRequestDTO dto){
-		UnitMeasureEntity unitMesEntity = this.service.create( this.mapper.toEntity(dto) );
+		UnitMeasureEntity unitMeasureEntity =this.mapper.toEntity(dto);
+		Integer idUser = null;
+		unitMeasureEntity.setIdUser(idUser);
+		UnitMeasureEntity unitMesEntity = this.service.create( unitMeasureEntity );
 		UnitMeasureResponseDTO unitMeasureDTO =  this.mapper.toGetDTO(unitMesEntity);
 		return new ResponseEntity<>(unitMeasureDTO,HttpStatus.CREATED);
 	}
@@ -69,6 +72,8 @@ public class UnitMeasureController {
 	public ResponseEntity<UnitMeasureResponseDTO> update(@Validated @PathVariable("id") Long id, @RequestBody UnitMeasureRequestDTO dto){
 		dto.setIdUnitMeasure(id);
 		UnitMeasureEntity unitMeasureEntity = this.mapper.toEntity(dto);
+		Integer idUser = null;
+		unitMeasureEntity.setIdUser(idUser);
 		UnitMeasureEntity unitMeasureEntityUpdated = this.service.update(unitMeasureEntity, id);
 		return new ResponseEntity<>(this.mapper.toGetDTO(unitMeasureEntityUpdated),HttpStatus.OK);
 	}

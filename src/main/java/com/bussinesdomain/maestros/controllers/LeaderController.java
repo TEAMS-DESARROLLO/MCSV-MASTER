@@ -68,6 +68,8 @@ public class LeaderController {
         CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity()).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null); 
 
         LeaderEntity entidad = this.leaderMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		entidad.setIdUser(idUser);
         entidad.setCommunity(communityEntity);
         LeaderEntity entidadSave = this.leaderService.create( entidad);
         LeaderResponseDTO responseviaDTO = this.leaderMapper.toGetResponseDTO(entidadSave);
@@ -81,6 +83,8 @@ public class LeaderController {
                                                        @RequestBody LeaderRequestDTO requestDTO){
         CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity()).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
         LeaderEntity objEntitySource = this.leaderMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		objEntitySource.setIdUser(idUser);
         objEntitySource.setCommunity(communityEntity);
         LeaderEntity obj =  leaderService.update(objEntitySource, idLeader);
         LeaderResponseDTO responseviaDTO = this.leaderMapper.toGetResponseDTO(obj);

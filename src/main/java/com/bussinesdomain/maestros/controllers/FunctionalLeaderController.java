@@ -55,6 +55,8 @@ public class FunctionalLeaderController {
     public ResponseEntity<FunctionalLeaderResponseDTO> save(@Validated @RequestBody FunctionalLeaderRequestDTO requestDTO) {
 
         FunctionalLeaderEntity entidad = this.functionalLeaderMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		entidad.setIdUser(idUser);
         FunctionalLeaderEntity entidadSave = this.functionalLeaderService.create( entidad);
         FunctionalLeaderResponseDTO responseviaDTO = this.functionalLeaderMapper.toGetResponseDTO(entidadSave);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
@@ -64,6 +66,8 @@ public class FunctionalLeaderController {
     public ResponseEntity<FunctionalLeaderResponseDTO> update(@Validated @PathVariable("idFunctionalLeader") Long idFunctionalLeader,
                                                     @RequestBody FunctionalLeaderRequestDTO requestDTO){
         FunctionalLeaderEntity objEntitySource = this.functionalLeaderMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		objEntitySource.setIdUser(idUser);
         FunctionalLeaderEntity obj =  functionalLeaderService.update(objEntitySource, idFunctionalLeader);
         FunctionalLeaderResponseDTO responseviaDTO = this.functionalLeaderMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);

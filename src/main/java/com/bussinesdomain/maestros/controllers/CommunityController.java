@@ -55,6 +55,8 @@ public class CommunityController {
     @PostMapping("/create")
     public ResponseEntity<CommunityResponseDTO> save(@Validated @RequestBody CommunityRequestDTO requestDTO) {
         CommunityEntity entidad = this.communityMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		entidad.setIdUser(idUser);
         CommunityEntity entidadSave = this.communityService.create( entidad);
         CommunityResponseDTO responseviaDTO = this.communityMapper.toGetResponseDTO(entidadSave);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
@@ -65,6 +67,8 @@ public class CommunityController {
     public ResponseEntity<CommunityResponseDTO> update(@Validated @PathVariable("idCommunity") Long idCommunity,
                                                        @RequestBody CommunityRequestDTO requestDTO){
         CommunityEntity objEntitySource = this.communityMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		objEntitySource.setIdUser(idUser);
         CommunityEntity obj =  communityService.update(objEntitySource, idCommunity);
         CommunityResponseDTO responseviaDTO = this.communityMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);

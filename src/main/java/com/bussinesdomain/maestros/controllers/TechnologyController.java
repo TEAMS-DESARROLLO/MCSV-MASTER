@@ -46,6 +46,8 @@ public class TechnologyController {
     public ResponseEntity<TechnologyResponseDTO> save(@Validated @RequestBody TechnologyRequestDTO requestDTO) {
 
         TechnologyEntity entidad = this.technologyMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		entidad.setIdUser(idUser);
         TechnologyEntity entidadSave = this.technologyService.create( entidad);
         TechnologyResponseDTO responseviaDTO = this.technologyMapper.toGetResponseDTO(entidadSave);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);
@@ -55,6 +57,8 @@ public class TechnologyController {
     public ResponseEntity<TechnologyResponseDTO> update(@Validated @PathVariable("idTechnology") Long idTechnology,
                                                     @RequestBody TechnologyRequestDTO requestDTO){
         TechnologyEntity objEntitySource = this.technologyMapper.toEntity(requestDTO);
+        Integer idUser = null;
+		objEntitySource.setIdUser(idUser);
         TechnologyEntity obj =  technologyService.update(objEntitySource, idTechnology);
         TechnologyResponseDTO responseviaDTO = this.technologyMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);

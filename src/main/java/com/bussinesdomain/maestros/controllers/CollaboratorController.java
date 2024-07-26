@@ -94,7 +94,8 @@ public class CollaboratorController {
         FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById( requestDTO.getIdFunctionalLeader() ).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 
         CollaboratorEntity entidad = this.collaboratorMapper.toEntity(requestDTO);
-
+        Integer idUser = null;
+		entidad.setIdUser(idUser);
         entidad.setLeader(leaderEntity);
         entidad.setRol(rolEntity);
         entidad.setRegion(regionEntity);
@@ -131,7 +132,8 @@ public class CollaboratorController {
         FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader()).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 
         CollaboratorEntity objEntitySource = this.collaboratorMapper.toEntity(requestDTO);
-
+        Integer idUser = null;
+		objEntitySource.setIdUser(idUser);
         objEntitySource.setLeader(leaderEntity);
         objEntitySource.setRol(rolEntity);
         objEntitySource.setRegion(regionEntity);

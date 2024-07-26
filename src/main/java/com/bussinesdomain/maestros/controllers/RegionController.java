@@ -60,7 +60,10 @@ public class RegionController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<RegionResponseDTO> save(@Validated @RequestBody RegionRequestDTO dto){
-		RegionEntity regionEntity = this.service.create( this.mapper.toEntity(dto));
+		RegionEntity entity =this.mapper.toEntity(dto);
+		Integer idUser = null;
+		entity.setIdUser(idUser);
+		RegionEntity regionEntity = this.service.create(entity );
 		RegionResponseDTO regionDTO = this.mapper.toGetDTO(regionEntity);
 		return new ResponseEntity<>(regionDTO,HttpStatus.CREATED);
 	}
@@ -69,6 +72,8 @@ public class RegionController {
 	public ResponseEntity<RegionResponseDTO> save(@Validated @PathVariable("id") Long id,@RequestBody RegionRequestDTO dto){
 		dto.setIdRegion(id);
 		RegionEntity regionEntity = this.mapper.toEntity(dto);
+		Integer idUser = null;
+		regionEntity.setIdUser(idUser);
 		RegionEntity regionEntityUpdated = this.service.update(regionEntity, id);
 		return new ResponseEntity<>(this.mapper.toGetDTO(regionEntityUpdated), HttpStatus.OK);
 	}

@@ -60,7 +60,10 @@ public class StatusCollaboratorController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<StatusCollaboratorResponseDTO> save(@Validated @RequestBody  StatusCollaboratorRequestDTO dto){
-		StatusCollaboratorEntity unitMesEntity = this.service.create( this.mapper.toEntity(dto) );
+		StatusCollaboratorEntity entity = this.mapper.toEntity(dto) ;
+		Integer idUser = null;
+		entity.setIdUser(idUser);
+		StatusCollaboratorEntity unitMesEntity = this.service.create( entity);
 		StatusCollaboratorResponseDTO StatusCollaboratorDTO =  this.mapper.toGetDTO(unitMesEntity);
 		return new ResponseEntity<>(StatusCollaboratorDTO,HttpStatus.CREATED);
 	}
@@ -68,9 +71,11 @@ public class StatusCollaboratorController {
 	@PutMapping("/{id}")
 	public ResponseEntity<StatusCollaboratorResponseDTO> update(@Validated @PathVariable("id") Long id, @RequestBody StatusCollaboratorRequestDTO dto){
 		dto.setIdStatusCollaborator(id);
-		StatusCollaboratorEntity StatusCollaboratorEntity = this.mapper.toEntity(dto);
-		StatusCollaboratorEntity StatusCollaboratorEntityUpdated = this.service.update(StatusCollaboratorEntity, id);
-		return new ResponseEntity<>(this.mapper.toGetDTO(StatusCollaboratorEntityUpdated),HttpStatus.OK);
+		StatusCollaboratorEntity statusCollaboratorEntity = this.mapper.toEntity(dto);
+		Integer idUser = null;
+		statusCollaboratorEntity.setIdUser(idUser);
+		StatusCollaboratorEntity statusCollaboratorEntityUpdated = this.service.update(statusCollaboratorEntity, id);
+		return new ResponseEntity<>(this.mapper.toGetDTO(statusCollaboratorEntityUpdated),HttpStatus.OK);
 	}
 	
 	

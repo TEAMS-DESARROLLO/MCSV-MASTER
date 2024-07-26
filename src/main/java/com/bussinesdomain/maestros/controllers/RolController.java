@@ -60,7 +60,10 @@ public class RolController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<RolResponseDTO> save(@Validated @RequestBody RolRequestDTO dto){
-		RolEntity rolEntity = this.service.create( this.mapper.toEntity(dto) );
+		RolEntity entity = this.mapper.toEntity(dto);
+		Integer idUser = null;
+		entity.setIdUser(idUser);
+		RolEntity rolEntity = this.service.create( entity );
 		RolResponseDTO rolDTO = this.mapper.toGetDTO(rolEntity);
 		return new ResponseEntity<>(rolDTO,HttpStatus.CREATED);		
 	}
@@ -69,6 +72,8 @@ public class RolController {
 	public ResponseEntity<RolResponseDTO> update(@Validated @PathVariable("id") Long id,@RequestBody RolRequestDTO dto){
 		dto.setIdRol(id);
 		RolEntity roEntity = this.mapper.toEntity(dto);
+		Integer idUser = null;
+		roEntity.setIdUser(idUser);
 		RolEntity rolEntityUpdated = this.service.update(roEntity, id);
 		return new ResponseEntity<>(this.mapper.toGetDTO(rolEntityUpdated),HttpStatus.OK);	
 	}
