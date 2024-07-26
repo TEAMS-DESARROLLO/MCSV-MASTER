@@ -21,4 +21,6 @@ public class TechnologyResponseDTO {
     private Long idTechnology;
 
     private String name;
+    private Long idSubpractica;
+    private String descriptionSubpractica;
 }

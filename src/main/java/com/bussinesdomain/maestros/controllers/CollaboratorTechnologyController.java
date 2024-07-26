@@ -6,7 +6,7 @@ import com.bussinesdomain.maestros.dto.CollaboratorTechnologyResponseDTO;
 import com.bussinesdomain.maestros.mapper.ICollaboratorTechnologyMapper;
 import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.CollaboratorTechnologyEntity;
-import com.bussinesdomain.maestros.models.TechnologyEntity;
+
 import com.bussinesdomain.maestros.services.ICollaboratorService;
 import com.bussinesdomain.maestros.services.ICollaboratorTechnologyService;
 import com.bussinesdomain.maestros.services.ITechnologyService;
@@ -16,7 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,8 +47,8 @@ public class CollaboratorTechnologyController {
 
     @PostMapping("/create")
     public ResponseEntity<CollaboratorTechnologyResponseDTO> assignTechnology(@RequestBody CollaboratorTechnologyRequestDTO requestDTO){
-        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
-        TechnologyEntity technologyEntity = technologyService.readById(requestDTO.getIdTechnology());
+        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator()).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
+        //TechnologyEntity technologyEntity = technologyService.readById(requestDTO.getIdTechnology()).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);    
 
         //CollaboratorTechnologyEntity entity = collaboratorTechnologyMapper.toEntity(requestDTO);
         //entity.setCollaborator(collaboratorEntity);
@@ -64,7 +64,7 @@ public class CollaboratorTechnologyController {
 
     @PostMapping("/createMultiple")
     public ResponseEntity<List<CollaboratorTechnologyResponseDTO>> assignTechnology( @RequestBody CollaboratorTechnologiesRequestDTO requestDTO){
-        CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
+        //CollaboratorEntity collaboratorEntity = collaboratorService.readById(requestDTO.getIdCollaborator());
 
         // List<CollaboratorTechnologyEntity> entities = new ArrayList<CollaboratorTechnologyEntity>();
         // for(Long idTechnology : requestDTO.getLstIdTechnologies()){
@@ -90,7 +90,7 @@ public class CollaboratorTechnologyController {
 
     @DeleteMapping("/{idCollaboratorTechnology}")
     public ResponseEntity<CollaboratorTechnologyResponseDTO> unAssignTechnology(@PathVariable("idCollaboratorTechnology") Long idCollaboratorTechnology){
-        CollaboratorTechnologyEntity entity = collaboratorTechnologyService.readById(idCollaboratorTechnology);
+        CollaboratorTechnologyEntity entity = collaboratorTechnologyService.readById(idCollaboratorTechnology).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);  
         collaboratorTechnologyService.delete(entity);
         return new ResponseEntity<>( HttpStatus.NO_CONTENT);
     }

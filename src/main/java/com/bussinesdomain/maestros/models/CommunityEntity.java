@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
+
 
 @Entity
 @Table(name = "community")
@@ -33,12 +35,21 @@ public class CommunityEntity implements Serializable {
     @Column(name="updated_at",nullable = true)
     private LocalDateTime updatedAt;
 
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
+    
+    @ManyToOne(optional = true,fetch= FetchType.EAGER)
+    @JoinColumn(name="id_region",referencedColumnName="id_region")
+    private RegionEntity region;
+
     @PrePersist
     public void prePersisten(){
+        this.registrationStatus=RegistrationStatus.ACTIVE;
         this.createdAt=LocalDateTime.now();
     }
     @PreUpdate
     public void preModify(){
         this.updatedAt = LocalDateTime.now();
     }
+    
 }

@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bussinesdomain.maestros.dto.CommunityResultadoDTO;
-import com.bussinesdomain.maestros.dto.CommunityTreeDTO;
+
 import com.bussinesdomain.maestros.dto.TreeNodesDataDTO;
 import com.bussinesdomain.maestros.services.impl.TreeComunitySubPracticaTenololgyServiceImpl;
 

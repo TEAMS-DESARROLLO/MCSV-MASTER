@@ -1,7 +1,6 @@
 package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
-import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.CommunityEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.ICommunityService;
@@ -17,7 +16,7 @@ public class CommunityServiceImpl extends CRUDImpl<CommunityEntity,Long> impleme
 
     @Override
     public CommunityEntity update(CommunityEntity entity, Long id) {
-        CommunityEntity original = this.readById(id);
+        CommunityEntity original = this.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }

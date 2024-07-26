@@ -21,7 +21,7 @@ public class TechnologyServiceImpl extends CRUDImpl<TechnologyEntity,Long> imple
 
     @Override
     public TechnologyEntity update(TechnologyEntity entity,Long id){
-        TechnologyEntity original = this.readById(id);
+        TechnologyEntity original = this.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }

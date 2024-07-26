@@ -20,4 +20,7 @@ public class TechnologyRequestDTO {
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
     private String name;
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Long idSubpractica;
+    private String descriptionSubpractica;
 }

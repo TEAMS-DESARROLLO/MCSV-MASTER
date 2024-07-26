@@ -53,7 +53,7 @@ public class RegionController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<RegionResponseDTO> findById(@PathVariable("id")Long id){
-		RegionEntity regionEntity = this.service.readById(id);
+		RegionEntity regionEntity = this.service.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 		RegionResponseDTO regionDTO = this.mapper.toGetDTO(regionEntity);
 		return new ResponseEntity<>(regionDTO,HttpStatus.OK);
 	}

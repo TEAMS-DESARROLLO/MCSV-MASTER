@@ -53,7 +53,7 @@ public class UnitMeasureController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<UnitMeasureResponseDTO> findById(@PathVariable("id") Long id){
-		UnitMeasureEntity unitMeasureEntity = this.service.readById(id);
+		UnitMeasureEntity unitMeasureEntity = this.service.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 		UnitMeasureResponseDTO unitMeasureDTO =this.mapper.toGetDTO(unitMeasureEntity);
 		return new ResponseEntity<>(unitMeasureDTO,HttpStatus.OK);
 	}

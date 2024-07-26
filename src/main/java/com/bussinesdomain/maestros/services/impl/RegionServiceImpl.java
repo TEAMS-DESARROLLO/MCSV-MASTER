@@ -20,7 +20,7 @@ public class RegionServiceImpl extends CRUDImpl<RegionEntity,Long> implements IR
     }
     @Override
     public RegionEntity update(RegionEntity entity, Long id){
-        RegionEntity original = this.readById(id);
+        RegionEntity original = this.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null); ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }

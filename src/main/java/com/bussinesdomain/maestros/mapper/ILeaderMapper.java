@@ -23,10 +23,18 @@ public interface ILeaderMapper {
     LeaderResponseDTO toGetResponseDTO(LeaderEntity entity);
 
     @Mapping(target = "community",ignore = true)
+    
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     LeaderEntity toEntity(LeaderDTO dto);
 
     @Mapping(target = "community",ignore = true)
+    
+    @Mapping(target = "createdAt",ignore = true)
+    @Mapping(target = "updatedAt",ignore = true)
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     LeaderEntity toEntity(LeaderRequestDTO dto);
 

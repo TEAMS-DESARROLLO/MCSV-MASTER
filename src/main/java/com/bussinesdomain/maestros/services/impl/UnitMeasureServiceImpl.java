@@ -20,7 +20,7 @@ public class UnitMeasureServiceImpl extends CRUDImpl<UnitMeasureEntity,Long> imp
 
     @Override
     public UnitMeasureEntity update(UnitMeasureEntity entity, Long id){
-        UnitMeasureEntity original = this.readById(id);
+        UnitMeasureEntity original = this.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }

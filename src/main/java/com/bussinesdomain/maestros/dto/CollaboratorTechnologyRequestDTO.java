@@ -21,6 +21,11 @@ public class CollaboratorTechnologyRequestDTO {
     private String collaboratorNames;
 
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
-    private Long idTechnology;
-    private String technologyName;
+    private Long idCatalogTechnology;
+    private String descriptionCatalogTechnology;
+    
+    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    private Integer collaboratorRank;
+
+    private Integer evaluatorRank;
 }

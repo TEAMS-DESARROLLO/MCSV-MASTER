@@ -2,10 +2,19 @@ package com.bussinesdomain.maestros.controllers;
 
 
 import com.bussinesdomain.maestros.commons.PaginationModel;
-import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.dto.CollaboratorRequestDTO;
+import com.bussinesdomain.maestros.dto.CollaboratorResponseDTO;
 import com.bussinesdomain.maestros.mapper.ICollaboratorMapper;
-import com.bussinesdomain.maestros.models.*;
-import com.bussinesdomain.maestros.services.*;
+import com.bussinesdomain.maestros.models.CollaboratorEntity;
+import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
+import com.bussinesdomain.maestros.models.LeaderEntity;
+import com.bussinesdomain.maestros.models.RegionEntity;
+import com.bussinesdomain.maestros.models.RolEntity;
+import com.bussinesdomain.maestros.services.ICollaboratorService;
+import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
+import com.bussinesdomain.maestros.services.ILeaderService;
+import com.bussinesdomain.maestros.services.IRegionService;
+import com.bussinesdomain.maestros.services.IRolService;
 import com.bussinesdomain.maestros.services.impl.CollaboratorPaginationService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,7 +23,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 
 @Slf4j
@@ -26,15 +43,14 @@ public class CollaboratorController {
     private final ICollaboratorService collaboratorService;
     private final ICollaboratorMapper collaboratorMapper;
 
-
     private final ILeaderService leaderService;
     private final IRolService rolService;
     private final IRegionService regionService;
     private final IFunctionalLeaderService functionalLeaderService;
 
 
-
     private final CollaboratorPaginationService iCollaboratorPaginationService;
+
 
     @PostMapping("/pagination")
     public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
@@ -44,7 +60,7 @@ public class CollaboratorController {
     @GetMapping("/{idCollaborator}")
     public ResponseEntity<CollaboratorResponseDTO> findById(@PathVariable("idCollaborator") Long idCollaborator){
 
-        CollaboratorEntity obj = this.collaboratorService.readById(idCollaborator);
+        CollaboratorEntity obj = this.collaboratorService.readById(idCollaborator).get();
         CollaboratorResponseDTO dto = this.collaboratorMapper.toGetResponseDTO(obj);
 
         dto.setIdLeader(obj.getLeader().getIdLeader());
@@ -62,15 +78,17 @@ public class CollaboratorController {
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 
+    
     @PostMapping("/create")
     public ResponseEntity<CollaboratorResponseDTO> save(@Validated @RequestBody CollaboratorRequestDTO requestDTO) {
-        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader());
 
-        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol());
+        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader()).get();
 
-        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion());
+        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol()).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 
-        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader());
+        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion()).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);  
+
+        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById( requestDTO.getIdFunctionalLeader() ).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 
         CollaboratorEntity entidad = this.collaboratorMapper.toEntity(requestDTO);
 
@@ -99,13 +117,15 @@ public class CollaboratorController {
     @PutMapping("/{idCollaborator}")
     public ResponseEntity<CollaboratorResponseDTO> update(@Validated @PathVariable("idCollaborator") Long idCollaborator,
                                                     @RequestBody CollaboratorRequestDTO requestDTO){
-        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader());
 
-        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol());
+        LeaderEntity leaderEntity =  leaderService.readById(requestDTO.getIdLeader()).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 
-        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion());
 
-        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader());
+        RolEntity rolEntity = rolService.readById(requestDTO.getIdRol()).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
+
+        RegionEntity regionEntity = regionService.readById(requestDTO.getIdRegion()).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
+
+        FunctionalLeaderEntity functionalLeaderEntity = functionalLeaderService.readById(requestDTO.getIdFunctionalLeader()).stream().filter(p -> p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
 
         CollaboratorEntity objEntitySource = this.collaboratorMapper.toEntity(requestDTO);
 

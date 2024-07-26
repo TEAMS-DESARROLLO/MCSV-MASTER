@@ -19,7 +19,7 @@ public class RolServiceImpl extends CRUDImpl<RolEntity,Long> implements IRolServ
     }
     @Override
     public RolEntity update(RolEntity entity,Long id){
-        RolEntity original = this.readById(id);
+        RolEntity original = this.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }

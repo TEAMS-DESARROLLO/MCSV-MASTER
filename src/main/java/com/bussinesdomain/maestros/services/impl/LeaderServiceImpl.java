@@ -16,7 +16,7 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
 
     @Override
     public LeaderEntity update(LeaderEntity entity, Long id) {
-        LeaderEntity original = this.readById(id);
+        LeaderEntity original = this.readById(id).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null); ;
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }

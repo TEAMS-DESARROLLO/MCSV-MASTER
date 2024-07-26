@@ -1,5 +1,9 @@
 package com.bussinesdomain.maestros.models;
 
+import java.time.LocalDateTime;
+
+import com.bussinesdomain.maestros.constants.RegistrationStatus;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,4 +28,28 @@ public class TechnologyEntity {
     @ManyToOne
     @JoinColumn(name="id_subpractica")
     private SubpracticaEntity subpracticaEntity;
+
+
+    
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="created_at",nullable = false)
+    private LocalDateTime createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name="updated_at",nullable = true)
+    private LocalDateTime updatedAt;
+
+    @Column(name="registration_status ", nullable=false,length = 1)
+    private String registrationStatus;
+
+    @PrePersist
+    public void prePersisten(){
+        this.registrationStatus=RegistrationStatus.ACTIVE;
+        this.createdAt=LocalDateTime.now();
+    }
+    @PreUpdate
+    public void preModify(){
+        this.updatedAt = LocalDateTime.now();
+    }
 }

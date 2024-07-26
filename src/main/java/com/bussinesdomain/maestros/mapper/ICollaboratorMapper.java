@@ -32,6 +32,7 @@ public interface ICollaboratorMapper {
     @Mapping(target = "rol",ignore = true)
     @Mapping(target = "region",ignore = true)
     @Mapping(target = "functionalLeader",ignore = true)
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     CollaboratorEntity toEntity(CollaboratorDTO dto);
 
@@ -40,6 +41,7 @@ public interface ICollaboratorMapper {
     @Mapping(target = "rol",ignore = true)
     @Mapping(target = "region",ignore = true)
     @Mapping(target = "functionalLeader",ignore = true)
+    @Mapping(target = "registrationStatus",ignore = true)
     @InheritInverseConfiguration
     CollaboratorEntity toEntity(CollaboratorRequestDTO dto);
 

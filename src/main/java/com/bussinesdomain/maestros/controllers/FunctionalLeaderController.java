@@ -46,7 +46,7 @@ public class FunctionalLeaderController {
     @GetMapping("/{idFunctionalLeader}")
     public ResponseEntity<FunctionalLeaderResponseDTO> findById(@PathVariable("idFunctionalLeader") Long idFunctionalLeader){
 
-        FunctionalLeaderEntity obj = this.functionalLeaderService.readById(idFunctionalLeader);
+        FunctionalLeaderEntity obj = this.functionalLeaderService.readById(idFunctionalLeader).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null); 
         FunctionalLeaderResponseDTO dto = this.functionalLeaderMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

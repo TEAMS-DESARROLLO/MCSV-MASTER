@@ -14,15 +14,15 @@ import org.mapstruct.MappingConstants;
 public interface ICollaboratorTechnologyMapper {
     @Mapping(target  = "idCollaborator", ignore = true)
     @Mapping(target  = "collaboratorNames", ignore = true)
-    @Mapping(target  = "idTechnology", ignore = true)
-    @Mapping(target  = "technologyName", ignore = true)
+    //@Mapping(target  = "idTechnology", ignore = true)
+    //@Mapping(target  = "technologyName", ignore = true)
     CollaboratorTechnologyDTO toGetDTO(CollaboratorTechnologyEntity entity);
 
 
     @Mapping(target  = "idCollaborator", ignore = true)
     @Mapping(target  = "collaboratorNames", ignore = true)
-    @Mapping(target  = "idTechnology", ignore = true)
-    @Mapping(target  = "technologyName", ignore = true)
+    //@Mapping(target  = "idTechnology", ignore = true)
+    //@Mapping(target  = "technologyName", ignore = true)
     CollaboratorTechnologyResponseDTO toGetResponseDTO(CollaboratorTechnologyEntity entity);
 
 

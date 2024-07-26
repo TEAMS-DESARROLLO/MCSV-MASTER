@@ -37,7 +37,7 @@ public class TechnologyController {
     @GetMapping("/{idTechnology}")
     public ResponseEntity<TechnologyResponseDTO> findById(@PathVariable("idTechnology") Long idTechnology){
 
-        TechnologyEntity obj = this.technologyService.readById(idTechnology);
+        TechnologyEntity obj = this.technologyService.readById(idTechnology).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
         TechnologyResponseDTO dto = this.technologyMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }

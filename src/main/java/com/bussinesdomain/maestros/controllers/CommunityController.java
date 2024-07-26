@@ -47,7 +47,7 @@ public class CommunityController {
     @GetMapping("/{idCommunity}")
     public ResponseEntity<CommunityResponseDTO> findById(@PathVariable("idCommunity") Long idCommunity){
 
-        CommunityEntity obj = this.communityService.readById(idCommunity);
+        CommunityEntity obj = this.communityService.readById(idCommunity).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null); 
         CommunityResponseDTO dto = this.communityMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
