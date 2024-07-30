@@ -12,6 +12,8 @@ import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.commons.SortModel;
 import com.bussinesdomain.maestros.dto.CommunityDTO;
+import com.bussinesdomain.maestros.exception.BussinessRuleException;
+import com.bussinesdomain.maestros.exception.ServiceException;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
@@ -26,29 +28,35 @@ public class CommunityPaginationService implements IPaginationCommons<CommunityD
     private final  EntityManager entityManager;
 
     @Override
-    public Page<CommunityDTO> pagination(PaginationModel pagination) {
-        String sqlCount  = "SELECT count(a) " + getFrom().toString() + getFilters( pagination.getFilters()  ).toString();
-        String sqlSelect = getSelect().toString() + getFrom().toString() +getFilters( pagination.getFilters()).toString() + getOrder(pagination.getSorts());
+    public Page<CommunityDTO> pagination(PaginationModel pagination)  {
+        try {
+            String sqlCount  = "SELECT count(a) " + getFrom().toString() + getFilters( pagination.getFilters()  ).toString();
+            String sqlSelect = getSelect().toString() + getFrom().toString() +getFilters( pagination.getFilters()).toString() + getOrder(pagination.getSorts());
+                
+            Query queryCount = entityManager. createQuery(sqlCount);
+            Query querySelect = entityManager.createQuery(sqlSelect);
+    
+            this.setParams(pagination.getFilters(), queryCount);
+            this.setParams(pagination.getFilters(), querySelect);
+    
+            Long total = (long) queryCount.getSingleResult();
+    
+            querySelect.setFirstResult((pagination.getPageNumber()) * pagination.getRowsPerPage());
+            querySelect.setMaxResults(pagination.getRowsPerPage());        
+    
+            @SuppressWarnings("unchecked")
+            List<CommunityDTO> lista = querySelect.getResultList();
+    
+            PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
+    
+            Page<CommunityDTO> page = new PageImpl<CommunityDTO>(lista, pageable, total);
+    
+            return page;
             
-        Query queryCount = entityManager. createQuery(sqlCount);
-        Query querySelect = entityManager.createQuery(sqlSelect);
-
-        this.setParams(pagination.getFilters(), queryCount);
-        this.setParams(pagination.getFilters(), querySelect);
-
-        Long total = (long) queryCount.getSingleResult();
-
-        querySelect.setFirstResult((pagination.getPageNumber()) * pagination.getRowsPerPage());
-        querySelect.setMaxResults(pagination.getRowsPerPage());        
-
-        @SuppressWarnings("unchecked")
-        List<CommunityDTO> lista = querySelect.getResultList();
-
-        PageRequest pageable = PageRequest.of(pagination.getPageNumber(), pagination.getRowsPerPage());
-
-        Page<CommunityDTO> page = new PageImpl<CommunityDTO>(lista, pageable, total);
-
-        return page;
+        } catch (Exception e) {
+            
+             throw new ServiceException("No se puede generar la paginacion " + e.getMessage(), e.getCause() );
+        }
     }
 
     @Override

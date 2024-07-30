@@ -17,10 +17,19 @@ public class CommunityDTO {
     @EqualsAndHashCode.Include
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idCommunity;
+
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
-    @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)
+    @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)    
     private String description;
-    @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
+    
+    //@NotNull(message = ValidationMessage.CAN_T_BE_NULL)
     private Long idRegion;
     private String regionDescription;
+
+
+    public CommunityDTO(Long idCommunity, String description) {
+        this.idCommunity = idCommunity;
+        this.description = description;
+
+    }
 }

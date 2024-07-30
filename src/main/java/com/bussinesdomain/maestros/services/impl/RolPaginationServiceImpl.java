@@ -51,7 +51,7 @@ public class RolPaginationServiceImpl implements IPaginationCommons<RolResponseD
 
 			return page;
 		} catch (RuntimeException e) {
-			throw new ServiceException("error when generating the pagination " + e.getMessage());
+			throw new ServiceException("error when generating the pagination " + e.getMessage(), e.getCause());
 		}
 	}
 

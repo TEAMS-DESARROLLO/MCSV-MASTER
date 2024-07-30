@@ -48,7 +48,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
 
             return page;
         } catch (RuntimeException e) {
-            throw new ServiceException("error al momento de generar la paginacion " + e.getMessage());
+            throw new ServiceException("error al momento de generar la paginacion " + e.getMessage(), e.getCause() );
         }
     }
 

@@ -31,7 +31,7 @@ public class CommunityController {
 
 
     @PostMapping("/pagination")
-    public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
+    public ResponseEntity<Page<CommunityDTO> > paginador(@RequestBody PaginationModel pagination ){
         Page<CommunityDTO> lst = communityPaginationService.pagination(pagination);
         return new ResponseEntity<>(lst, HttpStatus.OK) ;
     }    
