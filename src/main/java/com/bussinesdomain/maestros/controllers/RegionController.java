@@ -22,6 +22,7 @@ import com.bussinesdomain.maestros.dto.RegionResponseDTO;
 import com.bussinesdomain.maestros.mapper.IRegionMapper;
 import com.bussinesdomain.maestros.models.RegionEntity;
 import com.bussinesdomain.maestros.services.IRegionService;
+import com.bussinesdomain.maestros.services.impl.RegionPaginationServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 public class RegionController {
 
 	private final IRegionMapper mapper;
-	private final IPaginationCommons<RegionResponseDTO> paginationCommons;
+	private final RegionPaginationServiceImpl paginationCommons;
 	private final IRegionService service;
 	
 	

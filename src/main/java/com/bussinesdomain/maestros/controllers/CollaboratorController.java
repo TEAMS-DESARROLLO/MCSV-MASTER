@@ -17,6 +17,7 @@ import com.bussinesdomain.maestros.services.IRegionService;
 import com.bussinesdomain.maestros.services.IRolService;
 import com.bussinesdomain.maestros.services.impl.CollaboratorPaginationService;
 
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -32,9 +33,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @Slf4j
+@SecurityRequirement(name = "bearer-key")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/collaborator")
@@ -53,7 +55,7 @@ public class CollaboratorController {
 
 
     @PostMapping("/pagination")
-    public ResponseEntity<?> paginador(@RequestBody PaginationModel pagination ){
+    public ResponseEntity<?> paginador( @RequestBody PaginationModel pagination ){
         Page<CollaboratorResponseDTO> lst = iCollaboratorPaginationService.pagination(pagination);
         return new ResponseEntity<>(lst, HttpStatus.OK) ;
     }
