@@ -1,7 +1,26 @@
 package com.bussinesdomain.maestros.controllers;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.bussinesdomain.maestros.commons.PaginationModel;
-import com.bussinesdomain.maestros.dto.*;
+import com.bussinesdomain.maestros.dto.CommunityResponseDTO;
+import com.bussinesdomain.maestros.dto.FunctionalLeaderDTO;
+import com.bussinesdomain.maestros.dto.FunctionalLeaderRequestDTO;
+import com.bussinesdomain.maestros.dto.FunctionalLeaderResponseDTO;
 import com.bussinesdomain.maestros.mapper.IFunctionalLeaderMapper;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
@@ -9,14 +28,6 @@ import com.bussinesdomain.maestros.services.impl.FunctionalLeaderPaginationServi
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -55,6 +66,8 @@ public class FunctionalLeaderController {
     public ResponseEntity<FunctionalLeaderResponseDTO> save(@Validated @RequestBody FunctionalLeaderRequestDTO requestDTO) {
 
         FunctionalLeaderEntity entidad = this.functionalLeaderMapper.toEntity(requestDTO);
+        Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        entidad.setIdUser(idUser);
         FunctionalLeaderEntity entidadSave = this.functionalLeaderService.create( entidad);
         FunctionalLeaderResponseDTO responseviaDTO = this.functionalLeaderMapper.toGetResponseDTO(entidadSave);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);

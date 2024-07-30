@@ -1,5 +1,20 @@
 package com.bussinesdomain.maestros.controllers;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.bussinesdomain.maestros.dto.CommunityResponseDTO;
 import com.bussinesdomain.maestros.dto.TechnologyDTO;
 import com.bussinesdomain.maestros.dto.TechnologyRequestDTO;
@@ -7,14 +22,9 @@ import com.bussinesdomain.maestros.dto.TechnologyResponseDTO;
 import com.bussinesdomain.maestros.mapper.ITechnologyMapper;
 import com.bussinesdomain.maestros.models.TechnologyEntity;
 import com.bussinesdomain.maestros.services.ITechnologyService;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -46,6 +56,8 @@ public class TechnologyController {
     public ResponseEntity<TechnologyResponseDTO> save(@Validated @RequestBody TechnologyRequestDTO requestDTO) {
 
         TechnologyEntity entidad = this.technologyMapper.toEntity(requestDTO);
+        Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        entidad.setIdUser(idUser);
         TechnologyEntity entidadSave = this.technologyService.create( entidad);
         TechnologyResponseDTO responseviaDTO = this.technologyMapper.toGetResponseDTO(entidadSave);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.CREATED);

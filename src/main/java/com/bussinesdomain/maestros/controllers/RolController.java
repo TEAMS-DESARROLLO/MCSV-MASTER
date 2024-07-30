@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +61,9 @@ public class RolController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<RolResponseDTO> save(@Validated @RequestBody RolRequestDTO dto){
-		RolEntity rolEntity = this.service.create( this.mapper.toEntity(dto) );
+		RolEntity rolEntity = this.service.create(this.mapper.toEntity(dto));
+		Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		rolEntity.setIdUser(idUser);
 		RolResponseDTO rolDTO = this.mapper.toGetDTO(rolEntity);
 		return new ResponseEntity<>(rolDTO,HttpStatus.CREATED);		
 	}

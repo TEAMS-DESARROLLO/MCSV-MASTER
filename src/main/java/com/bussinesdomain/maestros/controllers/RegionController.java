@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bussinesdomain.maestros.commons.IPaginationCommons;
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.RegionRequestDTO;
 import com.bussinesdomain.maestros.dto.RegionResponseDTO;
@@ -61,7 +61,9 @@ public class RegionController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<RegionResponseDTO> save(@Validated @RequestBody RegionRequestDTO dto){
-		RegionEntity regionEntity = this.service.create( this.mapper.toEntity(dto));
+		RegionEntity regionEntity = this.service.create(this.mapper.toEntity(dto));
+		Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		regionEntity.setIdUser(idUser);
 		RegionResponseDTO regionDTO = this.mapper.toGetDTO(regionEntity);
 		return new ResponseEntity<>(regionDTO,HttpStatus.CREATED);
 	}

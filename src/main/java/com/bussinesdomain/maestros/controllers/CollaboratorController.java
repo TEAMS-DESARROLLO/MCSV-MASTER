@@ -1,6 +1,20 @@
 package com.bussinesdomain.maestros.controllers;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.bussinesdomain.maestros.commons.PaginationModel;
 import com.bussinesdomain.maestros.dto.CollaboratorRequestDTO;
 import com.bussinesdomain.maestros.dto.CollaboratorResponseDTO;
@@ -17,23 +31,9 @@ import com.bussinesdomain.maestros.services.IRegionService;
 import com.bussinesdomain.maestros.services.IRolService;
 import com.bussinesdomain.maestros.services.impl.CollaboratorPaginationService;
 
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @Slf4j
 @SecurityRequirement(name = "bearer-key")
@@ -101,6 +101,8 @@ public class CollaboratorController {
         entidad.setRol(rolEntity);
         entidad.setRegion(regionEntity);
         entidad.setFunctionalLeader(functionalLeaderEntity);
+        Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        entidad.setIdUser(idUser);
 
         CollaboratorEntity entidadSave = this.collaboratorService.create( entidad);
         CollaboratorResponseDTO responseviaDTO = this.collaboratorMapper.toGetResponseDTO(entidadSave);
@@ -138,6 +140,8 @@ public class CollaboratorController {
         objEntitySource.setRol(rolEntity);
         objEntitySource.setRegion(regionEntity);
         objEntitySource.setFunctionalLeader(functionalLeaderEntity);
+        Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        objEntitySource.setIdUser(idUser);
 
         CollaboratorEntity obj =  collaboratorService.update(objEntitySource, idCollaborator);
         CollaboratorResponseDTO responseviaDTO = this.collaboratorMapper.toGetResponseDTO(obj);

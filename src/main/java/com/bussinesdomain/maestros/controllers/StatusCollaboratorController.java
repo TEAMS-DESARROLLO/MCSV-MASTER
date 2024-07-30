@@ -3,9 +3,9 @@ package com.bussinesdomain.maestros.controllers;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import com.bussinesdomain.maestros.dto.StatusCollaboratorRequestDTO;
 import com.bussinesdomain.maestros.dto.StatusCollaboratorResponseDTO;
@@ -60,7 +59,9 @@ public class StatusCollaboratorController {
 	
 	@PostMapping("/create")
 	public ResponseEntity<StatusCollaboratorResponseDTO> save(@Validated @RequestBody  StatusCollaboratorRequestDTO dto){
-		StatusCollaboratorEntity unitMesEntity = this.service.create( this.mapper.toEntity(dto) );
+		StatusCollaboratorEntity unitMesEntity = this.service.create(this.mapper.toEntity(dto));
+		Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		unitMesEntity.setIdUser(idUser);
 		StatusCollaboratorResponseDTO StatusCollaboratorDTO =  this.mapper.toGetDTO(unitMesEntity);
 		return new ResponseEntity<>(StatusCollaboratorDTO,HttpStatus.CREATED);
 	}
