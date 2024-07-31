@@ -2,7 +2,10 @@ package com.bussinesdomain.maestros.config;
 
 import java.io.IOException;
 import java.security.Key;
+
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -86,6 +89,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private Claims validateToken(HttpServletRequest request) {
 		String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
+		ConfigToken.tokenBack = jwtToken;
         return  Jwts
         .parserBuilder()
         .setSigningKey(getKey())
@@ -93,6 +97,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         .parseClaimsJws(jwtToken)
         .getBody();
 
+	}
+
+	private String getJwtToken(HttpServletRequest request) {
+		String jwtToken = request.getHeader(HEADER).replace(PREFIX, "");
+		return jwtToken;
 	}
 
 
@@ -108,6 +117,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		List<String> authorities = (List) claims.get("authorities");
         String sidUsuario = (String) claims.get("idUser");
         Long idUsuario = Long.parseLong(sidUsuario);
+
 
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(claims.getSubject(), idUsuario,
 				authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
