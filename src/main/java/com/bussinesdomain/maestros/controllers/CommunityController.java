@@ -78,6 +78,8 @@ public class CommunityController {
     public ResponseEntity<CommunityResponseDTO> update(@Validated @PathVariable("idCommunity") Long idCommunity,
                                                        @RequestBody CommunityRequestDTO requestDTO){
         CommunityEntity objEntitySource = this.communityMapper.toEntity(requestDTO);
+        Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        objEntitySource.setIdUser(idUser);
         CommunityEntity obj =  communityService.update(objEntitySource, idCommunity);
         CommunityResponseDTO responseviaDTO = this.communityMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);

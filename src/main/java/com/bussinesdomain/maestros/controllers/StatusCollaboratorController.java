@@ -70,6 +70,8 @@ public class StatusCollaboratorController {
 	public ResponseEntity<StatusCollaboratorResponseDTO> update(@Validated @PathVariable("id") Long id, @RequestBody StatusCollaboratorRequestDTO dto){
 		dto.setIdStatusCollaborator(id);
 		StatusCollaboratorEntity StatusCollaboratorEntity = this.mapper.toEntity(dto);
+		Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		StatusCollaboratorEntity.setIdUser(idUser);
 		StatusCollaboratorEntity StatusCollaboratorEntityUpdated = this.service.update(StatusCollaboratorEntity, id);
 		return new ResponseEntity<>(this.mapper.toGetDTO(StatusCollaboratorEntityUpdated),HttpStatus.OK);
 	}

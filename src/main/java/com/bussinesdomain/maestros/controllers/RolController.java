@@ -72,6 +72,8 @@ public class RolController {
 	public ResponseEntity<RolResponseDTO> update(@Validated @PathVariable("id") Long id,@RequestBody RolRequestDTO dto){
 		dto.setIdRol(id);
 		RolEntity roEntity = this.mapper.toEntity(dto);
+		Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		roEntity.setIdUser(idUser);
 		RolEntity rolEntityUpdated = this.service.update(roEntity, id);
 		return new ResponseEntity<>(this.mapper.toGetDTO(rolEntityUpdated),HttpStatus.OK);	
 	}

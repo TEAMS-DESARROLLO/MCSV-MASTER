@@ -95,6 +95,8 @@ public class LeaderController {
         CommunityEntity communityEntity =  communityService.readById(requestDTO.getIdCommunity()).stream().filter(p->p.getRegistrationStatus().equals("A")).findFirst().orElse(null);
         LeaderEntity objEntitySource = this.leaderMapper.toEntity(requestDTO);
         objEntitySource.setCommunity(communityEntity);
+        Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        objEntitySource.setIdUser(idUser);
         LeaderEntity obj =  leaderService.update(objEntitySource, idLeader);
         LeaderResponseDTO responseviaDTO = this.leaderMapper.toGetResponseDTO(obj);
         responseviaDTO.setIdCommunity(obj.getCommunity().getIdCommunity());

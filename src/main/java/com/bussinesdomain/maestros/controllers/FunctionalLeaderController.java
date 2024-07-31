@@ -77,6 +77,8 @@ public class FunctionalLeaderController {
     public ResponseEntity<FunctionalLeaderResponseDTO> update(@Validated @PathVariable("idFunctionalLeader") Long idFunctionalLeader,
                                                     @RequestBody FunctionalLeaderRequestDTO requestDTO){
         FunctionalLeaderEntity objEntitySource = this.functionalLeaderMapper.toEntity(requestDTO);
+        Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+        objEntitySource.setIdUser(idUser);
         FunctionalLeaderEntity obj =  functionalLeaderService.update(objEntitySource, idFunctionalLeader);
         FunctionalLeaderResponseDTO responseviaDTO = this.functionalLeaderMapper.toGetResponseDTO(obj);
         return new ResponseEntity<>(responseviaDTO, HttpStatus.OK);

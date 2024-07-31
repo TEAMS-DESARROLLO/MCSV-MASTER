@@ -72,6 +72,8 @@ public class UnitMeasureController {
 	public ResponseEntity<UnitMeasureResponseDTO> update(@Validated @PathVariable("id") Long id, @RequestBody UnitMeasureRequestDTO dto){
 		dto.setIdUnitMeasure(id);
 		UnitMeasureEntity unitMeasureEntity = this.mapper.toEntity(dto);
+		Long idUser = (Long) SecurityContextHolder.getContext().getAuthentication().getCredentials();
+		unitMeasureEntity.setIdUser(idUser);
 		UnitMeasureEntity unitMeasureEntityUpdated = this.service.update(unitMeasureEntity, id);
 		return new ResponseEntity<>(this.mapper.toGetDTO(unitMeasureEntityUpdated),HttpStatus.OK);
 	}
