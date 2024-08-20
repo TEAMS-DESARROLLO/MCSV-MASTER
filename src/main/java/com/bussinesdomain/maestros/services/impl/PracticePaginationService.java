@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class CommunityPaginationService implements IPaginationCommons<PracticeDTO> {
+public class PracticePaginationService implements IPaginationCommons<PracticeDTO> {
 
        
     private final  EntityManager entityManager;

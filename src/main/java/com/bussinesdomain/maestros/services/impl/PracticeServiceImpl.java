@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CommunityServiceImpl extends CRUDImpl<PracticeEntity,Long> implements IPracticeService {
+public class PracticeServiceImpl extends CRUDImpl<PracticeEntity,Long> implements IPracticeService {
 
     private final IGenericRepository<PracticeEntity, Long> repository;
-    private final IPracticeMapper iCommunityMapper;
+    private final IPracticeMapper iPracticeMapper;
 
     @Override
     public PracticeEntity update(PracticeEntity entity, Long id) {
@@ -37,10 +37,10 @@ public class CommunityServiceImpl extends CRUDImpl<PracticeEntity,Long> implemen
     }
 
     @Override
-    public List<PracticeResponseDTO> communitiesByIds(List<Long> ids) {
-        List<PracticeEntity> communities = repository.findAllById(ids);
-        List<PracticeResponseDTO> communitiesDto = iCommunityMapper.listEntityToResponseDTO(communities);
-        return communitiesDto;
+    public List<PracticeResponseDTO> practicesByIds(List<Long> ids) {
+        List<PracticeEntity> practices = repository.findAllById(ids);
+        List<PracticeResponseDTO> practicesDto = iPracticeMapper.listEntityToResponseDTO(practices);
+        return practicesDto;
 
     }
 }

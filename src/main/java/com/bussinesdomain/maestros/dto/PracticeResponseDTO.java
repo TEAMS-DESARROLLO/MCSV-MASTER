@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class PracticeResponseDTO {
     @EqualsAndHashCode.Include
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
-    private Long idCommunity;
+    private Long idPractice;
     private String description;
 
     

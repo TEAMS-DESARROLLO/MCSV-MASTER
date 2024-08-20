@@ -7,7 +7,7 @@ import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.IPracticeMapper;
 import com.bussinesdomain.maestros.models.PracticeEntity;
 import com.bussinesdomain.maestros.services.IPracticeService;
-import com.bussinesdomain.maestros.services.impl.CommunityPaginationService;
+import com.bussinesdomain.maestros.services.impl.PracticePaginationService;
 
 import ch.qos.logback.core.model.Model;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class PracticeController {
 
     private final IPracticeMapper communityMapper;
     private final IPracticeService communityService;
-    private final CommunityPaginationService communityPaginationService;
+    private final PracticePaginationService communityPaginationService;
 
 
 
@@ -104,7 +104,7 @@ public class PracticeController {
     @PostMapping("/communityByIds")
     public ResponseEntity<List<PracticeResponseDTO>> communitiesByIds(List<Long> ids) {
         
-        List<PracticeResponseDTO> lista = communityService.communitiesByIds(ids);
+        List<PracticeResponseDTO> lista = communityService.practicesByIds(ids);
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 

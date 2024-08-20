@@ -10,5 +10,5 @@ public interface IPracticeService extends IBaseInterfaceService<PracticeEntity,L
 
     PracticeEntity update(PracticeEntity entity, Long id);
 
-    List<PracticeResponseDTO> communitiesByIds(List<Long> ids);
+    List<PracticeResponseDTO> practicesByIds(List<Long> ids);
 }
