@@ -21,7 +21,7 @@ public class CollaboratorServiceImpl extends CRUDImpl<CollaboratorEntity,Long> i
     private final IGenericRepository<CollaboratorEntity,Long> repository;
 
 
-    private final ICollaboratorMapper iCollaboratorMapper;
+
 
     private final ICollaboratorBusinessRepository iCollaboratorBusinessRepository;
 

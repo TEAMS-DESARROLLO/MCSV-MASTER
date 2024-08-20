@@ -60,13 +60,13 @@ public class PracticePaginationService implements IPaginationCommons<PracticeDTO
 
     @Override
     public StringBuilder getSelect() {
-        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.CommunityDTO(a.idCommunity,a.description) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.PracticeDTO(a.idPractice,a.description) ");
         return sql;
     }
 
     @Override
     public StringBuilder getFrom() {
-        StringBuilder sql = new StringBuilder(" FROM CommunityEntity a  ");
+        StringBuilder sql = new StringBuilder(" FROM PracticeEntity a  ");
         return sql;
     }
 
@@ -76,7 +76,7 @@ public class PracticePaginationService implements IPaginationCommons<PracticeDTO
 
         for(Filter filtro:filters){
             if(filtro.getField().equals("idCommunity")){
-                sql.append(" AND a.idCommunity = :idCommunity");
+                sql.append(" AND a.idPractice = :idPractice");
             }
             if(filtro.getField().equals("description")){
                 sql.append(" AND a.description LIKE :description ");
@@ -89,8 +89,8 @@ public class PracticePaginationService implements IPaginationCommons<PracticeDTO
     @Override
     public Query setParams(List<Filter> filters, Query query) {
         for(Filter filtro:filters){
-            if(filtro.getField().equals("idCommunity")){
-                query.setParameter("idCommunity",filtro.getValue() );
+            if(filtro.getField().equals("idPractice")){
+                query.setParameter("idPractice",filtro.getValue() );
             }
             if(filtro.getField().equals("description")){
                 query.setParameter("description","%"+filtro.getValue()+"%");
@@ -107,11 +107,11 @@ public class PracticePaginationService implements IPaginationCommons<PracticeDTO
             sql.append(" ORDER BY ");
 
             for(SortModel sort:sorts){
-                if(sort.getColName().equals("idCommunity")){
+                if(sort.getColName().equals("idPractice")){
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " idCommunity " + sort.getSort() );
+                    sql.append( " idPractice " + sort.getSort() );
                     flagMore = true;
                 }
 

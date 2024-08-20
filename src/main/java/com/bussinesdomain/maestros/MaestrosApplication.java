@@ -18,11 +18,11 @@ import com.bussinesdomain.maestros.procesos.ILoadDataCommunity;
 //@EnableDiscoveryClient
 public class MaestrosApplication  implements CommandLineRunner { 
 
-	// @Autowired
-	// private ILoadData loadData;
+	@Autowired
+	private ILoadData loadData;
 
-	// @Autowired
-	// private ILoadDataCommunity loadDataCommunity;
+	@Autowired
+	private ILoadDataCommunity loadDataCommunity;
 
 
 	public static void main(String[] args) {
@@ -31,16 +31,16 @@ public class MaestrosApplication  implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-	 	//List<PeruTotalDto> peruTotal = loadData.loadPeruTotal();
+	 	// List<PeruTotalDto> peruTotal = loadData.loadPeruTotalFromXls();
 
-		//List<Map<String, Object>> functionalLeaderList = loadData.getFunctionalLeader(peruTotal);
+		// List<Map<String, Object>> functionalLeaderList = loadData.getFunctionalLeaderFromPeruTotalDTO(peruTotal) ;
 
-		//loadData.updateFunctionalLeader(functionalLeaderList);
-		//loadData.updateCollaborator(peruTotal);
-		System.out.println("Carga de datos finalizada");
+		// loadData.updateFunctionalLeaderInDataBase(functionalLeaderList); 
+		// loadData.updateCollaboratorInDataBase(peruTotal);
+		// System.out.println("Carga de datos finalizada");
 
 		// List<CommunityFromXlsDTO> lstCommunity = loadDataCommunity.loadDataFromXls();
-		// loadDataCommunity.updateMasterData(lstCommunity,1L);
+		// loadDataCommunity.updatePracticeInCollaborator(lstCommunity,1L, peruTotal);
 		// System.out.println("Carga de datos finalizada");
 		
 

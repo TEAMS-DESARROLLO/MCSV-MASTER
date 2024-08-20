@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bussinesdomain.maestros.commons.IPaginationCommons;
+
 import com.bussinesdomain.maestros.commons.PaginationModel;
-import com.bussinesdomain.maestros.dto.LeaderResponseDTO;
+
 import com.bussinesdomain.maestros.dto.RegionRequestDTO;
 import com.bussinesdomain.maestros.dto.RegionResponseDTO;
 import com.bussinesdomain.maestros.mapper.IRegionMapper;

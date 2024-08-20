@@ -53,13 +53,13 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
 
     @Override
     public StringBuilder getSelect() {
-        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.LeaderDTO(a.idLeader,a.names,cm.idCommunity,cm.description as communityDescription) ");
+        StringBuilder sql = new StringBuilder("SELECT new com.bussinesdomain.maestros.dto.LeaderDTO(a.idLeader,a.names,cm.idPractice,cm.description as practiceDescription) ");
         return sql;
     }
 
     @Override
     public StringBuilder getFrom() {
-        StringBuilder sql = new StringBuilder(" FROM LeaderEntity a  join CommunityEntity cm on a.community.idCommunity = cm.idCommunity ");
+        StringBuilder sql = new StringBuilder(" FROM LeaderEntity a  join PracticeEntity cm on a.practice.idPractice = cm.idPractice ");
         return sql;
     }
 
@@ -74,11 +74,11 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
             if(filtro.getField().equals("names")){
                 sql.append(" AND a.names LIKE :names ");
             }
-            if(filtro.getField().equals("idCommunity")){
-                sql.append(" AND cm.idCommunity = :idCommunity ");
+            if(filtro.getField().equals("idPractice")){
+                sql.append(" AND cm.idPractice = :idPractice ");
             }
-            if(filtro.getField().equals("communityDescription")){
-                sql.append(" AND cm.description LIKE :communityDescription ");
+            if(filtro.getField().equals("practiceDescription")){
+                sql.append(" AND cm.description LIKE :practiceDescription ");
             }
         }
 
@@ -94,11 +94,11 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
             if(filtro.getField().equals("names")){
                 query.setParameter("names","%"+filtro.getValue()+"%");
             }
-            if(filtro.getField().equals("idCommunity")){
-                query.setParameter("idCommunity",filtro.getValue() );
+            if(filtro.getField().equals("idPractice")){
+                query.setParameter("idPractice",filtro.getValue() );
             }
-            if(filtro.getField().equals("communityDescription")){
-                query.setParameter("communityDescription","%"+filtro.getValue()+"%");
+            if(filtro.getField().equals("practiceDescription")){
+                query.setParameter("practiceDescription","%"+filtro.getValue()+"%");
             }
         }
         return query;
@@ -126,14 +126,14 @@ public class LeaderPaginationService implements IPaginationCommons<LeaderDTO> {
                     sql.append( " a.names " + sort.getSort() );
                     flagMore = true;
                 }
-                if(sort.getColName().equals("idCommunity")){
+                if(sort.getColName().equals("idPractice")){
                     if(flagMore)
                         sql.append(", ");
 
-                    sql.append( " cm.idCommunity " + sort.getSort() );
+                    sql.append( " cm.idPractice " + sort.getSort() );
                     flagMore = true;
                 }
-                if(sort.getColName().equals("communityDescription")){
+                if(sort.getColName().equals("practiceDescription")){
                     if(flagMore)
                         sql.append(", ");
 

@@ -5,8 +5,7 @@ import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
 import com.bussinesdomain.maestros.models.RegionEntity;
 import com.bussinesdomain.maestros.procesos.ILoadData;
-import com.bussinesdomain.maestros.repository.ICollaboratorRepository;
-import com.bussinesdomain.maestros.repository.IFunctionalLeaderRepository;
+
 import com.bussinesdomain.maestros.services.ICollaboratorService;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
 
@@ -267,7 +266,7 @@ public class LoadDataImpl implements ILoadData {
                 }
                 Map<String, Object> map = new HashMap<>();
                 map.put("codigo", pt.get().getCodigo());
-                map.put("nombre", pt.get().getNombre() + " " + pt.get().getCodigo());
+                map.put("nombre", pt.get().getNombre() );
                 return map;
 
 
@@ -289,7 +288,7 @@ public class LoadDataImpl implements ILoadData {
                 
                 FunctionalLeaderEntity functionalLeader = new FunctionalLeaderEntity();
                 Long idFuncionalLeader = Long.valueOf( (String) map.get("codigo") );
-                System.out.println("idFuncionalLeader: " + idFuncionalLeader);
+                //System.out.println("idFuncionalLeader: " + idFuncionalLeader);
 
                 functionalLeader.setIdFunctionalLeader( idFuncionalLeader );
                 functionalLeader.setNames( (String) map.get("nombre") );

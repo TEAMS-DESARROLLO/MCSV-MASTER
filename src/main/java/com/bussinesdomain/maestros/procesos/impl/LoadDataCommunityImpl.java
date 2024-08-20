@@ -9,10 +9,13 @@ import java.util.List;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.bussinesdomain.maestros.dto.CommunityFromXlsDTO;
+import com.bussinesdomain.maestros.dto.PeruTotalDto;
 import com.bussinesdomain.maestros.models.CollaboratorEntity;
+import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
 import com.bussinesdomain.maestros.models.PracticeEntity;
 import com.bussinesdomain.maestros.procesos.ILoadDataCommunity;
 import com.bussinesdomain.maestros.services.ICollaboratorService;
+import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
 import com.bussinesdomain.maestros.services.IPracticeService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ public class LoadDataCommunityImpl implements ILoadDataCommunity {
 
     private final ICollaboratorService collaboratorService;
     private final IPracticeService communityService;
+    private final IFunctionalLeaderService functionalLeaderService;
 
     @Override
     public List<CommunityFromXlsDTO> loadDataFromXls() {
@@ -118,19 +122,41 @@ public class LoadDataCommunityImpl implements ILoadDataCommunity {
     }    
 
     @Override
-    public void updateMasterData(List<CommunityFromXlsDTO> communityFromXlsDTOs, Long idPractice) {
+    public void updatePracticeInCollaborator(List<CommunityFromXlsDTO> communityFromXlsDTOs, Long idPractice, List<PeruTotalDto> peruTotalDtos) {
 
 
         PracticeEntity practiceEntity = communityService.readById(idPractice).get();
+
+        //cargamos los responsables funcionales 
+        List<FunctionalLeaderEntity> lstFunctionalLeader = functionalLeaderService.getAll();
 
 
         communityFromXlsDTOs.forEach(communityFromXlsDTO -> {
 
             Long idCollaborator = Long.parseLong(communityFromXlsDTO.getIdCollaborator());
-            CollaboratorEntity collaboratorEntity = collaboratorService.readById(idCollaborator).get();
-            if (collaboratorEntity != null) {
-                collaboratorEntity.setPractice(practiceEntity);
-                collaboratorService.create(collaboratorEntity);
+            boolean existe = collaboratorService.exists(idCollaborator);
+
+            if(existe){
+                CollaboratorEntity collaboratorEntity = collaboratorService.readById(idCollaborator).get();
+                String sIdCollaborator = idCollaborator.toString();
+                PeruTotalDto peruTotalDto = peruTotalDtos.stream().filter(peruTotal -> peruTotal.getCodigo().equals(sIdCollaborator)).findFirst().orElse(null);  
+                
+
+                FunctionalLeaderEntity functionalLeaderEntity = new FunctionalLeaderEntity(); 
+
+                if(peruTotalDto != null){
+                    String rf = peruTotalDto.getRf();
+
+                    if(rf != null && !rf.isEmpty()){
+                       functionalLeaderEntity = lstFunctionalLeader.stream().filter(functionalLeader -> functionalLeader.getNames().equals(rf)).findFirst().orElse(null);
+                    }
+                }
+
+                if (collaboratorEntity != null) {
+                    collaboratorEntity.setFunctionalLeader(functionalLeaderEntity);
+                    collaboratorEntity.setPractice(practiceEntity);
+                    collaboratorService.create(collaboratorEntity);
+                }
             }
 
 

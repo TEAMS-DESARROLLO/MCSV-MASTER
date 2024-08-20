@@ -9,7 +9,7 @@ import com.bussinesdomain.maestros.models.PracticeEntity;
 import com.bussinesdomain.maestros.services.IPracticeService;
 import com.bussinesdomain.maestros.services.impl.PracticePaginationService;
 
-import ch.qos.logback.core.model.Model;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
+
 
 @Slf4j
 @RestController
@@ -32,13 +32,13 @@ public class PracticeController {
 
     private final IPracticeMapper communityMapper;
     private final IPracticeService communityService;
-    private final PracticePaginationService communityPaginationService;
+    private final PracticePaginationService practicePaginationService;
 
 
 
     @PostMapping("/pagination")
     public ResponseEntity<Page<PracticeDTO> > paginador(@RequestBody PaginationModel pagination ){
-        Page<PracticeDTO> lst = communityPaginationService.pagination(pagination);
+        Page<PracticeDTO> lst = practicePaginationService.pagination(pagination);
         return new ResponseEntity<>(lst, HttpStatus.OK) ;
     }    
 
