@@ -83,7 +83,7 @@ public class CollaboratorPaginationService implements IPaginationCommons<Collabo
                 " left join RegionEntity rg on a.region=rg " +
                 " left join FunctionalLeaderEntity fl on a.functionalLeader=fl " +
                 " left join StatusCollaboratorEntity sc on a.statusCollaborator = sc " +
-                " left join practiceEntity ce on a.practice = ce " 
+                " left join PracticeEntity ce on a.practice = ce " 
                 );
         return sql;
     }
