@@ -1,0 +1,12 @@
+server:
+    port: 9002
+spring:
+    application:
+        name: mcsv-master
+    config:
+        import: ${CONFIG_SERVER} 
+
+    cloud:
+        config:
+            #nombre base que se busca en el git o repositorio
+            name: config-server    
