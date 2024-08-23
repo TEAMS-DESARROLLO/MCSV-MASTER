@@ -24,7 +24,7 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
         return repository;
     }
 
-    private final ICollaboratorTechnologyBusinessRepository businessRepository;
+
 
     @Override
     public CollaboratorTechnologyEntity update(CollaboratorTechnologyEntity entity,Long id){
@@ -38,14 +38,13 @@ public class CollaboratorTechnologyServiceImpl extends CRUDImpl<CollaboratorTech
 
     @Override
     public CollaboratorTechnologyEntity getTechnologyInCollaborator(Long idCollaborator, Long idTechnology) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTechnologyInCollaborator'");
+        return null;
+
     }
 
     @Override
     public List<CollaboratorTechnologyEntity> getByCollaboratorId(Long idCollaborator) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getByCollaboratorId'");
+        return null;
     }
 
 

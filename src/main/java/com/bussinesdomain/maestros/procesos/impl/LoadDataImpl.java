@@ -312,7 +312,7 @@ public class LoadDataImpl implements ILoadData {
 
         Integer cnt = 0;
 
-        RegionEntity region = RegionEntity.builder().idRegion(1L). build();
+        RegionEntity region = RegionEntity.builder().idRegion(13L). build();
        
         for (PeruTotalDto peruTotalDto : peruTotalDtos) {
 
@@ -326,6 +326,7 @@ public class LoadDataImpl implements ILoadData {
             collaborator.setEmail(peruTotalDto.getEmail());
             collaborator.setRegistrationStatus("A");
             collaborator.setRegion( region );
+            collaborator.setRf(peruTotalDto.getRf());
             
             collaboratorList.add(collaborator);
 

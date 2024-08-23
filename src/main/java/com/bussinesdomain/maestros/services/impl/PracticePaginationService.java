@@ -75,7 +75,7 @@ public class PracticePaginationService implements IPaginationCommons<PracticeDTO
         StringBuilder sql = new StringBuilder("where 1=1 ");
 
         for(Filter filtro:filters){
-            if(filtro.getField().equals("idCommunity")){
+            if(filtro.getField().equals("idPractice")){
                 sql.append(" AND a.idPractice = :idPractice");
             }
             if(filtro.getField().equals("description")){

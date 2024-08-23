@@ -1,15 +1,12 @@
 package com.bussinesdomain.maestros;
 
-import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import com.bussinesdomain.maestros.dto.CommunityFromXlsDTO;
-import com.bussinesdomain.maestros.dto.PeruTotalDto;
+
 import com.bussinesdomain.maestros.procesos.ILoadData;
 import com.bussinesdomain.maestros.procesos.ILoadDataCommunity;
 
@@ -40,7 +37,7 @@ public class MaestrosApplication  implements CommandLineRunner {
 		// System.out.println("Carga de datos finalizada");
 
 		// List<CommunityFromXlsDTO> lstCommunity = loadDataCommunity.loadDataFromXls();
-		// loadDataCommunity.updatePracticeInCollaborator(lstCommunity,1L, peruTotal);
+		// loadDataCommunity.updatePracticeInCollaborator(lstCommunity,30L, peruTotal);
 		// System.out.println("Carga de datos finalizada");
 		
 

@@ -26,7 +26,7 @@ public class PracticeServiceImpl extends CRUDImpl<PracticeEntity,Long> implement
         if(original.equals(null)){
             throw new ModelNotFoundException("The following ID does not exists : " + id);
         }
-        String[] ignoreProperties= new String[]{"createdAt","updatedAt","idCommunity"};
+        String[] ignoreProperties= new String[]{"createdAt","updatedAt","idPractice"};
         BeanUtils.copyProperties(entity,original,ignoreProperties);
         return super.update(original,id);
     }

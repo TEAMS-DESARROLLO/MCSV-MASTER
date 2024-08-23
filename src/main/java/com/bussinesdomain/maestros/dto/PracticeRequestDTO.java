@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PracticeRequestDTO {
     @EqualsAndHashCode.Include
-    private Long idCommunity;
+    private Long idPractice;
     
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)

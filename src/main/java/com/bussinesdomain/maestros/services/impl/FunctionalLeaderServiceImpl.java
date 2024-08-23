@@ -2,7 +2,7 @@ package com.bussinesdomain.maestros.services.impl;
 
 import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
-import com.bussinesdomain.maestros.repository.ICollaboratorBusinessRepository;
+
 import com.bussinesdomain.maestros.repository.IGenericRepository;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
 import lombok.RequiredArgsConstructor;

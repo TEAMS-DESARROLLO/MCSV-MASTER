@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class PracticeDTO {
     @EqualsAndHashCode.Include
     @NotNull(message = ValidationMessage.CAN_T_BE_NULL)
-    private Long idCommunity;
+    private Long idPractice;
 
     @NotEmpty(message = ValidationMessage.NONEMPTY_STRING)
     @NotBlank(message = ValidationMessage.NOWHITESPACES_STRING)    
@@ -27,8 +27,8 @@ public class PracticeDTO {
     private String regionDescription;
 
 
-    public PracticeDTO(Long idCommunity, String description) {
-        this.idCommunity = idCommunity;
+    public PracticeDTO(Long idPractice, String description) {
+        this.idPractice = idPractice;
         this.description = description;
 
     }

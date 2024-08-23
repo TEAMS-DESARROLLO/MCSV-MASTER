@@ -32,7 +32,7 @@ public class CollaboratorEntity {
     @Column(name="email")
     private String email;
 
-    
+    private String rf;
 
     private Integer state;
 
@@ -56,6 +56,8 @@ public class CollaboratorEntity {
     @ManyToOne()
     @JoinColumn(name="id_status_collaborator")
     private StatusCollaboratorEntity statusCollaborator;
+
+    
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name="created_at")

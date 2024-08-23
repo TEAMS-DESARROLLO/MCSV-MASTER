@@ -1,8 +1,7 @@
 package com.bussinesdomain.maestros.dto;
 
 import com.bussinesdomain.maestros.constants.ValidationMessage;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -2,7 +2,7 @@ package com.bussinesdomain.maestros.dto;
 
 import com.bussinesdomain.maestros.constants.ValidationMessage;
 
-import jakarta.persistence.Column;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
