@@ -9,5 +9,7 @@ import com.bussinesdomain.maestros.models.LeaderEntity;
 public interface ILeaderService extends IBaseInterfaceService<LeaderEntity,Long> {
 
     List<LeaderResponseDTO> leadersByIds(List<Long> ids);
+
+    LeaderEntity getLeaderEntityByIdPractice(Long idPractice);
     
 }

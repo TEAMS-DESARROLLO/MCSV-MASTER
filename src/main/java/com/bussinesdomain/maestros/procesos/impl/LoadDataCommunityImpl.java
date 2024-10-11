@@ -12,10 +12,12 @@ import com.bussinesdomain.maestros.dto.CommunityFromXlsDTO;
 import com.bussinesdomain.maestros.dto.PeruTotalDto;
 import com.bussinesdomain.maestros.models.CollaboratorEntity;
 import com.bussinesdomain.maestros.models.FunctionalLeaderEntity;
+import com.bussinesdomain.maestros.models.LeaderEntity;
 import com.bussinesdomain.maestros.models.PracticeEntity;
 import com.bussinesdomain.maestros.procesos.ILoadDataCommunity;
 import com.bussinesdomain.maestros.services.ICollaboratorService;
 import com.bussinesdomain.maestros.services.IFunctionalLeaderService;
+import com.bussinesdomain.maestros.services.ILeaderService;
 import com.bussinesdomain.maestros.services.IPracticeService;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class LoadDataCommunityImpl implements ILoadDataCommunity {
     private final ICollaboratorService collaboratorService;
     private final IPracticeService communityService;
     private final IFunctionalLeaderService functionalLeaderService;
+    private final ILeaderService leaderService;
 
     @Override
     public List<CommunityFromXlsDTO> loadDataFromXls() {
@@ -126,7 +129,7 @@ public class LoadDataCommunityImpl implements ILoadDataCommunity {
 
 
         PracticeEntity practiceEntity = communityService.readById(idPractice).get();
-
+        LeaderEntity leaderEntity = leaderService.getLeaderEntityByIdPractice(idPractice);
         //cargamos los responsables funcionales 
         List<FunctionalLeaderEntity> lstFunctionalLeader = functionalLeaderService.getAll();
 
@@ -155,6 +158,7 @@ public class LoadDataCommunityImpl implements ILoadDataCommunity {
                 if (collaboratorEntity != null) {
                     collaboratorEntity.setFunctionalLeader(functionalLeaderEntity);
                     collaboratorEntity.setPractice(practiceEntity);
+                    collaboratorEntity.setLeader(leaderEntity);
                     collaboratorService.create(collaboratorEntity);
                 }
             }

@@ -66,7 +66,7 @@ public class FunctionalLeaderPaginationService implements IPaginationCommons<Fun
 
     @Override
     public StringBuilder getFilters(List<Filter> filters) {
-        StringBuilder sql = new StringBuilder("where 1=1 ");
+        StringBuilder sql = new StringBuilder("where 1=1 and a.registrationStatus = 'A' ");
 
         for(Filter filtro:filters){
             if(filtro.getField().equals("idFunctionalLeader")){

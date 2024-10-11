@@ -5,6 +5,7 @@ import com.bussinesdomain.maestros.exception.ModelNotFoundException;
 import com.bussinesdomain.maestros.mapper.ILeaderMapper;
 import com.bussinesdomain.maestros.models.LeaderEntity;
 import com.bussinesdomain.maestros.repository.IGenericRepository;
+import com.bussinesdomain.maestros.repository.ILeaderRepository;
 import com.bussinesdomain.maestros.services.ILeaderService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +20,7 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
 
     private final IGenericRepository<LeaderEntity,Long> repository;
     private final ILeaderMapper iLeaderMapper;
+    private final ILeaderRepository iLeaderRepository;
 
     @Override
     public LeaderEntity update(LeaderEntity entity, Long id) {
@@ -43,4 +45,10 @@ public class LeaderServiceImpl extends CRUDImpl<LeaderEntity,Long> implements IL
         return leadersDto;
 
     }
+
+    @Override
+    public LeaderEntity getLeaderEntityByIdPractice(Long idPractice) {
+        return iLeaderRepository.getLeaderEntityByIdPractice(idPractice);
+    }
+
 }

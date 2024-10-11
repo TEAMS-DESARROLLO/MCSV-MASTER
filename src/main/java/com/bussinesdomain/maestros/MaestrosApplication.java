@@ -6,9 +6,13 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.util.List;
+import java.util.Map;
 
 import com.bussinesdomain.maestros.procesos.ILoadData;
 import com.bussinesdomain.maestros.procesos.ILoadDataCommunity;
+import com.bussinesdomain.maestros.dto.CommunityFromXlsDTO;
+import com.bussinesdomain.maestros.dto.PeruTotalDto;
 
 
 @SpringBootApplication

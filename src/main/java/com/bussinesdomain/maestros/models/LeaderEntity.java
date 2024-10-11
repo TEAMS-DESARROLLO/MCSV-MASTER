@@ -27,8 +27,8 @@ public class LeaderEntity {
     @Column(name="names",nullable = false)
     private String names;
 
-    @ManyToOne(optional = false,fetch= FetchType.EAGER)
-    @JoinColumn(name="id_practice",referencedColumnName="id_practice")
+    @ManyToOne(optional = false)
+    @JoinColumn(name="id_practice")
     private PracticeEntity practice;
 
     @Temporal(TemporalType.TIMESTAMP)
