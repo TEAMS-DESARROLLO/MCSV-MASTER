@@ -45,6 +45,11 @@ public class PracticeEntity implements Serializable {
     @Column(name="id_user ")    
     private Long idUser;
 
+    public PracticeEntity(Long idPractice, String description){
+        this.idPractice=idPractice;
+        this.description=description;
+    }
+
     @PrePersist
     public void prePersisten(){
         this.registrationStatus=RegistrationStatus.ACTIVE;

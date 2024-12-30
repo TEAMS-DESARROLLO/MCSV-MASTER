@@ -44,13 +44,13 @@ public class LeaderController {
     @GetMapping("/all")
     public ResponseEntity<List<LeaderDTO>> findByFiltro(){
 
-        List<LeaderEntity> objs = leaderService.getAll();
-        List<LeaderDTO> lst = objs.stream().map( obj -> {
+        List<LeaderDTO> lst = leaderService.getAll().stream().map(obj -> {
             LeaderDTO ele = leaderMapper.toGetDTO(obj);
             ele.setIdPractice(obj.getPractice().getIdPractice());
             ele.setPracticeDescription(obj.getPractice().getDescription());
             return ele;
         }).collect(Collectors.toList());
+        
         return new ResponseEntity<>(lst, HttpStatus.OK);
     }
 
