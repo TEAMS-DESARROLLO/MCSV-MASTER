@@ -205,6 +205,7 @@
 			</plugin>	
 					 
 		</plugins>
+		<finalName>master</finalName>
 	</build>
 
 	
