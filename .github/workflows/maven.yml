@@ -37,7 +37,7 @@ jobs:
       with:
         image: thinkhub/master
         tags: latest
-        registry: registry-url.io
+        registry: docker.io
         dockerfile: Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
